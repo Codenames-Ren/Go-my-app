@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"ren/backend-api/controllers"
-	"ren/backend-api/middlewares"
+	"ren/backend-api/src/controllers"
+	"ren/backend-api/src/middlewares"
 
 	"github.com/gin-gonic/gin"
 )

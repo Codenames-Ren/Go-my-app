@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"ren/backend-api/models"
+	"ren/backend-api/src/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
-	"ren/backend-api/database"
-	"ren/backend-api/middlewares"
-	"ren/backend-api/models"
+	"ren/backend-api/src/database"
+	"ren/backend-api/src/middlewares"
+	"ren/backend-api/src/models"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"

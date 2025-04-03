@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ren/backend-api/database"
-	"ren/backend-api/routes"
+	"ren/backend-api/src/database"
+	"ren/backend-api/src/routes"
 
 	"github.com/gin-gonic/gin"
 )
