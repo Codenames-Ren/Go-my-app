@@ -35,5 +35,6 @@ func UserRoutes(router *gin.Engine) {
 
 		//nambah endpoint buat grup admin disini
 		adminGroup.GET("/users", controllers.GetAllUsers)
+		adminGroup.DELETE("/users/:id", controllers.DeleteUser)
 	}
 }

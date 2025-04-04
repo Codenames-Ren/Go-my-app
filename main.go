@@ -17,6 +17,9 @@ func main() {
 	//Setup Routing
 	routes.UserRoutes(router)
 
+	//Register route from otproute
+	routes.RegisterOTPRoutes(router, database.DB)
+
 	//Server berjalan di port 8080
 	router.Run(":8080")
 }
