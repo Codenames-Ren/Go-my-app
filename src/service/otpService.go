@@ -13,6 +13,7 @@ import (
 
 type OTPService struct {
 	DB *gorm.DB
+	EmailService *EmailService
 }
 
 //Random 6 Digit OTP 
@@ -23,6 +24,16 @@ func generateOTPCode() string {
 
 //Save OTP to Database
 func (s *OTPService) CreateOTP(userID string, purpose string) (*models.OTP, error) {
+
+	var latestOTP models.OTP
+	err := s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Order("created_at DESC").First(&latestOTP).Error
+	if err == nil {
+		//found latest otp, check time difference
+		if time.Since(latestOTP.CreatedAt) < time.Minute {
+			return nil, errors.New("too many request, Please wait before requesting another OTP")
+		}
+	}
+
 	code := generateOTPCode()
 	expiry := time.Now().Add(5 * time.Minute) //Expired in 5 minute
 
@@ -34,6 +45,23 @@ func (s *OTPService) CreateOTP(userID string, purpose string) (*models.OTP, erro
 	}
 
 	if err := s.DB.Create(otp).Error; err != nil {
+		return nil, err
+	}
+
+	//Take user data from database
+	var user models.User
+	if err := s.DB.First(&user, "id = ?", userID).Error; err != nil {
+		return nil, err
+	}
+
+	//send otp via email
+	subject := "Your OTP Code"
+	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes.\n\nIf you did not request this, please ignore.", user.Email, otp.Code)
+	if user.Email == "" {
+		return nil, errors.New("user email is empty")
+	}
+
+	if err := s.EmailService.SendEmail(user.Email, subject, body); err != nil {
 		return nil, err
 	}
 

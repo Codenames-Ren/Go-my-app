@@ -14,7 +14,7 @@ type User struct {
 	Role 		string 		`gorm:"default:user"`
 	CreatedAt 	time.Time
 	UpdatedAt 	time.Time
-	DeletedAt 	gorm.DeletedAt
+	DeletedAt 	gorm.DeletedAt `gorm:"index"`
 }
 
 type OTP struct {

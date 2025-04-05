@@ -63,7 +63,11 @@ func Register(c *gin.Context) {
 	//Search ID by prefix
 	var lastUser models.User
 	var lastID string
-	if err := database.DB.Where("id LIKE ?", prefix+"-%").Order("id DESC").First(&lastUser).Error; err == nil {
+	if err := database.DB.
+	Unscoped().
+	Where("id LIKE ?", prefix+"-%").
+	Order("id DESC").First(&lastUser).
+	Error; err == nil {
 		lastID = lastUser.ID //ambil id terakhir
 	}
 
