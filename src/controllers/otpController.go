@@ -16,7 +16,7 @@ type OTPController struct {
 //Handle Generate OTP
 func (ctrl *OTPController) RequestOTP(c *gin.Context) {
 	var req struct {
-		UserID string `json:"user_id" binding:"required"`
+		Email string `json:"email" binding:"required"`
 		Purpose string `json:"purpose" binding:"required"`
 	}
 
@@ -25,7 +25,7 @@ func (ctrl *OTPController) RequestOTP(c *gin.Context) {
 		return
 	}
 
-	_, err := ctrl.OTPService.CreateOTP(req.UserID, req.Purpose)
+	_, err := ctrl.OTPService.CreateOTP(req.Email, req.Purpose)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -39,7 +39,7 @@ func (ctrl *OTPController) RequestOTP(c *gin.Context) {
 
 func (ctrl *OTPController) VerifyOTP(c *gin.Context) {
 	var req struct {
-		UserID 			string		`json:"user_id"`
+		Email 			string		`json:"email"`
 		Purpose 		string		`json:"purpose"`
 		Code 			string		`json:"code"`
 	}
@@ -49,9 +49,9 @@ func (ctrl *OTPController) VerifyOTP(c *gin.Context) {
 		return
 	}
 
-	valid, err := ctrl.OTPService.VerifyOTP(req.UserID, req.Purpose, req.Code)
+	valid, err := ctrl.OTPService.VerifyOTPByEmail(req.Email, req.Purpose, req.Code)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

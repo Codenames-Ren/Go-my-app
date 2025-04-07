@@ -3,6 +3,7 @@ package middlewares
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,13 +11,14 @@ import (
 )
 
 //Secret Key JWT
-var secretKey = []byte("secret")
+var secretKey = []byte(os.Getenv("SECRET_KEY"))
 
 //Generate token JWT
-func GenerateToken(username string, role string)(string, error) {
+func GenerateToken(username string, role string, status string)(string, error) {
 	claims := jwt.MapClaims{
 		"username": username,
 		"role": role,
+		"status": status,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -53,6 +55,13 @@ func AuthMiddleware() gin.HandlerFunc {
 		if !ok || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
 			c.Abort()
+			return
+		}
+
+		//cek status user
+		status, exists := claims["status"]
+		if !exists || status != "active" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Account is not active"})
 			return
 		}
 

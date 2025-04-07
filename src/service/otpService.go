@@ -23,22 +23,28 @@ func generateOTPCode() string {
 }
 
 //Save OTP to Database
-func (s *OTPService) CreateOTP(userID string, purpose string) (*models.OTP, error) {
+func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error) {
+	var user models.User
+	if err := s.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, errors.New("user not found")
+	}
+
+	if user.Email == "" {
+		return nil, errors.New("user email is empty")
+	}
 
 	var latestOTP models.OTP
-	err := s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Order("created_at DESC").First(&latestOTP).Error
-	if err == nil {
-		//found latest otp, check time difference
-		if time.Since(latestOTP.CreatedAt) < time.Minute {
-			return nil, errors.New("too many request, Please wait before requesting another OTP")
-		}
+	err := s.DB.Where("user_id = ? AND purpose = ?", user.ID, purpose).Order("created_at DESC").First(&latestOTP).Error
+
+	if err == nil && time.Since(latestOTP.CreatedAt) < time.Minute {
+		return nil, errors.New("too many request, please wait before requesting another OTP")
 	}
 
 	code := generateOTPCode()
-	expiry := time.Now().Add(5 * time.Minute) //Expired in 5 minute
+	expiry := time.Now().Add(5 * time.Minute)
 
 	otp := &models.OTP{
-		UserID: userID,
+		UserID: user.ID,
 		Code: code,
 		ExpiresAt: expiry,
 		Purpose: purpose,
@@ -48,30 +54,25 @@ func (s *OTPService) CreateOTP(userID string, purpose string) (*models.OTP, erro
 		return nil, err
 	}
 
-	//Take user data from database
-	var user models.User
-	if err := s.DB.First(&user, "id = ?", userID).Error; err != nil {
-		return nil, err
-	}
-
-	//send otp via email
 	subject := "Your OTP Code"
-	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes.\n\nIf you did not request this, please ignore.", user.Email, otp.Code)
-	if user.Email == "" {
-		return nil, errors.New("user email is empty")
-	}
+	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes. \n\nIf you did not request this, please ignore.", user.Email, otp.Code)
 
 	if err := s.EmailService.SendEmail(user.Email, subject, body); err != nil {
 		return nil, err
 	}
-
 	return otp, nil
 }
 
-func (s *OTPService) VerifyOTP(userID, purpose, code string) (bool, error) {
-	var otp models.OTP
+func (s *OTPService) VerifyOTPByEmail(email, purpose, code string) (bool, error) {
 
-	err := s.DB.Where("user_id = ? AND purpose = ? AND code = ?", userID, purpose, code).Order("created_at DESC").First(&otp).Error;
+	//search user by email
+	var user models.User
+	if err := s.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		return false, errors.New("user not found")
+	}
+
+	var otp models.OTP
+	err := s.DB.Where("user_id = ? AND purpose = ? AND code = ?", user.ID, purpose, code).Order("created_at DESC").First(&otp).Error;
 
 	if err != nil {
 		return false, err
@@ -90,5 +91,13 @@ func (s *OTPService) VerifyOTP(userID, purpose, code string) (bool, error) {
 	otp.Used = true
 	s.DB.Save(&otp)
 
+	//update status user
+	user.Status = "active"
+	s.DB.Save(&user)
+
 	return true, nil
+}
+
+func (s *OTPService) DeleteOTP(userID, purpose string) error {
+	return s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Delete(&models.OTP{}).Error
 }
