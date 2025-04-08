@@ -22,6 +22,40 @@ func generateOTPCode() string {
 	return fmt.Sprintf("%06d", rand.Intn(1000000))
 }
 
+//rate limiting
+func (s *OTPService) CheckRateLimit(userID string, purpose string) error {
+	var latestOTP models.OTP
+	err := s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Order("created_at DESC").First(&latestOTP).Error
+
+	if err == nil && time.Since(latestOTP.CreatedAt) < time.Minute {
+		return errors.New("too many request, please wait before requesting another OTP")
+	}
+	return nil
+}
+
+//checking request
+func (s *OTPService) CheckMaxRequest(userID string, purpose string) error {
+	var count int64
+	s.DB.Model(&models.OTP{}).Where("user_id = ? AND purpose = ? AND created_at >= ?", userID, purpose, time.Now().Add(-24*time.Hour)).Count(&count)
+
+	if count >= 5 {
+
+		var lastOTP models.OTP
+		err := s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Order("created_at DESC").First(&lastOTP).Error;
+		if err != nil {
+			return errors.New("failed to check OTP history")
+		}
+
+		cooldown := 15 * time.Minute
+		if time.Since(lastOTP.CreatedAt) < cooldown {
+			remaining := cooldown - time.Since(lastOTP.CreatedAt)
+			return fmt.Errorf("you have reached the maximum OTP request limit. Please wait %d minutes before trying again", int(remaining.Minutes())+1)
+	}
+}
+
+	return nil
+}
+
 //Save OTP to Database
 func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error) {
 	var user models.User
@@ -33,11 +67,12 @@ func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error
 		return nil, errors.New("user email is empty")
 	}
 
-	var latestOTP models.OTP
-	err := s.DB.Where("user_id = ? AND purpose = ?", user.ID, purpose).Order("created_at DESC").First(&latestOTP).Error
+	if err := s.CheckRateLimit(user.ID, purpose); err != nil {
+		return nil, err
+	}
 
-	if err == nil && time.Since(latestOTP.CreatedAt) < time.Minute {
-		return nil, errors.New("too many request, please wait before requesting another OTP")
+	if err := s.CheckMaxRequest(user.ID, purpose); err != nil {
+		return nil, err
 	}
 
 	code := generateOTPCode()

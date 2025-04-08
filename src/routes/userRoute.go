@@ -18,14 +18,17 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 		//Endpoint for Register with OTP
 		userGroup.POST("/register/init", controllers.RegisterInit)
 		userGroup.POST("/register/verify", controllers.RegisterComplete)
+		userGroup.POST("/register/resend-otp", controllers.ResendRegisterOTP)
 
 		//Endpoint for login with otp
 		userGroup.POST("/login/init", controllers.LoginInit)
 		userGroup.POST("/login/verify", controllers.LoginComplete)
+		userGroup.POST("/login/resend-otp", controllers.ResendLoginOTP)
 
 		//Endpoint for reset password
 		userGroup.POST("/forgot-password", controllers.ForgotPassword)
 		userGroup.POST("/reset-password", controllers.ResetPassword)
+		userGroup.POST("/forgot-password/resend-otp", controllers.ResendForgotPassOTP)
 
 		//Endpoint where needs auth
 		userGroup.PUT("/update-password", middlewares.AuthMiddleware(), controllers.UpdatePassword)
