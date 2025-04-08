@@ -232,6 +232,11 @@ func LoginInit(c *gin.Context) {
 		return
 	}
 
+	if user.Status != "active" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first."})
+		return
+	}
+
 	//set cookie for login
 	c.SetCookie("loginData", user.ID, 300, "/", "", false, true)
 
