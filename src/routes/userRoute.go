@@ -33,7 +33,11 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 		//Endpoint where needs auth
 		userGroup.PUT("/update-password", middlewares.AuthMiddleware(), controllers.UpdatePassword)
 		userGroup.GET("/profile", middlewares.AuthMiddleware(), func(c *gin.Context) {
-			c.JSON(200, gin.H{"message": "Welcome to your profile!"})
+			username, _ := c.Get("username")
+			c.JSON(200, gin.H{
+				"message": "Welcome to your profile!",
+				"user"	: username,
+			})
 		})
 	}
 
