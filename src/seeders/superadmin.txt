@@ -1,0 +1,44 @@
+package seeders
+
+import (
+	"fmt"
+	"time"
+
+	"ren/backend-api/src/models"
+
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
+
+func SeedSuperAdmin(db *gorm.DB) error {
+	var count int64
+	db.Model(&models.User{}).Where("id = ? AND role = ?", "SP-ADM", "super_admin").Count(&count)
+
+	if count > 0 {
+		fmt.Println("Superadmin already exists, skipping seeder ❤️")
+		return nil
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("Seadragon555!"), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	superAdmin := models.User{
+		ID:        "SP-ADM",
+		Username:  "Rein",
+		Email:     "1124160034@global.ac.id",
+		Password:  string(hashedPassword),
+		Role:      "super_admin",
+		Status:    "active",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	if err := db.Create(&superAdmin).Error; err != nil {
+		return err
+	}
+
+	fmt.Println("Superadmin created successfully! 🎉")
+	return nil
+}

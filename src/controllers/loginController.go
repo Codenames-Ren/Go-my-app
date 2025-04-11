@@ -38,7 +38,7 @@ func LoginInit(c *gin.Context) {
 	}
 
 	if user.Status != "active" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first."})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first or contact our admin for assistance."})
 		return
 	}
 
@@ -83,7 +83,7 @@ func LoginComplete(c *gin.Context) {
 	}
 
 	if user.Status != "active" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first."})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first or contact our admin for assistance."})
 		return
 	}
 
@@ -141,7 +141,7 @@ func ResendLoginOTP(c *gin.Context) {
 	}
 
 	if user.Status != "active" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active, Please activate your account first."})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Your account is not active. Please activate your account first or contact our admin for assistance."})
 		return
 	}
 

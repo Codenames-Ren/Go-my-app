@@ -1,1 +1,4 @@
 .env
+
+/seeders/main.txt
+/seeders/superadmin.txt

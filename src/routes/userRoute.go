@@ -55,6 +55,12 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 
 		//nambah endpoint buat grup admin disini
 		adminGroup.GET("/users", controllers.GetAllUsers)
-		adminGroup.DELETE("/users/:id", controllers.DeleteUser)
+	}
+
+	//superadmin
+	superAdminGroup := router.Group("/sp-admin", middlewares.AuthMiddleware(), middlewares.SuperAdminMiddleware())
+	{
+		superAdminGroup.GET("/users", controllers.GetAllUsers)
+		superAdminGroup.DELETE("/users/:id", controllers.DeleteUser)
 	}
 }

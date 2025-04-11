@@ -18,7 +18,7 @@ func RegisterInit(c *gin.Context) {
 		Username 	string `json:"username" binding:"required"`
 		Email 		string `json:"email" binding:"required,email"`
 		Password 	string `json:"password" binding:"required"`
-		Role	 	string `json:"role" binding:"required"`
+		Role	 	string `json:"role"`
 	}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -34,11 +34,17 @@ func RegisterInit(c *gin.Context) {
 
 	//Check user has been used or not
 	var existingUser models.User
-	if err := database.DB.Where("email = ? OR username = ?", input.Email, input.Username).First(&existingUser).Error;
+	if err := database.DB.Unscoped().Where("email = ? OR username = ?", input.Email, input.Username).First(&existingUser).Error;
 	err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email or username already in use!"})
 		return
 	}
+
+	// //Validation role
+	// if input.Role != "user" && input.Role != "admin"  {
+	// 	c.JSON(http.StatusForbidden, gin.H{"error": "Access Denied!"})
+	// 	return
+	// }
 
 	//prefix id by role
 	var prefix string
