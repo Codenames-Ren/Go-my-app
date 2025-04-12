@@ -8,6 +8,7 @@ import (
 
 	"ren/backend-api/src/models"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +21,19 @@ type OTPService struct {
 func generateOTPCode() string {
 	rand.Seed(time.Now().UnixNano())
 	return fmt.Sprintf("%06d", rand.Intn(1000000))
+}
+
+func hashOTP(otp string) (string, error) {
+	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(otp), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedBytes), nil
+}
+
+func VerifyOTP(plainOTP, hashedOTP string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedOTP), []byte(plainOTP))
+	return err == nil
 }
 
 //rate limiting
@@ -75,12 +89,19 @@ func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error
 		return nil, err
 	}
 
-	code := generateOTPCode()
+	//generate plaintext otp
+	plainCode := generateOTPCode()
 	expiry := time.Now().Add(5 * time.Minute)
+
+	//hash code
+	hashedCode, err := hashOTP(plainCode)
+	if err != nil {
+		return nil, fmt.Errorf("failed to hash OTP: %v", err)
+	}
 
 	otp := &models.OTP{
 		UserID: user.ID,
-		Code: code,
+		Code: hashedCode,
 		ExpiresAt: expiry,
 		Purpose: purpose,
 	}
@@ -90,15 +111,26 @@ func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error
 	}
 
 	subject := "Your OTP Code"
-	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes. \n\nIf you did not request this, please ignore.", user.Email, otp.Code)
+	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes. \n\nIf you did not request this, please ignore.", user.Email, plainCode)
 
 	if err := s.EmailService.SendEmail(user.Email, subject, body); err != nil {
 		return nil, err
 	}
-	return otp, nil
+
+	tempOTP := &models.OTP{
+		ID: otp.ID,
+		UserID: otp.UserID,
+		Code: plainCode,
+		ExpiresAt: otp.ExpiresAt,
+		Purpose: otp.Purpose,
+		CreatedAt: otp.CreatedAt,
+		Used: otp.Used,
+	}
+
+	return tempOTP, nil
 }
 
-func (s *OTPService) VerifyOTPByEmail(email, purpose, code string) (bool, error) {
+func (s *OTPService) VerifyOTPByEmail(email, purpose, inputCode string) (bool, error) {
 
 	//search user by email
 	var user models.User
@@ -106,31 +138,37 @@ func (s *OTPService) VerifyOTPByEmail(email, purpose, code string) (bool, error)
 		return false, errors.New("user not found")
 	}
 
-	var otp models.OTP
-	err := s.DB.Where("user_id = ? AND purpose = ? AND code = ?", user.ID, purpose, code).Order("created_at DESC").First(&otp).Error;
-
+	var otps []models.OTP
+	err := s.DB.Where("user_id = ? AND purpose = ?", user.ID, purpose).Order("created_at DESC").Find(&otps).Error;
 	if err != nil {
 		return false, err
 	}
 
-	//Expired Check
-	if time.Since(otp.CreatedAt) > time.Minute*5 {
-		return false, errors.New("OTP has expired")
+	if len(otps) == 0 {
+		return false, errors.New("no OTP found")
 	}
 
-	//check otp has used or not
-	if otp.Used {
-		return false, errors.New("OTP already used")
+	for _, otp := range otps {
+		if otp.Used {
+			continue
+		}
+
+		if time.Since(otp.CreatedAt) > time.Minute * 5 {
+			continue
+		}
+
+		if VerifyOTP(inputCode, otp.Code) {
+			otp.Used = true
+			s.DB.Save(&otp)
+
+			user.Status = "active"
+			s.DB.Save(&user)
+
+			return true, nil
+		}
 	}
 
-	otp.Used = true
-	s.DB.Save(&otp)
-
-	//update status user
-	user.Status = "active"
-	s.DB.Save(&user)
-
-	return true, nil
+	return false, errors.New("invalid or expired otp")
 }
 
 func (s *OTPService) DeleteOTP(userID, purpose string) error {
