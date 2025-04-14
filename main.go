@@ -31,6 +31,31 @@ func main() {
 	//Inisialisasi Server
 	router := gin.Default()
 
+	router.Use(func (c *gin.Context)  {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, Authorization")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	})
+
+	//Static route from public
+	router.Static("/public", "./public")
+
+	//redirect route to login page
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/login")
+	})
+
+	router.GET("/login", func(c *gin.Context) {
+		c.File("./public/login_form/index.html")
+	})
+
 	//setup email service
 	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	emailService := service.EmailService{
