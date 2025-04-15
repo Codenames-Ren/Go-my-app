@@ -1,57 +1,104 @@
-.otp-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: white;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.otp-input-container {
+body {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.container {
+  width: 400px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.otp-container {
+  display: flex;
   gap: 10px;
-  margin: 30px 0;
+  margin-bottom: 30px;
+  justify-content: center;
 }
 
 .otp-input {
-  width: 40px;
-  height: 50px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
+  width: 50px;
+  height: 60px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: border 0.2s;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.2s ease;
 }
 
 .otp-input:focus {
-  border: 2px solid #3498db;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 266, 0.2);
   outline: none;
 }
 
-.verify-button {
-  background-color: #3498db;
-  color: white;
+.btn {
+  width: 100%;
+  padding: 14px;
   border: none;
-  padding: 12px 30px;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
 }
 
-.verify-button:hover {
-  background-color: #2980b9;
+.verify-btn {
+  background-color: #4a90e2;
+  color: white;
+  margin-bottom: 15px;
 }
 
-.resend-container {
-  margin-top: 20px;
+.verify-btn:hover {
+  background-color: #3a80d2;
+}
+
+.resend-btn {
+  background-color: transparent;
+  color: #4a90e2;
+  border: 1px solid #4a90e2;
+}
+
+.resend-btn:hover:not(:disabled) {
+  background-color: rgba(74, 144, 266, 0.05);
+}
+
+.resend-btn:disabled {
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
 }
 
 .timer {
-  font-size: 14px;
-  color: #777;
-  margin-top: 10px;
+  font-size: 16px;
+  color: #666;
+  margin-top: 15px;
 }

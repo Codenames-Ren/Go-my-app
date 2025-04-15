@@ -5,32 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verify</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/public/login-form/otp.css" />
+    <link rel="stylesheet" href="/public/login_form/style/otp.css" />
   </head>
   <body>
-    <div class="otp-container">
+    <div class="container">
       <h2>Verification Code</h2>
       <p>We've sent a verification code to your email</p>
 
       <form id="otpForm">
-        <div class="otp-input-container">
-          <input type="text" class="otp-input" maxlength="1" autofocus />
-          <input type="text" class="otp-input" maxlength="1" />
-          <input type="text" class="otp-input" maxlength="1" />
-          <input type="text" class="otp-input" maxlength="1" />
-          <input type="text" class="otp-input" maxlength="1" />
-          <input type="text" class="otp-input" maxlength="1" />
+        <div class="otp-container">
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            autofocus
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
+          />
         </div>
 
-        <div class="button-container">
-          <button type="submit" class="verify-button">Verify</button>
-        </div>
-
-        <div class="resend-container">
-          <p>Didn't receive the code? <a href="#" id="resendOtp">Resend</a></p>
-          <div class="timer">Resend in <span id="countdown">60</span>s</div>
-        </div>
+        <button type="submit" class="btn verify-btn">Send</button>
       </form>
+
+      <button id="resendBtn" class="btn resend-btn" disabled>Resend</button>
+      <div class="timer" id="timer">
+        Resend in <span id="countdown">60</span>s before resend otp
+      </div>
     </div>
 
     <script src="/public/login-form/script/otp.js"></script>
