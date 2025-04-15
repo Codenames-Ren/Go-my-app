@@ -26,14 +26,27 @@ registerForm.addEventListener("submit", async (e) => {
     console.log(data);
 
     if (response.ok) {
-      alert("Check your email for the OTP!");
-      window.location.href = "/otp.html";
+      await Swal.fire({
+        title: "Success",
+        text: "OTP has been sent to your email, please verify to continue.",
+        icon: "success",
+      });
+      window.location.href = "/otp";
     } else {
-      alert(data.message || "Register failed");
+      await Swal.fire({
+        title: "Register Failed",
+        text: "Failed to register account! please contact admin",
+        icon: "error",
+      });
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Something went wrong");
+    await Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+      footer: '<a href="#">Why do I have this issue?</a>',
+    });
   }
 });
 
@@ -59,14 +72,27 @@ loginForm.addEventListener("submit", async (e) => {
     console.log(data);
 
     if (response.ok) {
-      alert("Check your email for the OTP!");
-      window.location.href = "/otp.html";
+      await Swal.fire({
+        title: "Success",
+        text: "OTP has been sent to your email, please verify to continue.",
+        icon: "success",
+      });
+      window.location.href = "/otp";
     } else {
-      alert(data.message || "Login failed");
+      await Swal.fire({
+        title: "Login Failed!",
+        text: "Invalid email or password",
+        icon: "error",
+      });
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Something went wrong");
+    await Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+      footer: '<a href="#">Why do I have this issue?</a>',
+    });
   }
 });
 

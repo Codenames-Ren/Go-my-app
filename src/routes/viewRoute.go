@@ -1,0 +1,21 @@
+package routes
+
+import "github.com/gin-gonic/gin"
+
+func ViewRoute(router *gin.Engine) {
+	//Static route from public
+	router.Static("/public", "./public")
+
+	//redirect route to login page
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/login")
+	})
+
+	router.GET("/login", func(c *gin.Context) {
+		c.File("./public/login_form/index.html")
+	})
+
+	router.GET("/otp", func(c *gin.Context) {
+		c.File("./public/login_form/otp.html")
+	})
+}

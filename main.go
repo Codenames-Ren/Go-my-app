@@ -30,6 +30,8 @@ func main() {
 
 	//Inisialisasi Server
 	router := gin.Default()
+	
+	routes.ViewRoute(router)
 
 	router.Use(func (c *gin.Context)  {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -42,18 +44,6 @@ func main() {
 		}
 
 		c.Next()
-	})
-
-	//Static route from public
-	router.Static("/public", "./public")
-
-	//redirect route to login page
-	router.GET("/", func(c *gin.Context) {
-		c.Redirect(302, "/login")
-	})
-
-	router.GET("/login", func(c *gin.Context) {
-		c.File("./public/login_form/index.html")
 	})
 
 	//setup email service
