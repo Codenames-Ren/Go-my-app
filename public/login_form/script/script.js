@@ -31,7 +31,9 @@ registerForm.addEventListener("submit", async (e) => {
         text: "OTP has been sent to your email, please verify to continue.",
         icon: "success",
       });
-      window.location.href = "/otp";
+      window.location.href = `/otp?email=${encodeURIComponent(
+        email
+      )}&purpose=register`;
     } else {
       await Swal.fire({
         title: "Register Failed",
@@ -77,7 +79,9 @@ loginForm.addEventListener("submit", async (e) => {
         text: "OTP has been sent to your email, please verify to continue.",
         icon: "success",
       });
-      window.location.href = "/otp";
+      window.location.href = `/otp?email=${encodeURIComponent(
+        email
+      )}&purpose=login`;
     } else {
       await Swal.fire({
         title: "Login Failed!",

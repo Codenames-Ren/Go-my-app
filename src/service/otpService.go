@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 
@@ -113,9 +114,11 @@ func (s *OTPService) CreateOTP(email string, purpose string) (*models.OTP, error
 	subject := "Your OTP Code"
 	body := fmt.Sprintf("Hello %s, \n\nYour OTP code is: %s\n\nThis code will expire in 5 minutes. \n\nIf you did not request this, please ignore.", user.Email, plainCode)
 
-	if err := s.EmailService.SendEmail(user.Email, subject, body); err != nil {
-		return nil, err
-	}
+	go func()  {
+		if err := s.EmailService.SendEmail(user.Email, subject, body); err != nil {
+			log.Println("Failed to send OTP Email:", err)
+		}
+	}()
 
 	tempOTP := &models.OTP{
 		ID: otp.ID,

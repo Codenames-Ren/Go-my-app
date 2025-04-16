@@ -3,65 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify</title>
+    <title>Verification</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/public/login_form/style/otp.css" />
   </head>
   <body>
     <div class="container">
-      <h2>Verification Code</h2>
-      <p>We've sent a verification code to your email</p>
+      <h1>Verifikasi OTP</h1>
+      <p>Masukkan kode 6 digit angka yang kami telah kirimkan ke email anda.</p>
 
-      <form id="otpForm">
-        <div class="otp-container">
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            autofocus
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-          <input
-            type="text"
-            class="otp-input"
-            maxlength="1"
-            oninput="this.value=this.value.replace(/[^0-9]/g, '')"
-          />
-        </div>
+      <div class="otp-field">
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          pattern="[0-9]"
+          inputmode="numeric"
+          class="otp-input"
+        />
+      </div>
 
-        <button type="submit" class="btn verify-btn">Send</button>
-      </form>
-
-      <button id="resendBtn" class="btn resend-btn" disabled>Resend</button>
-      <div class="timer" id="timer">
-        Resend in <span id="countdown">60</span>s before resend otp
+      <button id="verify-btn">Verifikasi</button>
+      <div class="timer">
+        <span id="timer-text"
+          >Kirim ulang otp dalam <span id="timer">01:00</span></span
+        >
+        <button id="resend-btn" style="display: none; margin-top: 10px">
+          Kirim Ulang OTP
+        </button>
       </div>
     </div>
 
-    <script src="/public/login-form/script/otp.js"></script>
+    <div id="success-popup" class="popup">OTP berhasil dikirim ulang</div>
   </body>
+  <script src="/public/login_form/script/otp.jsv=2"></script>
 </html>

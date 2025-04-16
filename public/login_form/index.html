@@ -11,7 +11,7 @@
   <body>
     <div class="container" id="container">
       <div class="form-container register-container">
-        <form action="#">
+        <form class="register-form">
           <h1>Register</h1>
           <input type="text" placeholder="Username" />
           <input type="email" placeholder="Email" />
@@ -29,7 +29,7 @@
       </div>
 
       <div class="form-container login-container">
-        <form action="#">
+        <form class="login-form">
           <h1>Login</h1>
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
@@ -59,7 +59,7 @@
           <div class="overlay-panel overlay-left">
             <h1 class="title">Hello<br />friends</h1>
             <p>if you have an account, login there and have fun!</p>
-            <button class="ghost" id="login">
+            <button type="button" class="ghost" id="login">
               Login
               <i class="lni lni-arrow-left login"></i>
             </button>
@@ -72,7 +72,7 @@
             <p>
               if you don't have an account yet, join us and start your journey!
             </p>
-            <button class="ghost" id="register">
+            <button type="button" class="ghost" id="register">
               Register
 
               <i class="lni lni-arrow-right register"></i>
@@ -81,6 +81,6 @@
         </div>
       </div>
     </div>
-    <script src="public/login_form/script/script.js"></script>
+    <script src="/public/login_form/script/script.js"></script>
   </body>
 </html>

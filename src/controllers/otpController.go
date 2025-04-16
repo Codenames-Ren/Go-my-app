@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"ren/backend-api/src/service"
@@ -25,11 +26,12 @@ func (ctrl *OTPController) RequestOTP(c *gin.Context) {
 		return
 	}
 
-	_, err := ctrl.OTPService.CreateOTP(req.Email, req.Purpose)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	go func() {
+		_, err := ctrl.OTPService.CreateOTP(req.Email, req.Purpose)
+		if err != nil {
+			log.Println("Failed to send OTP:", err)
+		}
+	}()
 
 	//response JSON
 	c.JSON(http.StatusOK, gin.H{
@@ -41,7 +43,7 @@ func (ctrl *OTPController) VerifyOTP(c *gin.Context) {
 	var req struct {
 		Email 			string		`json:"email"`
 		Purpose 		string		`json:"purpose"`
-		Code 			string		`json:"code"`
+		Code 			string		`json:"otpCode"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {

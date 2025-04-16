@@ -1,104 +1,102 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins");
 
 body {
+  font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  height: 100vh;
+  background-color: #f0f2f5;
+  margin: 0;
 }
 
 .container {
-  width: 400px;
   background-color: white;
-  border-radius: 12px;
-  padding: 40px 30px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 380px;
   text-align: center;
 }
 
 h1 {
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   font-size: 24px;
 }
 
 p {
   color: #666;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   font-size: 14px;
-  line-height: 1.6;
 }
 
-.otp-container {
+.otp-field {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   margin-bottom: 30px;
-  justify-content: center;
+  gap: 10px;
 }
 
-.otp-input {
-  width: 50px;
-  height: 60px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+.otp-field input {
+  width: 45px;
+  height: 45px;
   text-align: center;
   font-size: 24px;
   font-weight: 600;
-  color: #333;
-  transition: all 0.2s ease;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: all 0.2s;
 }
 
-.otp-input:focus {
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 266, 0.2);
+.otp-field input:focus {
+  border-color: #1bc712;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
   outline: none;
 }
 
-.btn {
+button {
+  padding: 12px 0;
   width: 100%;
-  padding: 14px;
+  background-color: #0ed004;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s;
 }
 
-.verify-btn {
-  background-color: #4a90e2;
-  color: white;
-  margin-bottom: 15px;
-}
-
-.verify-btn:hover {
-  background-color: #3a80d2;
-}
-
-.resend-btn {
-  background-color: transparent;
-  color: #4a90e2;
-  border: 1px solid #4a90e2;
-}
-
-.resend-btn:hover:not(:disabled) {
-  background-color: rgba(74, 144, 266, 0.05);
-}
-
-.resend-btn:disabled {
-  color: #999;
-  border-color: #ddd;
+button:disabled {
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
+button:hover:not(:disabled) {
+  background-color: #1bc712;
+}
+
 .timer {
-  font-size: 16px;
-  color: #666;
   margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(200%);
+  transition: transform 0.3s ease-out;
+  z-index: 1000;
+}
+
+.popup.show {
+  transform: translateX(0);
 }
