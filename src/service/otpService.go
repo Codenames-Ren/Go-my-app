@@ -53,7 +53,7 @@ func (s *OTPService) CheckMaxRequest(userID string, purpose string) error {
 	var count int64
 	s.DB.Model(&models.OTP{}).Where("user_id = ? AND purpose = ? AND created_at >= ?", userID, purpose, time.Now().Add(-24*time.Hour)).Count(&count)
 
-	if count >= 5 {
+	if count >= 10 {
 
 		var lastOTP models.OTP
 		err := s.DB.Where("user_id = ? AND purpose = ?", userID, purpose).Order("created_at DESC").First(&lastOTP).Error;

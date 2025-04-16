@@ -6,12 +6,12 @@
     <title>Login-Form</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="public/login_form/style/style.css" />
+    <link rel="stylesheet" href="/public/login_form/style/style.css" />
   </head>
   <body>
     <div class="container" id="container">
       <div class="form-container register-container">
-        <form class="register-form">
+        <form action="#">
           <h1>Register</h1>
           <input type="text" placeholder="Username" />
           <input type="email" placeholder="Email" />
@@ -29,7 +29,7 @@
       </div>
 
       <div class="form-container login-container">
-        <form class="login-form">
+        <form action="#">
           <h1>Login</h1>
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
@@ -59,7 +59,7 @@
           <div class="overlay-panel overlay-left">
             <h1 class="title">Hello<br />friends</h1>
             <p>if you have an account, login there and have fun!</p>
-            <button type="button" class="ghost" id="login">
+            <button class="ghost" id="login">
               Login
               <i class="lni lni-arrow-left login"></i>
             </button>
@@ -72,7 +72,7 @@
             <p>
               if you don't have an account yet, join us and start your journey!
             </p>
-            <button type="button" class="ghost" id="register">
+            <button class="ghost" id="register">
               Register
 
               <i class="lni lni-arrow-right register"></i>
@@ -81,6 +81,12 @@
         </div>
       </div>
     </div>
-    <script src="/public/login_form/script/script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var script = document.createElement("script");
+        script.src = "/public/login_form/script/script.js";
+        document.head.appendChild(script);
+      });
+    </script>
   </body>
 </html>

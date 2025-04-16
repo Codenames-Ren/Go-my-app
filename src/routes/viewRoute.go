@@ -3,6 +3,11 @@ package routes
 import "github.com/gin-gonic/gin"
 
 func ViewRoute(router *gin.Engine) {
+
+	router.Use(func(c *gin.Context) {
+        c.Writer.Header().Set("Cache-Control", "no-store")
+    })
+	
 	//Static route from public
 	router.Static("/public", "./public")
 
@@ -16,6 +21,12 @@ func ViewRoute(router *gin.Engine) {
 	})
 
 	router.GET("/otp", func(c *gin.Context) {
+		email := c.Query("email")
+		purpose := c.Query("purpose")
+
+		if email == "" || purpose == "" {
+			c.String(400, "Missing query parameters")	
+		}
 		c.File("./public/login_form/otp.html")
 	})
 }

@@ -1,8 +1,11 @@
+console.log("Script loaded");
+
 const registerForm = document.querySelector(".register-container form");
 const loginForm = document.querySelector(".login-container form");
 
 //register handler
 registerForm.addEventListener("submit", async (e) => {
+  console.log("Rehister form submitted!");
   e.preventDefault();
 
   const username = registerForm.querySelector(
@@ -54,6 +57,7 @@ registerForm.addEventListener("submit", async (e) => {
 
 //handle login
 loginForm.addEventListener("submit", async (e) => {
+  console.log("Login form submitted!");
   e.preventDefault();
 
   const email = loginForm.querySelector(`input[placeholder="Email"]`).value;

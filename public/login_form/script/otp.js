@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.message?.includes("success")) {
+        if (data.message) {
           showPopup();
           startTimer();
         } else {
@@ -173,8 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({
         email: email,
-        purpose: purpose,
-        otpCode: otpCode,
+        otp: otpCode,
       }),
     })
       .then((response) => {
@@ -184,7 +183,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       .then((data) => {
         console.log("Response data:", data);
-        if (data && data.message === "OTP verified successfully") {
+        if (
+          data &&
+          (data.token || data.message === "OTP verified successfully")
+        ) {
           Swal.fire({
             title: "Berhasil",
             text: "Kode OTP berhasil di verifikasi.",
