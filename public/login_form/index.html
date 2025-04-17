@@ -11,7 +11,7 @@
   <body>
     <div class="container" id="container">
       <div class="form-container register-container">
-        <form action="#">
+        <form action="#" autocomplete="off">
           <h1>Register</h1>
           <input type="text" placeholder="Username" />
           <input type="email" placeholder="Email" />
@@ -31,11 +31,16 @@
       <div class="form-container login-container">
         <form action="#">
           <h1>Login</h1>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          <input type="email" placeholder="Email" autocomplete="off" />
+          <input type="password" placeholder="Password" autocomplete="off" />
           <div class="content">
             <div class="checkbox">
-              <input type="checkbox" name="checkbox" id="checkbox" />
+              <input
+                type="checkbox"
+                name="checkbox"
+                id="checkbox"
+                autocomplete="on"
+              />
               <label>Remember me</label>
             </div>
             <div class="pass-link">

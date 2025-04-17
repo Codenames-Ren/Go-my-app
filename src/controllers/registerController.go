@@ -165,7 +165,7 @@ func RegisterComplete(c *gin.Context) {
 	c.SetCookie("registerData", "", -1, "/", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "User registered successfully!",
+		"message": "OTP verified successfully",
 		"username": user.Username,
 		"email": user.Email,
 	})
@@ -176,15 +176,18 @@ func RegisterComplete(c *gin.Context) {
 
 //resend otp
 func ResendRegisterOTP(c *gin.Context) {
-	userID, err := c.Cookie("registerData")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Registration session expired"})
+	var req struct {
+		Email string `json:"email" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	//get user data
 	var user models.User
-	if err := database.DB.Where("id = ?", userID).First(&user).Error; err != nil {
+	if err := database.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
 		return
 	}
@@ -200,7 +203,7 @@ func ResendRegisterOTP(c *gin.Context) {
 		return
 	}
 
-	_, err = otpService.CreateOTP(user.Email, "registration")
+	_, err := otpService.CreateOTP(user.Email, "registration")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to resend OTP" + err.Error()})
 		return

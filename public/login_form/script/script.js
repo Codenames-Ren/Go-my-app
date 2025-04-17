@@ -5,7 +5,7 @@ const loginForm = document.querySelector(".login-container form");
 
 //register handler
 registerForm.addEventListener("submit", async (e) => {
-  console.log("Rehister form submitted!");
+  console.log("Register form submitted!");
   e.preventDefault();
 
   const username = registerForm.querySelector(
@@ -40,7 +40,7 @@ registerForm.addEventListener("submit", async (e) => {
     } else {
       await Swal.fire({
         title: "Register Failed",
-        text: "Failed to register account! please contact admin",
+        text: "Register akun gagal. Username atau email sudah terdaftar!",
         icon: "error",
       });
     }
