@@ -16,6 +16,10 @@ func ViewRoute(router *gin.Engine) {
 		c.Redirect(302, "/login")
 	})
 
+	router.GET("/home", func(c *gin.Context) {
+		c.File("./public/homepage/index.html")
+	})
+
 	router.GET("/login", func(c *gin.Context) {
 		c.File("./public/login_form/index.html")
 	})

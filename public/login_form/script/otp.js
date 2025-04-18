@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
           verifyButton.disabled = true;
 
           setTimeout(() => {
-            window.location.href = "/dashboard.html";
+            window.location.href = "/home";
           }, 2000);
         } else {
           Swal.fire(

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StayWise | Hotel Booking</title>
+    <link rel="stylesheet" href="/public/homepage/style/style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo" data-page="home">
+        <i class="fas fa-hotel"></i>
+        StayWise
+      </div>
+
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a data-page="home" class="active">Home</a></li>
+        <li><a data-page="hotels">Hotels</a></li>
+        <li><a data-page="destinations">Destinations</a></li>
+        <li><a data-page="about">About</a></li>
+        <li><a data-page="contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-links">
+        <div class="toggle-container">
+          <i class="fas fa-sun"></i>
+          <div class="mode-toggle" id="modeToggle">
+            <div class="toggle-thumb"></div>
+          </div>
+          <i class="fas fa-moon"></i>
+        </div>
+        <button class="login-btn" id="loginBtn">Login</button>
+      </div>
+    </nav>
+
+    <div class="container">
+      <!-- Home Page -->
+      <div class="page active" id="home">
+        <section class="hero-section">
+          <div class="hero-bg"></div>
+          <div class="hero-content">
+            <h1 class="hero-title">Find Your Perfect Stay</h1>
+            <p class="hero-description">
+              Discover amazing hotels, resorts, and accommodations for your next
+              adventure. Choose the perfect package for your needs.
+            </p>
+            <button class="btn" data-page="hotels">Explore Hotels</button>
+          </div>
+        </section>
+
+        <section class="packages-section">
+          <div class="packages-container">
+            <!-- Regular Package -->
+            <div class="package-card package-regular" id="regularPackage">
+              <div class="package-header">
+                <h3 class="package-title">Regular</h3>
+                <div class="package-price">
+                  $99<span class="price-period">/night</span>
+                </div>
+              </div>
+              <div class="package-features">
+                <div class="feature-item">
+                  <i class="fas fa-bed feature-icon"></i>
+                  <span>Standard Room</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-wifi feature-icon"></i>
+                  <span>Free Wi-Fi</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-coffee feature-icon"></i>
+                  <span>Breakfast Included</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-swimming-pool feature-icon"></i>
+                  <span>Pool Access</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-parking feature-icon"></i>
+                  <span>Free Parking</span>
+                </div>
+              </div>
+              <div class="package-cta">
+                <button class="btn book-package" data-package="regular">
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Family Package -->
+            <div class="package-card package-family" id="familyPackage">
+              <div class="popular-badge">POPULAR</div>
+              <div class="package-header">
+                <h3 class="package-title">Family</h3>
+                <div class="package-price">
+                  $199<span class="price-period">/night</span>
+                </div>
+              </div>
+              <div class="package-features">
+                <div class="feature-item">
+                  <i class="fas fa-home feature-icon"></i>
+                  <span>Family Suite</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-wifi feature-icon"></i>
+                  <span>High-Speed Wi-Fi</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-utensils feature-icon"></i>
+                  <span>All Meals Included</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-swimming-pool feature-icon"></i>
+                  <span>Pool & Kids Area</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-gamepad feature-icon"></i>
+                  <span>Game Room Access</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-car feature-icon"></i>
+                  <span>Family Activities</span>
+                </div>
+              </div>
+              <div class="package-cta">
+                <button class="btn book-package" data-package="family">
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- VIP Package -->
+            <div class="package-card package-vip" id="vipPackage">
+              <div class="package-header">
+                <h3 class="package-title">VIP</h3>
+                <div class="package-price">
+                  $299<span class="price-period">/night</span>
+                </div>
+              </div>
+              <div class="package-features">
+                <div class="feature-item">
+                  <i class="fas fa-crown feature-icon"></i>
+                  <span>Luxury Suite</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-wifi feature-icon"></i>
+                  <span>Premium Wi-Fi</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-utensils feature-icon"></i>
+                  <span>All-Inclusive Dining</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-glass-cheers feature-icon"></i>
+                  <span>Private Bar</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-spa feature-icon"></i>
+                  <span>Spa Treatment</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-concierge-bell feature-icon"></i>
+                  <span>24/7 Concierge</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-car feature-icon"></i>
+                  <span>Airport Transfer</span>
+                </div>
+              </div>
+              <div class="package-cta">
+                <button class="btn book-package" data-package="vip">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="features-section">
+          <h2 class="section-title">Why Choose StayWise?</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-map-marked-alt feature-card-icon"></i>
+              <h3 class="feature-card-title">Best Locations</h3>
+              <p class="feature-card-description">
+                Handpicked hotels in the most desirable locations around the
+                world.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-tag feature-card-icon"></i>
+              <h3 class="feature-card-title">Best Price Guarantee</h3>
+              <p class="feature-card-description">
+                Find a lower price? We'll match it and give you an additional
+                discount.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-headset feature-card-icon"></i>
+              <h3 class="feature-card-title">24/7 Customer Support</h3>
+              <p class="feature-card-description">
+                Our support team is always available to help with any issues.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-shield-alt feature-card-icon"></i>
+              <h3 class="feature-card-title">Secure Booking</h3>
+              <p class="feature-card-description">
+                Your payment and personal information are always protected.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Other pages would go here -->
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>StayWise</h3>
+          <p>
+            Your trusted partner for comfortable and memorable stays worldwide.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#" data-page="home">Home</a></li>
+            <li><a href="#" data-page="hotels">Hotels</a></li>
+            <li><a href="#" data-page="destinations">Destinations</a></li>
+            <li><a href="#" data-page="about">About Us</a></li>
+            <li><a href="#" data-page="contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> 123 Hotel Street, City
+            </li>
+            <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+            <li><i class="fas fa-envelope"></i> info@staywise.com</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 StayWise. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Package Booking Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal-content">
+        <button class="close-modal" id="closeBookingModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">
+          Book Your <span id="packageType">Package</span>
+        </h2>
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="bookingName">Full Name</label>
+            <input type="text" id="bookingName" required />
+          </div>
+          <div class="form-group">
+            <label for="bookingEmail">Email</label>
+            <input type="email" id="bookingEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="checkInDate">Check-in Date</label>
+            <input type="date" id="checkInDate" required />
+          </div>
+          <div class="form-group">
+            <label for="checkOutDate">Check-out Date</label>
+            <input type="date" id="checkOutDate" required />
+          </div>
+          <div class="form-group">
+            <label for="guestCount">Number of Guests</label>
+            <select id="guestCount" required>
+              <option value="1">1 Person</option>
+              <option value="2">2 People</option>
+              <option value="3">3 People</option>
+              <option value="4">4 People</option>
+              <option value="5+">5+ People</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn close-btn" id="cancelBooking">
+              Cancel
+            </button>
+            <button type="submit" class="btn">Confirm Booking</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <button class="close-modal" id="closeLoginModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">Login to Your Account</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn close-btn" id="cancelLogin">
+              Cancel
+            </button>
+            <button type="submit" class="btn">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/public/homepage/script/script.js"></script>
+  </body>
+</html>
