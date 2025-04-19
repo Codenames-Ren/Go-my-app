@@ -52,7 +52,7 @@ a {
 }
 
 a:hover {
-  color: #0ed004;
+  color: #1a73e8;
 }
 
 .content {
@@ -84,8 +84,8 @@ a:hover {
 button {
   position: relative;
   border-radius: 20px;
-  border: 1px solid #0ed004;
-  background-color: #0ed004;
+  border: 1px solid #0d47a1;
+  background-color: #1a73e8;
   color: #fff;
   font-size: 15px;
   font-weight: 700;

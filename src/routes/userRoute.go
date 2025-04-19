@@ -39,8 +39,21 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 				"user"	: username,
 			})
 		})
-	}
 
+		userGroup.GET("/check-login", middlewares.AuthMiddleware(), func (c *gin.Context) {
+			username, _ := c.Get("username")
+			role, _ := c.Get("role")
+			c.JSON(200, gin.H{
+				"isLoggedIn": true,
+				"username": username,
+				"role": role,
+			})
+		})
+
+		userGroup.POST("/logout", middlewares.AuthMiddleware(), func(c *gin.Context) {
+			c.JSON(200, gin.H{"message": "Logout successful"})
+		})
+	}
 
 	//route group admin
 	adminGroup := router.Group("/admin", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())

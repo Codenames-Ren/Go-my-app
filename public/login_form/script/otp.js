@@ -187,6 +187,10 @@ document.addEventListener("DOMContentLoaded", function () {
           data &&
           (data.token || data.message === "OTP verified successfully")
         ) {
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("isLoggedIn", "true");
+          }
           Swal.fire({
             title: "Berhasil",
             text: "Kode OTP berhasil di verifikasi.",

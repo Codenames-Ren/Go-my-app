@@ -16,6 +16,15 @@ registerForm.addEventListener("submit", async (e) => {
     'input[placeholder="Password"]'
   ).value;
 
+  if (!username || !email || !password) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Data tidak lengkap",
+      text: "Semua kolom harus diisi!",
+    });
+    return;
+  }
+
   try {
     const response = await fetch("/users/register/init", {
       method: "POST",
@@ -31,7 +40,7 @@ registerForm.addEventListener("submit", async (e) => {
     if (response.ok) {
       await Swal.fire({
         title: "Success",
-        text: "OTP has been sent to your email, please verify to continue.",
+        text: "Kode OTP telah dikirimkan ke email anda. Mohon verifikasi akun anda untuk melanjutkan",
         icon: "success",
       });
       window.location.href = `/otp?email=${encodeURIComponent(
@@ -65,6 +74,15 @@ loginForm.addEventListener("submit", async (e) => {
     'input[placeholder="Password"]'
   ).value;
 
+  if (!email || !password) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Data tidak lengkap",
+      text: "Semua kolom harus diisi!",
+    });
+    return;
+  }
+
   try {
     const response = await fetch("/users/login/init", {
       method: "POST",
@@ -80,7 +98,7 @@ loginForm.addEventListener("submit", async (e) => {
     if (response.ok) {
       await Swal.fire({
         title: "Success",
-        text: "OTP has been sent to your email, please verify to continue.",
+        text: "Kode OTP telah dikirimkan ke email anda. Mohon verifikasi akun anda untuk melanjutkan",
         icon: "success",
       });
       window.location.href = `/otp?email=${encodeURIComponent(
@@ -88,8 +106,8 @@ loginForm.addEventListener("submit", async (e) => {
       )}&purpose=login`;
     } else {
       await Swal.fire({
-        title: "Login Failed!",
-        text: "Invalid email or password",
+        title: "Login Gagal",
+        text: "Email atau password salah!",
         icon: "error",
       });
     }

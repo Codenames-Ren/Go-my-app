@@ -13,7 +13,7 @@ func ViewRoute(router *gin.Engine) {
 
 	//redirect route to login page
 	router.GET("/", func(c *gin.Context) {
-		c.Redirect(302, "/login")
+		c.Redirect(302, "/home")
 	})
 
 	router.GET("/home", func(c *gin.Context) {

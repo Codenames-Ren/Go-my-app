@@ -1,17 +1,17 @@
+console.log("Script Loaded!");
 // DOM elements
 const modeToggle = document.getElementById("modeToggle");
 const loginBtn = document.getElementById("loginBtn");
 const bookingModal = document.getElementById("bookingModal");
-const loginModal = document.getElementById("loginModal");
 const closeBookingModal = document.getElementById("closeBookingModal");
-const closeLoginModal = document.getElementById("closeLoginModal");
 const cancelBooking = document.getElementById("cancelBooking");
-const cancelLogin = document.getElementById("cancelLogin");
-const loginForm = document.getElementById("loginForm");
 const bookingForm = document.getElementById("bookingForm");
 const packageType = document.getElementById("packageType");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("navMenu");
+
+// Initialize
+document.addEventListener("DOMContentLoaded", checkLoginStatus);
 
 // Navigation handling
 const pageLinks = document.querySelectorAll("[data-page]");
@@ -77,47 +77,6 @@ cancelBooking.addEventListener("click", () => {
   bookingModal.classList.remove("active");
 });
 
-// Login modal
-loginBtn.addEventListener("click", () => {
-  if (loginBtn.textContent === "Login") {
-    loginModal.classList.add("active");
-  } else {
-    handleLogout();
-  }
-});
-
-// Close login modal
-closeLoginModal.addEventListener("click", () => {
-  loginModal.classList.remove("active");
-});
-
-cancelLogin.addEventListener("click", () => {
-  loginModal.classList.remove("active");
-});
-
-// Close modals when clicking outside
-window.addEventListener("click", (e) => {
-  if (e.target === bookingModal) {
-    bookingModal.classList.remove("active");
-  }
-  if (e.target === loginModal) {
-    loginModal.classList.remove("active");
-  }
-});
-
-// Login form submit
-loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  // Simplified login (in a real app, you'd have proper authentication)
-  if (email && password) {
-    loginModal.classList.remove("active");
-    handleLogin(email);
-  }
-});
-
 // Booking form submit
 bookingForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -155,14 +114,63 @@ function handleLogout() {
 }
 
 // Check if user is logged in on page load
-function checkLoginStatus() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  if (isLoggedIn) {
-    loginBtn.textContent = "Logout";
-  } else {
+async function checkLoginStatus() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    loginBtn.textContent = "Login";
+    return;
+  }
+
+  try {
+    const response = await fetch("/users/check-login", {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      loginBtn.textContent = "Logout";
+    } else {
+      //if token not valid or expired
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLoggendIn");
+      loginBtn.textContent = "Login";
+    }
+  } catch (error) {
+    console.error("Error checking login status:", error);
     loginBtn.textContent = "Login";
   }
 }
 
-// Initialize
-checkLoginStatus();
+loginBtn.addEventListener("click", async () => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    try {
+      //call logout endpoint
+      const response = await fetch("/users/logout", {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      //delete token from local storage
+      localStorage.removeItem("token");
+      localStorage.removeItem("isLoggedIn");
+      loginBtn.textContent = "Login";
+
+      Swal.fire({
+        title: "Berhasil",
+        text: "Anda sudah logout",
+        icon: "success",
+      });
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  } else {
+    window.location.href = "/login";
+  }
+});
