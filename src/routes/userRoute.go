@@ -29,6 +29,7 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 		userGroup.POST("/forgot-password", controllers.ForgotPassword)
 		userGroup.POST("/reset-password", controllers.ResetPassword)
 		userGroup.POST("/forgot-password/resend-otp", controllers.ResendForgotPassOTP)
+		userGroup.POST("/verify-reset-otp", controllers.VerifyResetOTP)
 
 		//Endpoint where needs auth
 		userGroup.PUT("/update-password", middlewares.AuthMiddleware(), controllers.UpdatePassword)

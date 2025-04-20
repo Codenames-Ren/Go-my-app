@@ -122,6 +122,14 @@ loginForm.addEventListener("submit", async (e) => {
   }
 });
 
+const forgotPass = document.getElementById("forgot-pass");
+
+forgotPass.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  window.location.href = "/forgot-password";
+});
+
 const container = document.getElementById("container");
 const registerBtn = document.getElementById("register");
 const loginBtn = document.getElementById("login");

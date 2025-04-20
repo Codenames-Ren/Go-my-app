@@ -9,8 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!email || !purpose) {
     Swal.fire({
       title: "Verifikasi gagal",
-      text: "Kode OTP tidak valid",
+      text: "Parameter tidak lengkap",
       icon: "error",
+    }).then(() => {
+      window.location.href = "/login";
     });
     return;
   }
@@ -20,26 +22,33 @@ document.addEventListener("DOMContentLoaded", function () {
     login: {
       verify: "/users/login/verify",
       resend: "/users/login/resend-otp",
+      redirect: "/home",
     },
     register: {
       verify: "/users/register/verify",
       resend: "/users/register/resend-otp",
+      redirect: "/home",
     },
     "reset-password": {
       verify: "/users/reset-password",
       resend: "/users/forgot-password/resend-otp",
+      redirect: "/reset-password-form",
     },
   };
 
-  const { verify, resend } = endpoints[purpose] || {};
-  if (!verify || !resend) {
+  const endpoint = endpoints[purpose];
+  if (!endpoint) {
     Swal.fire({
       title: "Verifikasi gagal",
       text: "Tipe Verifikasi tidak dikenali",
       icon: "error",
+    }).then(() => {
+      window.location.href = "/login";
     });
     return;
   }
+
+  const { verify, resend, redirect } = endpoint;
 
   const inputs = document.querySelectorAll(".otp-input");
   const verifyButton = document.getElementById("verify-btn");
@@ -163,8 +172,55 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Sending data:", {
       email: email,
       purpose: purpose,
-      otpCode: otpCode, // Ubah nama parameter agar sesuai dengan backend
+      otpCode: otpCode,
     });
+
+    //for reset-password, only verify otp without resetting password
+    if (purpose === "reset-password") {
+      fetch("/users/verify-reset-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          otp: otpCode,
+        }),
+      })
+        .then((response) => {
+          console.log("response status:", response.status);
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Response data:", data);
+          if (data.success || data.message) {
+            swal.fire({
+              title: "Berhasil",
+              text: "Kode OTP berhasil diverifikasi.",
+              icon: "success",
+            });
+
+            //save email and otp for use in reset password page
+            sessionStorage.setItem("resetEmail", email);
+            sessionStorage.setItem("resetOTP", otpCode);
+
+            setTimeout(() => {
+              window.location.href = redirect;
+            }, 2000);
+          } else {
+            Swal.fire(
+              "Gagal",
+              data.error || "Kode OTP salah atau kadaluarsa",
+              "error"
+            );
+          }
+        })
+        .catch((err) => {
+          console.error("Error details:", err);
+          Swal.fire("Error", "Gagal Menghubungi Server.", "error");
+        });
+      return;
+    }
 
     fetch(verify, {
       method: "POST",

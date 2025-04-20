@@ -135,7 +135,7 @@ async function checkLoginStatus() {
     } else {
       //if token not valid or expired
       localStorage.removeItem("token");
-      localStorage.removeItem("isLoggendIn");
+      localStorage.removeItem("isLoggedIn");
       loginBtn.textContent = "Login";
     }
   } catch (error) {

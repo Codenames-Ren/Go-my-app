@@ -24,6 +24,14 @@ func ViewRoute(router *gin.Engine) {
 		c.File("./public/login_form/index.html")
 	})
 
+	router.GET("/forgot-password", func(c *gin.Context) {
+		c.File("./public/login_form/forgotpass.html")
+	})
+
+	router.GET("/reset-password-form", func(c *gin.Context) {
+		c.File("./public/login_form/resetpass.html")
+	})
+
 	router.GET("/otp", func(c *gin.Context) {
 		email := c.Query("email")
 		purpose := c.Query("purpose")

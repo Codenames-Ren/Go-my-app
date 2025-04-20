@@ -139,3 +139,33 @@ func ResendForgotPassOTP(c *gin.Context) {
 		"message": "OTP has been resend to your email. Please check your inbox or spam folder.",
 	})
 }
+
+func VerifyResetOTP(c *gin.Context) {
+	var input struct {
+		Email string `json:"email" binding:"required,email"`
+		OTP string `json:"otp" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user models.User
+	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H {"error": "User not found"})
+		return
+	}
+
+	//otp verif
+	valid, err := otpService.VerifyOTPByEmail(user.Email, "reset_password", input.OTP)
+	if err != nil || !valid {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or expired otp"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OTP verified successfully!",
+		"success": true,
+	})
+}
