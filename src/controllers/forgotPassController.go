@@ -45,7 +45,6 @@ func ForgotPassword(c *gin.Context) {
 func ResetPassword(c *gin.Context) {
 	var input struct {
 		Email					string `json:"email" binding:"required"`
-		OTP						string `json:"otp" binding:"required"`
 		Newpassword				string `json:"new_password" binding:"required"`
 		ConfirmPassword			string `json:"confirm_password" binding:"required"`
 	}
@@ -74,11 +73,9 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	//otp verif
-	valid, err := otpService.VerifyOTPByEmail(user.Email, "reset_password", input.OTP)
-	if err != nil || !valid {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or expired otp"})
-		return
+	// //otp verif
+	if !user.ResetAllowed {
+		c.JSON(http.StatusUnauthorized, gin.H {"error": "You must verify OTP before resetting password"})
 	}
 
 	//hash new password
@@ -88,8 +85,11 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	//update password in database
-	if err := database.DB.Model(&user).Update("password", string(hashedPassword)).Error; err != nil {
+	// Update password & reset ResetAllowed to false
+	if err := database.DB.Model(&user).Updates(map[string]interface{}{
+		"password":      string(hashedPassword),
+		"reset_allowed": false,
+	}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update password"})
 		return
 	}
@@ -161,6 +161,12 @@ func VerifyResetOTP(c *gin.Context) {
 	valid, err := otpService.VerifyOTPByEmail(user.Email, "reset_password", input.OTP)
 	if err != nil || !valid {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or expired otp"})
+		return
+	}
+
+	//set flag to true if verify otp success
+	if err := database.DB.Model(&user).Update("reset_allowed", true).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to reset permission"})
 		return
 	}
 
