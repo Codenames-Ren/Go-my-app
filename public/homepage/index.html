@@ -3,8 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StayWise | Hotel Booking</title>
+    <title>Harmony Music | Enjoy your music</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="icon"
+      href="/public/homepage/image/icons8-rock-music-ios-17-filled-32.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="shortcut icon"
+      href="/public/homepage/image/icons8-rock-music-ios-17-filled-32.png"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="/public/homepage/style/style.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -14,8 +24,11 @@
   <body>
     <nav class="navbar">
       <div class="logo" data-page="home">
-        <i class="fas fa-hotel"></i>
-        StayWise
+        <img
+          src="/public/homepage/image/icons8-rock-music-ios-17-filled-96.png"
+          alt="logo"
+        />
+        Harmony Music
       </div>
 
       <div class="hamburger" id="hamburger">
@@ -24,8 +37,7 @@
 
       <ul class="nav-menu" id="navMenu">
         <li><a data-page="home" class="active">Home</a></li>
-        <li><a data-page="hotels">Hotels</a></li>
-        <li><a data-page="destinations">Destinations</a></li>
+        <li><a data-page="Concert">Concert</a></li>
         <li><a data-page="about">About</a></li>
         <li><a data-page="contact">Contact</a></li>
       </ul>
@@ -61,10 +73,11 @@
           <div class="packages-container">
             <!-- Regular Package -->
             <div class="package-card package-regular" id="regularPackage">
+              <div class="popular-badge">POPULAR</div>
               <div class="package-header">
                 <h3 class="package-title">Regular</h3>
                 <div class="package-price">
-                  $99<span class="price-period">/night</span>
+                  $99<span class="price-period">/person</span>
                 </div>
               </div>
               <div class="package-features">
@@ -98,11 +111,11 @@
 
             <!-- Family Package -->
             <div class="package-card package-family" id="familyPackage">
-              <div class="popular-badge">POPULAR</div>
+              <!-- <div class="popular-badge">POPULAR</div> -->
               <div class="package-header">
-                <h3 class="package-title">Family</h3>
+                <h3 class="package-title">VIP</h3>
                 <div class="package-price">
-                  $199<span class="price-period">/night</span>
+                  $199<span class="price-period">/person</span>
                 </div>
               </div>
               <div class="package-features">
@@ -132,7 +145,7 @@
                 </div>
               </div>
               <div class="package-cta">
-                <button class="btn book-package" data-package="family">
+                <button class="btn book-package" data-package="VIP">
                   Book Now
                 </button>
               </div>
@@ -141,9 +154,9 @@
             <!-- VIP Package -->
             <div class="package-card package-vip" id="vipPackage">
               <div class="package-header">
-                <h3 class="package-title">VIP</h3>
+                <h3 class="package-title">VVIP</h3>
                 <div class="package-price">
-                  $299<span class="price-period">/night</span>
+                  $299<span class="price-period">/person</span>
                 </div>
               </div>
               <div class="package-features">
@@ -177,7 +190,7 @@
                 </div>
               </div>
               <div class="package-cta">
-                <button class="btn book-package" data-package="vip">
+                <button class="btn book-package" data-package="VVIP">
                   Book Now
                 </button>
               </div>
@@ -225,50 +238,6 @@
       <!-- Other pages would go here -->
     </div>
 
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>StayWise</h3>
-          <p>
-            Your trusted partner for comfortable and memorable stays worldwide.
-          </p>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul class="footer-links">
-            <li><a href="#" data-page="home">Home</a></li>
-            <li><a href="#" data-page="hotels">Hotels</a></li>
-            <li><a href="#" data-page="destinations">Destinations</a></li>
-            <li><a href="#" data-page="about">About Us</a></li>
-            <li><a href="#" data-page="contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Contact Us</h3>
-          <ul class="footer-links">
-            <li>
-              <i class="fas fa-map-marker-alt"></i> 123 Hotel Street, City
-            </li>
-            <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
-            <li><i class="fas fa-envelope"></i> info@staywise.com</li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h3>Follow Us</h3>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 StayWise. All rights reserved.</p>
-      </div>
-    </footer>
-
     <!-- Package Booking Modal -->
     <div class="modal" id="bookingModal">
       <div class="modal-content">
@@ -288,21 +257,31 @@
             <input type="email" id="bookingEmail" required />
           </div>
           <div class="form-group">
-            <label for="checkInDate">Check-in Date</label>
-            <input type="date" id="checkInDate" required />
+            <label for="bookingNumber">Number</label>
+            <input
+              type="number"
+              id="bookingNumber"
+              required
+              class="no-spinner"
+            />
           </div>
           <div class="form-group">
-            <label for="checkOutDate">Check-out Date</label>
-            <input type="date" id="checkOutDate" required />
+            <label for="concertCount">Concert</label>
+            <select id="concertCount" required>
+              <option value="1">Spring Festival Music</option>
+              <option value="2">Summer Festival Music</option>
+              <option value="3">Winter Festa</option>
+              <option value="4">Autumn Magic Concert</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="guestCount">Number of Guests</label>
+            <label for="guestCount">Purchase Amount</label>
             <select id="guestCount" required>
-              <option value="1">1 Person</option>
-              <option value="2">2 People</option>
-              <option value="3">3 People</option>
-              <option value="4">4 People</option>
-              <option value="5+">5+ People</option>
+              <option value="1">1 Ticket</option>
+              <option value="2">2 Ticket</option>
+              <option value="3">3 Ticket</option>
+              <option value="4">4 Ticket</option>
+              <option value="5+">5+ Ticket</option>
             </select>
           </div>
           <div class="form-actions">
@@ -314,6 +293,49 @@
         </form>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Harmony Music</h3>
+          <p>
+            Your trusted partner for comfortable and memorable music worldwide.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#" data-page="home">Home</a></li>
+            <li><a href="#" data-page="hotels">Concert</a></li>
+            <li><a href="#" data-page="about">About Us</a></li>
+            <li><a href="#" data-page="contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+            <li>
+              <i class="fas fa-map-marker-alt"></i> 123 Hotel Street, City
+            </li>
+            <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
+            <li><i class="fas fa-envelope"></i> info@harmonymusic.com</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Harmony Music. All rights reserved.</p>
+      </div>
+    </footer>
     <script src="/public/homepage/script/script.js"></script>
   </body>
 </html>

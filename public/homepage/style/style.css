@@ -75,6 +75,10 @@ body {
   gap: 0.5rem;
 }
 
+.logo img {
+  height: 40px;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -89,6 +93,7 @@ body {
 
 .nav-menu li a {
   color: var(--text-color);
+  font-size: 18px;
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
@@ -155,6 +160,7 @@ body {
 .login-btn {
   padding: 0.5rem 1rem;
   border-radius: 4px;
+  font-size: 18px;
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -377,6 +383,18 @@ body {
   box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
 }
 
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Untuk Firefox juga */
+.no-spinner {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 .section-title {
   position: relative;
   font-size: 1.5rem;
@@ -597,6 +615,14 @@ footer {
     display: flex;
   }
 
+  .nav-links {
+    display: flex;
+    position: relative;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
   .packages-container {
     flex-direction: column;
     align-items: center;
@@ -612,5 +638,11 @@ footer {
 
   .hero-title {
     font-size: 2rem;
+  }
+
+  .login-btn {
+    width: auto;
+    height: auto;
+    font-size: 14px;
   }
 }

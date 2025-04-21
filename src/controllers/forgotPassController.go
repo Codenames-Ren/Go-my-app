@@ -76,6 +76,7 @@ func ResetPassword(c *gin.Context) {
 	// //otp verif
 	if !user.ResetAllowed {
 		c.JSON(http.StatusUnauthorized, gin.H {"error": "You must verify OTP before resetting password"})
+		return
 	}
 
 	//hash new password

@@ -61,6 +61,25 @@ hamburger.addEventListener("click", () => {
 const bookPackageButtons = document.querySelectorAll(".book-package");
 bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      //if not have login token
+      Swal.fire({
+        title: "Belum Login!",
+        text: "Anda harus login terlebih dahulu sebelum memesan",
+        icon: "warning",
+        confirmButtonText: "Login Sekarang",
+        showCancelButton: true,
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //redirect to login page
+          window.location.href = "/login";
+        }
+      });
+      return;
+    }
+
     const packageName = button.getAttribute("data-package");
     packageType.textContent =
       packageName.charAt(0).toUpperCase() + packageName.slice(1);
