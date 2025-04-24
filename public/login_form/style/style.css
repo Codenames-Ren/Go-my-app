@@ -6,7 +6,7 @@
 
 body {
   display: flex;
-  background-color: #f6f5f7;
+  background-color: #ffe7b6;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -16,6 +16,7 @@ body {
 }
 
 h1 {
+  color: #eee;
   font-weight: 700;
   letter-spacing: -1.5px;
   margin: 0;
@@ -26,7 +27,7 @@ h1.title {
   font-size: 45px;
   line-height: 45px;
   margin: 0;
-  text-shadow: 0 0 10px rgba(16, 64, 74, 0.5);
+  text-shadow: 0 0 10px rgba(2, 17, 20, 0.5);
 }
 
 p {
@@ -76,6 +77,7 @@ a:hover {
 }
 
 .content label {
+  color: #eee;
   font-size: 14px;
   user-select: none;
   padding-left: 5px;
@@ -84,8 +86,8 @@ a:hover {
 button {
   position: relative;
   border-radius: 20px;
-  border: 1px solid #0d47a1;
-  background-color: #1a73e8;
+
+  /* background-color: #fcbf49; */
   color: #fff;
   font-size: 15px;
   font-weight: 700;
@@ -94,6 +96,28 @@ button {
   letter-spacing: 1px;
   text-transform: capitalize;
   transition: 0.3s ease-in-out;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #fcbf49, #d62828);
+  border: 1px solid #d62828;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #d62828, #fcbf49);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #fcbf49, #d62828);
+  border: 1px solid #d62828;
+}
+
+.register-btn:hover {
+  background: linear-gradient(135deg, #d62828, #fcbf49);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
@@ -139,7 +163,7 @@ button.ghost:hover i.login {
 }
 
 form {
-  background-color: #fff;
+  background: linear-gradient(135deg, #d62828, #fcbf49);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -230,8 +254,8 @@ input {
 }
 
 .overlay {
-  background-image: url("../assets/overlay_bg.gif");
-  /* background: linear-gradient(to right, #4bb6b7, #4bb6b7); */
+  background-image: url("../assets/overlay_bg4.gif");
+  /* background: linear-gradient(135deg, #fcbf49, #d62828); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -285,7 +309,7 @@ input {
 }
 
 .social-container a {
-  border: 1px solid #ddd;
+  border: 1px solid #fcbf49;
   border-radius: 50%;
   display: inline-flex;
   justify-content: center;
@@ -297,9 +321,26 @@ input {
 }
 
 .social-container a:hover {
-  border-color: #4bb6b7;
+  border-color: #d62828;
 }
 
-.pass-link {
+.social-container .social {
+  color: #fff;
+}
+
+.social-container .social:hover {
+  background: linear-gradient(135deg, #d62828, #fcbf49);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.pass-link a {
   margin-left: 30px;
+  color: #eee;
+  transition: 0.3s ease-in-out;
+}
+
+.pass-link a:hover {
+  color: yellow;
+  text-shadow: 1px #333;
 }

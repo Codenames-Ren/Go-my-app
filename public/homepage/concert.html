@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HarmonyMusic | Concert</title>
+    <link
+      rel="icon"
+      href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="shortcut icon"
+      href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/public/homepage/style/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/public/homepage/index.html">
+          <img src="/public/homepage/image/icons8-96.png" alt="logo" />
+          HarmonyMusic
+        </a>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/concert">Concert</a></li>
+        <li><a href="/about" class="active">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <div class="nav-links">
+        <a href="#" class="btn" id="loginBtn">Login</a>
+      </div>
+    </nav>
+
+    <main class="container concert-section" style="padding: 6rem 5% 2rem">
+      <h2 class="section-title" data-aos="zoom-in">Upcoming Concerts</h2>
+      <div class="concert-grid">
+        <div class="concert-card" data-aos="fade-up" data-aos-delay="100">
+          <img
+            src="/public/homepage/image/banner.jpg"
+            alt="Spring Festival Music"
+            class="concert-img"
+          />
+          <div class="concert-info">
+            <h3 class="concert-card-title">Spring Festival Music</h3>
+            <p class="concert-card-description">
+              Sabtu, 15 Juni 2025 - Jakarta
+            </p>
+            <button class="btn book-package" data-package="spring">
+              Buy Ticket
+            </button>
+          </div>
+        </div>
+
+        <div class="concert-card" data-aos="fade-up" data-aos-delay="200">
+          <img
+            src="/public/homepage/image/banner.jpg"
+            alt="Summer Festival Music"
+            class="concert-img"
+          />
+          <div class="concert-info">
+            <h3 class="concert-card-title">Summer Festival Music</h3>
+            <p class="concert-card-description">
+              Minggu, 23 Juni 2025 - Bandung
+            </p>
+            <button class="btn book-package" data-package="summer">
+              Buy Ticket
+            </button>
+          </div>
+        </div>
+
+        <div class="concert-card" data-aos="fade-up" data-aos-delay="300">
+          <img
+            src="/public/homepage/image/banner.jpg"
+            alt="Winter Festa"
+            class="concert-img"
+          />
+          <div class="concert-info">
+            <h3 class="concert-card-title">Winter Festa</h3>
+            <p class="concert-card-description">
+              Sabtu, 29 Juni 2025 - Surabaya
+            </p>
+            <button class="btn book-package" data-package="winter">
+              Buy Ticket
+            </button>
+          </div>
+        </div>
+
+        <div class="concert-card" data-aos="fade-up" data-aos-delay="400">
+          <img
+            src="/public/homepage/image/banner.jpg"
+            alt="Autumn Magic Concert"
+            class="concert-img"
+          />
+          <div class="concert-info">
+            <h3 class="concert-card-title">Autumn Magic Concert</h3>
+            <p class="concert-card-description">
+              Minggu, 6 Juli 2025 - Yogyakarta
+            </p>
+            <button class="btn book-package" data-package="autumn">
+              Buy Ticket
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal-content">
+        <button class="close-modal" id="closeBookingModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">
+          Book Your <span id="packageType">Package</span>
+        </h2>
+        <form id="bookingForm">
+          <div class="form-group">
+            <label for="bookingName">Full Name</label>
+            <input type="text" id="bookingName" required />
+          </div>
+          <div class="form-group">
+            <label for="bookingEmail">Email</label>
+            <input type="email" id="bookingEmail" required />
+          </div>
+          <div class="form-group">
+            <label for="bookingNumber">Phone Number</label>
+            <input
+              type="number"
+              id="bookingNumber"
+              required
+              class="no-spinner"
+            />
+          </div>
+          <div class="form-group">
+            <label for="concertCount">Ticket Variant</label>
+            <select id="concertCount" required>
+              <option value="1">Regular - IDR 250.000</option>
+              <option value="2">VIP - IDR 500.000</option>
+              <option value="3">VVIP - IDR 1.000.000</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guestCount">Purchase Amount</label>
+            <select id="guestCount" required>
+              <option value="1">1 Ticket</option>
+              <option value="2">2 Ticket</option>
+              <option value="3">3 Ticket</option>
+              <option value="4">4 Ticket</option>
+              <option value="5">5 Ticket</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn close-btn" id="cancelBooking">
+              Cancel
+            </button>
+            <button type="submit" class="btn">Confirm Booking</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer data-aos="fade-up">
+      <div class="footer-section">
+        <h3>Follow</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Harmony Music. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/public/homepage/script/script.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>

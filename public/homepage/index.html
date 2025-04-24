@@ -3,387 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Harmony Music | Enjoy your music</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>HarmonyMusic | Home</title>
     <link
       rel="icon"
-      href="/public/homepage/image/icons8-rock-music-ios-17-filled-32.png"
+      href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
       type="image/x-icon"
     />
     <link
       rel="shortcut icon"
-      href="/public/homepage/image/icons8-rock-music-ios-17-filled-32.png"
+      href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
       type="image/x-icon"
     />
     <link rel="stylesheet" href="/public/homepage/style/style.css" />
     <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
     <nav class="navbar">
-      <div class="logo" data-page="home">
-        <img
-          src="/public/homepage/image/icons8-rock-music-ios-17-filled-96.png"
-          alt="logo"
-        />
-        Harmony Music
+      <div class="logo">
+        <a href="/public/homepage/index.html">
+          <img src="/public/homepage/image/icons8-96.png" alt="logo" />
+          HarmonyMusic
+        </a>
       </div>
-
-      <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
-
       <ul class="nav-menu" id="navMenu">
-        <li><a data-page="home" class="active">Home</a></li>
-        <li><a data-page="Concert">Concert</a></li>
-        <li><a data-page="about">About</a></li>
-        <li><a data-page="contact">Contact</a></li>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/concert">Concert</a></li>
+        <li><a href="/about" class="active">About</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
-
       <div class="nav-links">
-        <div class="toggle-container">
-          <i class="fas fa-sun"></i>
-          <div class="mode-toggle" id="modeToggle">
-            <div class="toggle-thumb"></div>
-          </div>
-          <i class="fas fa-moon"></i>
-        </div>
-        <button class="login-btn" id="loginBtn">Login</button>
+        <a href="#" class="btn" id="loginBtn">Login</a>
       </div>
     </nav>
 
-    <div class="container">
-      <!-- Home Page -->
-      <div class="page active" id="home">
-        <section class="hero-section">
-          <div class="hero-bg"></div>
-          <div class="hero-content">
-            <h1 class="hero-title">Find Your Perfect Stay</h1>
-            <p class="hero-description">
-              Discover amazing hotels, resorts, and accommodations for your next
-              adventure. Choose the perfect package for your needs.
-            </p>
-            <button class="btn" data-page="hotels">Order Now</button>
-          </div>
-        </section>
-        <hr />
-
-        <section class="features-concert">
-          <h2 class="section-title">List Concert</h2>
-          <div class="concert-grid">
-            <div class="concert-card">
-              <img src="/public/homepage/image/banner.jpg" alt="banner" />
-              <h3 class="concert-card-title">Spring Festival Music</h3>
-              <p class="concert-card-description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint
-                tempore rem eius. Placeat, beatae laudantium est corporis
-                molestiae asperiores provident iure hic minima sapiente
-                laboriosam fuga porro doloribus nisi recusandae!
-              </p>
-            </div>
-            <div class="concert-card">
-              <img src="/public/homepage/image/banner.jpg" alt="banner" />
-              <h3 class="concert-card-title">Summer Festival Music</h3>
-              <p class="concert-card-description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam
-                eos sed iure! Quasi recusandae veritatis amet quae, optio, eos
-                ad omnis corrupti culpa nesciunt placeat vitae eligendi. Et,
-                officiis soluta.
-              </p>
-            </div>
-            <div class="concert-card">
-              <img src="/public/homepage/image/banner.jpg" alt="banner" />
-              <h3 class="concert-card-title">Winter Festa</h3>
-              <p class="concert-card-description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque
-                dolores consequatur omnis repellat eligendi nemo alias quibusdam
-                quasi vel minus perferendis minima hic, eveniet aspernatur
-                cupiditate blanditiis, quidem sunt unde!
-              </p>
-            </div>
-            <div class="concert-card">
-              <img src="/public/homepage/image/banner.jpg" alt="banner" />
-              <h3 class="concert-card-title">Autumn Magic Concert</h3>
-              <p class="concert-card-description">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam,
-                cum veritatis facilis itaque delectus necessitatibus. Nihil
-                consequuntur perspiciatis, hic animi perferendis nam! Nam magni
-                fugit, at sequi dolore nobis facere.
-              </p>
-            </div>
-          </div>
-        </section>
-        <hr />
-
-        <section class="packages-section">
-          <div class="packages-container">
-            <!-- Regular Package -->
-            <div class="package-card package-regular" id="regularPackage">
-              <div class="popular-badge">POPULAR</div>
-              <div class="package-header">
-                <h3 class="package-title">Regular</h3>
-                <div class="package-price">
-                  $99<span class="price-period">/person</span>
-                </div>
-              </div>
-              <div class="package-features">
-                <div class="feature-item">
-                  <i class="fas fa-bed feature-icon"></i>
-                  <span>Standard Room</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-wifi feature-icon"></i>
-                  <span>Free Wi-Fi</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-coffee feature-icon"></i>
-                  <span>Breakfast Included</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-swimming-pool feature-icon"></i>
-                  <span>Pool Access</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-parking feature-icon"></i>
-                  <span>Free Parking</span>
-                </div>
-              </div>
-              <div class="package-cta">
-                <button class="btn book-package" data-package="regular">
-                  Book Now
-                </button>
-              </div>
-            </div>
-
-            <!-- Family Package -->
-            <div class="package-card package-family" id="familyPackage">
-              <!-- <div class="popular-badge">POPULAR</div> -->
-              <div class="package-header">
-                <h3 class="package-title">VIP</h3>
-                <div class="package-price">
-                  $199<span class="price-period">/person</span>
-                </div>
-              </div>
-              <div class="package-features">
-                <div class="feature-item">
-                  <i class="fas fa-home feature-icon"></i>
-                  <span>Family Suite</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-wifi feature-icon"></i>
-                  <span>High-Speed Wi-Fi</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-utensils feature-icon"></i>
-                  <span>All Meals Included</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-swimming-pool feature-icon"></i>
-                  <span>Pool & Kids Area</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-gamepad feature-icon"></i>
-                  <span>Game Room Access</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-car feature-icon"></i>
-                  <span>Family Activities</span>
-                </div>
-              </div>
-              <div class="package-cta">
-                <button class="btn book-package" data-package="VIP">
-                  Book Now
-                </button>
-              </div>
-            </div>
-
-            <!-- VIP Package -->
-            <div class="package-card package-vip" id="vipPackage">
-              <div class="package-header">
-                <h3 class="package-title">VVIP</h3>
-                <div class="package-price">
-                  $299<span class="price-period">/person</span>
-                </div>
-              </div>
-              <div class="package-features">
-                <div class="feature-item">
-                  <i class="fas fa-crown feature-icon"></i>
-                  <span>Luxury Suite</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-wifi feature-icon"></i>
-                  <span>Premium Wi-Fi</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-utensils feature-icon"></i>
-                  <span>All-Inclusive Dining</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-glass-cheers feature-icon"></i>
-                  <span>Private Bar</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-spa feature-icon"></i>
-                  <span>Spa Treatment</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-concierge-bell feature-icon"></i>
-                  <span>24/7 Concierge</span>
-                </div>
-                <div class="feature-item">
-                  <i class="fas fa-car feature-icon"></i>
-                  <span>Airport Transfer</span>
-                </div>
-              </div>
-              <div class="package-cta">
-                <button class="btn book-package" data-package="VVIP">
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="features-section">
-          <h2 class="section-title">Why Choose Harmony Music?</h2>
-          <div class="features-grid">
-            <div class="feature-card">
-              <i class="fas fa-map-marked-alt feature-card-icon"></i>
-              <h3 class="feature-card-title">Best Locations</h3>
-              <p class="feature-card-description">
-                Handpicked hotels in the most desirable locations around the
-                world.
-              </p>
-            </div>
-            <div class="feature-card">
-              <i class="fas fa-tag feature-card-icon"></i>
-              <h3 class="feature-card-title">Best Price Guarantee</h3>
-              <p class="feature-card-description">
-                Find a lower price? We'll match it and give you an additional
-                discount.
-              </p>
-            </div>
-            <div class="feature-card">
-              <i class="fas fa-headset feature-card-icon"></i>
-              <h3 class="feature-card-title">24/7 Customer Support</h3>
-              <p class="feature-card-description">
-                Our support team is always available to help with any issues.
-              </p>
-            </div>
-            <div class="feature-card">
-              <i class="fas fa-shield-alt feature-card-icon"></i>
-              <h3 class="feature-card-title">Secure Booking</h3>
-              <p class="feature-card-description">
-                Your payment and personal information are always protected.
-              </p>
-            </div>
-          </div>
-        </section>
+    <section class="hero-section" data-aos="fade-up">
+      <div class="hero-content">
+        <h1 class="hero-title">Experience Live Music Like Never Before</h1>
+        <p class="hero-description">
+          Discover amazing concerts, festivals, and live performances curated
+          for unforgettable vibes.
+        </p>
+        <a class="btn" href="/concert">See Concerts</a>
       </div>
+    </section>
 
-      <!-- Other pages would go here -->
-    </div>
-
-    <!-- Package Booking Modal -->
-    <div class="modal" id="bookingModal">
-      <div class="modal-content">
-        <button class="close-modal" id="closeBookingModal">
-          <i class="fas fa-times"></i>
-        </button>
-        <h2 class="modal-title">
-          Book Your <span id="packageType">Package</span>
-        </h2>
-        <form id="bookingForm">
-          <div class="form-group">
-            <label for="bookingName">Full Name</label>
-            <input type="text" id="bookingName" required />
-          </div>
-          <div class="form-group">
-            <label for="bookingEmail">Email</label>
-            <input type="email" id="bookingEmail" required />
-          </div>
-          <div class="form-group">
-            <label for="bookingNumber">Number</label>
-            <input
-              type="number"
-              id="bookingNumber"
-              required
-              class="no-spinner"
-            />
-          </div>
-          <div class="form-group">
-            <label for="concertCount">Concert</label>
-            <select id="concertCount" required>
-              <option value="1">Spring Festival Music</option>
-              <option value="2">Summer Festival Music</option>
-              <option value="3">Winter Festa</option>
-              <option value="4">Autumn Magic Concert</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="guestCount">Purchase Amount</label>
-            <select id="guestCount" required>
-              <option value="1">1 Ticket</option>
-              <option value="2">2 Ticket</option>
-              <option value="3">3 Ticket</option>
-              <option value="4">4 Ticket</option>
-              <option value="5+">5+ Ticket</option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn close-btn" id="cancelBooking">
-              Cancel
-            </button>
-            <button type="submit" class="btn">Confirm Booking</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Harmony Music</h3>
-          <p>
-            Your trusted partner for comfortable and memorable music worldwide.
-          </p>
-        </div>
-        <div class="footer-section">
-          <h3>Quick Links</h3>
-          <ul class="footer-links">
-            <li><a href="#" data-page="home">Home</a></li>
-            <li><a href="#" data-page="hotels">Concert</a></li>
-            <li><a href="#" data-page="about">About Us</a></li>
-            <li><a href="#" data-page="contact">Contact</a></li>
+    <section class="ticket-section container" data-aos="fade-up">
+      <h2 class="section-title" data-aos="zoom-in">Ticket Options</h2>
+      <div class="ticket-grid">
+        <div class="ticket-card" data-aos="fade-up" data-aos-delay="100">
+          <h3>Regular</h3>
+          <p class="price">IDR 250.000</p>
+          <ul class="ticket-benefits">
+            <li>Access to all general areas</li>
+            <li>Free merchandise sticker</li>
+            <li>1 day pass</li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h3>Contact Us</h3>
-          <ul class="footer-links">
-            <li>
-              <i class="fas fa-map-marker-alt"></i> 123 Hotel Street, City
-            </li>
-            <li><i class="fas fa-phone"></i> +1 234 567 8900</li>
-            <li><i class="fas fa-envelope"></i> info@harmonymusic.com</li>
+        <div class="ticket-card" data-aos="fade-up" data-aos-delay="200">
+          <h3>VIP</h3>
+          <p class="price">IDR 500.000</p>
+          <ul class="ticket-benefits">
+            <li>Front row viewing zone</li>
+            <li>Free exclusive T-shirt</li>
+            <li>VIP toilet & lounge access</li>
+            <li>2 day pass</li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h3>Follow Us</h3>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-          </div>
+        <div class="ticket-card" data-aos="fade-up" data-aos-delay="300">
+          <h3>VVIP</h3>
+          <p class="price">IDR 1.000.000</p>
+          <ul class="ticket-benefits">
+            <li>All-access backstage pass</li>
+            <li>Meet & greet with artists</li>
+            <li>VIP merchandise bundle</li>
+            <li>3 day pass + priority entry</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" data-aos="fade-up">
+      <h2 class="section-title" data-aos="zoom-in">
+        Why Choose Harmony Festival?
+      </h2>
+      <div class="card-grid">
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-map-marked-alt fa-2x"></i>
+          <h3>Best Locations</h3>
+          <p>Iconic venues that elevate your live music experience.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-ticket-alt fa-2x"></i>
+          <h3>Exclusive Tickets</h3>
+          <p>Get early access and VIP treatment for top events.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="300">
+          <i class="fas fa-headset fa-2x"></i>
+          <h3>24/7 Support</h3>
+          <p>Friendly, responsive help for anything you need.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="400">
+          <i class="fas fa-shield-alt fa-2x"></i>
+          <h3>Secure Booking</h3>
+          <p>Reliable, fast, and fully protected transactions.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer data-aos="fade-up">
+      <div class="footer-section">
+        <h3>Follow our social networks</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2025 Harmony Music. All rights reserved.</p>
       </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/public/homepage/script/script.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

@@ -1,5 +1,8 @@
+// script.js - Versi fix + animasi tambahan
+
 console.log("Script Loaded!");
-// DOM elements
+
+// --- DOM SELECTORS ---
 const modeToggle = document.getElementById("modeToggle");
 const loginBtn = document.getElementById("loginBtn");
 const bookingModal = document.getElementById("bookingModal");
@@ -10,10 +13,40 @@ const packageType = document.getElementById("packageType");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("navMenu");
 
-// Initialize
-document.addEventListener("DOMContentLoaded", checkLoginStatus);
+// --- INITIALIZE ---
+document.addEventListener("DOMContentLoaded", () => {
+  checkLoginStatus();
+  AOS.init({
+    duration: 800,
+    easing: "ease-in-out",
+    once: true,
+    mirror: false,
+  });
+});
 
-// Navigation handling
+// --- DARK MODE TOGGLE ---
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark-mode");
+}
+
+if (modeToggle) {
+  modeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem(
+      "darkMode",
+      document.body.classList.contains("dark-mode")
+    );
+  });
+}
+
+// --- MOBILE NAV TOGGLE ---
+if (hamburger && navMenu) {
+  hamburger.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+}
+
+// --- NAVIGATION HANDLING ---
 const pageLinks = document.querySelectorAll("[data-page]");
 pageLinks.forEach((link) => {
   link.addEventListener("click", () => {
@@ -23,47 +56,28 @@ pageLinks.forEach((link) => {
 });
 
 function setActivePage(pageId) {
-  // Remove active class from all pages and nav links
-  document.querySelectorAll(".page").forEach((page) => {
-    page.classList.remove("active");
-  });
-  document.querySelectorAll("[data-page]").forEach((link) => {
-    link.classList.remove("active");
-  });
+  document
+    .querySelectorAll(".page")
+    .forEach((page) => page.classList.remove("active"));
+  document
+    .querySelectorAll("[data-page]")
+    .forEach((link) => link.classList.remove("active"));
 
-  // Add active class to selected page and nav link
-  document.getElementById(pageId).classList.add("active");
+  const targetPage = document.getElementById(pageId);
+  if (targetPage) targetPage.classList.add("active");
+
   document.querySelectorAll(`[data-page="${pageId}"]`).forEach((link) => {
     link.classList.add("active");
   });
 }
 
-// Dark mode toggle
-modeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
-  localStorage.setItem(
-    "darkMode",
-    document.body.classList.contains("dark-mode")
-  );
-});
-
-// Check for saved dark mode preference
-if (localStorage.getItem("darkMode") === "true") {
-  document.body.classList.add("dark-mode");
-}
-
-// Mobile menu toggle
-hamburger.addEventListener("click", () => {
-  navMenu.classList.toggle("active");
-});
-
-// Package booking
+// --- PACKAGE BOOKING ---
 const bookPackageButtons = document.querySelectorAll(".book-package");
 bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const token = localStorage.getItem("token");
+
     if (!token) {
-      //if not have login token
       Swal.fire({
         title: "Belum Login!",
         text: "Anda harus login terlebih dahulu sebelum memesan",
@@ -72,74 +86,59 @@ bookPackageButtons.forEach((button) => {
         showCancelButton: true,
         cancelButtonText: "Batal",
       }).then((result) => {
-        if (result.isConfirmed) {
-          //redirect to login page
-          window.location.href = "/login";
-        }
+        if (result.isConfirmed) window.location.href = "/login";
       });
       return;
     }
 
     const packageName = button.getAttribute("data-package");
-    packageType.textContent =
-      packageName.charAt(0).toUpperCase() + packageName.slice(1);
-    bookingModal.classList.add("active");
+    if (packageType)
+      packageType.textContent =
+        packageName.charAt(0).toUpperCase() + packageName.slice(1);
+    if (bookingModal) bookingModal.classList.add("active");
   });
 });
 
-// Close booking modal
-closeBookingModal.addEventListener("click", () => {
-  bookingModal.classList.remove("active");
-});
+// --- CLOSE MODAL ---
+closeBookingModal?.addEventListener("click", () =>
+  bookingModal?.classList.remove("active")
+);
+cancelBooking?.addEventListener("click", () =>
+  bookingModal?.classList.remove("active")
+);
 
-cancelBooking.addEventListener("click", () => {
-  bookingModal.classList.remove("active");
-});
+// --- FORM SUBMIT ---
+if (bookingForm) {
+  bookingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("bookingName")?.value;
+    const email = document.getElementById("bookingEmail")?.value;
+    const checkIn = document.getElementById("checkInDate")?.value;
+    const checkOut = document.getElementById("checkOutDate")?.value;
+    const guests = document.getElementById("guestCount")?.value;
 
-// Booking form submit
-bookingForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const name = document.getElementById("bookingName").value;
-  const email = document.getElementById("bookingEmail").value;
-  const checkIn = document.getElementById("checkInDate").value;
-  const checkOut = document.getElementById("checkOutDate").value;
-  const guests = document.getElementById("guestCount").value;
-
-  // Simplified booking (in a real app, you'd send this to the server)
-  if (name && email && checkIn && checkOut) {
-    alert("Booking successful! Check your email for confirmation.");
-    bookingModal.classList.remove("active");
-    bookingForm.reset();
-  }
-});
-
-// Handle login
-function handleLogin(email) {
-  // Store login status
-  localStorage.setItem("isLoggedIn", "true");
-  localStorage.setItem("userEmail", email);
-
-  // Update UI
-  loginBtn.textContent = "Logout";
+    if (name && email && checkIn && checkOut && guests) {
+      Swal.fire({
+        title: "Sukses!",
+        text: "Booking kamu sudah dikirim. Cek email ya!",
+        icon: "success",
+      });
+      bookingModal?.classList.remove("active");
+      bookingForm.reset();
+    } else {
+      Swal.fire({
+        title: "Gagal",
+        text: "Semua kolom harus diisi.",
+        icon: "error",
+      });
+    }
+  });
 }
 
-// Handle logout
-function handleLogout() {
-  localStorage.removeItem("isLoggedIn");
-  localStorage.removeItem("userEmail");
-
-  // Update UI
-  loginBtn.textContent = "Login";
-}
-
-// Check if user is logged in on page load
+// --- CHECK LOGIN STATUS ---
 async function checkLoginStatus() {
   const token = localStorage.getItem("token");
-
-  if (!token) {
-    loginBtn.textContent = "Login";
-    return;
-  }
+  if (!token) return updateLoginButton(false);
 
   try {
     const response = await fetch("/users/check-login", {
@@ -149,47 +148,52 @@ async function checkLoginStatus() {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      loginBtn.textContent = "Logout";
+      updateLoginButton(true);
     } else {
-      //if token not valid or expired
-      localStorage.removeItem("token");
-      localStorage.removeItem("isLoggedIn");
-      loginBtn.textContent = "Login";
+      throw new Error("Invalid token");
     }
   } catch (error) {
-    console.error("Error checking login status:", error);
-    loginBtn.textContent = "Login";
+    console.error("Login check error:", error);
+    localStorage.removeItem("token");
+    updateLoginButton(false);
   }
 }
 
-loginBtn.addEventListener("click", async () => {
-  const token = localStorage.getItem("token");
+// --- HANDLE LOGIN/LOGOUT ---
+if (loginBtn) {
+  console.log("Setup login button click handler");
 
-  if (token) {
-    try {
-      //call logout endpoint
-      const response = await fetch("/users/logout", {
-        method: "POST",
-        headers: {
-          Authorization: token,
-        },
-      });
+  loginBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
 
-      //delete token from local storage
-      localStorage.removeItem("token");
-      localStorage.removeItem("isLoggedIn");
-      loginBtn.textContent = "Login";
+    const token = localStorage.getItem("token");
 
-      Swal.fire({
-        title: "Berhasil",
-        text: "Anda sudah logout",
-        icon: "success",
-      });
-    } catch (error) {
-      console.error("Error during logout:", error);
+    if (token) {
+      try {
+        await fetch("/users/logout", {
+          method: "POST",
+          headers: { Authorization: token },
+        });
+        localStorage.removeItem("token");
+        updateLoginButton(false);
+
+        Swal.fire({
+          title: "Logout Berhasil",
+          text: "Sampai jumpa lagi!",
+          icon: "success",
+        });
+      } catch (err) {
+        console.error("Logout error:", err);
+
+        localStorage.removeItem("token");
+        updateLoginButton(false);
+      }
+    } else {
+      window.location.href = "/login";
     }
-  } else {
-    window.location.href = "/login";
-  }
-});
+  });
+}
+
+function updateLoginButton(loggedIn) {
+  if (loginBtn) loginBtn.textContent = loggedIn ? "Logout" : "Login";
+}

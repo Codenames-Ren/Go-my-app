@@ -50,7 +50,7 @@ p {
 }
 
 .otp-field input:focus {
-  border-color: #1a73e8;
+  border-color: #fcbf49;
   box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
   outline: none;
 }
@@ -58,7 +58,7 @@ p {
 button {
   padding: 12px 0;
   width: 100%;
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #fcbf49, #d62828);
   color: white;
   border: none;
   border-radius: 5px;
@@ -74,7 +74,7 @@ button:disabled {
 }
 
 button:hover:not(:disabled) {
-  background-color: #0d47a1;
+  background: linear-gradient(135deg, #d62828, #fcbf49);
 }
 
 .timer {
@@ -88,7 +88,7 @@ button:hover:not(:disabled) {
   top: 20px;
   right: 20px;
   padding: 15px 20px;
-  background-color: #4cc9f0;
+  background: linear-gradient(135deg, #d62828, #fcbf49);
   color: white;
   border-radius: 5px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

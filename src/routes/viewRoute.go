@@ -20,6 +20,18 @@ func ViewRoute(router *gin.Engine) {
 		c.File("./public/homepage/index.html")
 	})
 
+	router.GET("/concert", func(c *gin.Context) {
+		c.File("./public/homepage/concert.html")
+	})
+
+	router.GET("/about", func(c *gin.Context) {
+		c.File("./public/homepage/about.html")
+	})
+
+	router.GET("/contact", func(c *gin.Context) {
+		c.File("./public/homepage/contact.html")
+	})
+
 	router.GET("/login", func(c *gin.Context) {
 		c.File("./public/login_form/index.html")
 	})

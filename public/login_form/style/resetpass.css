@@ -46,7 +46,7 @@ p {
 }
 
 .password-input:focus {
-  border: #1a73e8;
+  border: #fcbf49;
   box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
   outline: none;
 }
@@ -54,7 +54,7 @@ p {
 button {
   padding: 12px 0;
   width: 100%;
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #fcbf49, #d62828);
   color: white;
   border: none;
   border-radius: 5px;
@@ -65,5 +65,5 @@ button {
 }
 
 button:hover {
-  background-color: #0d47a1;
+  background: linear-gradient(135deg, #d62828, #fcbf49);
 }
