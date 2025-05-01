@@ -109,29 +109,49 @@ cancelBooking?.addEventListener("click", () =>
 
 // --- FORM SUBMIT ---
 if (bookingForm) {
-  bookingForm.addEventListener("submit", (e) => {
+  bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = document.getElementById("bookingName")?.value;
     const email = document.getElementById("bookingEmail")?.value;
-    const checkIn = document.getElementById("checkInDate")?.value;
-    const checkOut = document.getElementById("checkOutDate")?.value;
-    const guests = document.getElementById("guestCount")?.value;
+    const phoneNumber = document.getElementById("bookingNumber")?.value;
+    const ticketType = document.getElementById("concertCount")?.value;
+    const guestsCount = document.getElementById("guestCount")?.value;
 
-    if (name && email && checkIn && checkOut && guests) {
-      Swal.fire({
-        title: "Sukses!",
-        text: "Booking kamu sudah dikirim. Cek email ya!",
-        icon: "success",
-      });
-      bookingModal?.classList.remove("active");
-      bookingForm.reset();
-    } else {
-      Swal.fire({
-        title: "Gagal",
-        text: "Semua kolom harus diisi.",
+    if (!name || !email || !phoneNumber || !ticketType || !guestsCount) {
+      return Swal.fire({
+        title: "Error",
+        text: "Harap isi semua field yang diperlukan!",
         icon: "error",
       });
     }
+
+    bookingModal?.classList.remove("active");
+
+    const { isConfirmed, value: paymentMethod } = await Swal.fire({
+      title: "Pilih Metode Pembayaran",
+      input: "radio",
+      inputOptions: {
+        bank: "BCA : 7445866678 - A/N Testing",
+        ewallet: "Dana : 081217778899",
+      },
+      inputValidator: (value) => {
+        if (!value) return "Pilih salah satu metode pembayaran!";
+      },
+      confirmButtonText: "Bayar",
+      showCancelButton: true,
+      cancelButtonText: "Batal",
+    });
+
+    if (!isConfirmed) return;
+
+    Swal.fire({
+      title: "Sukses!",
+      html: `Pesanan kamu telah dikirim!
+      <br><strong>Metode Pembayaran: </strong> ${paymentMethod}`,
+      icon: "success",
+    });
+
+    bookingForm.reset();
   });
 }
 
