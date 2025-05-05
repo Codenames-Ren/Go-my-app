@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invoice Pembelian Tiket</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .invoice-box {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      }
+      .header {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        color: #3498db;
+        margin: 0;
+      }
+      .header img {
+        max-width: 200px;
+        margin-bottom: 10px;
+      }
+      .info {
+        margin-bottom: 20px;
+      }
+      .info p {
+        margin: 5px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      table th,
+      table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      table th {
+        background-color: #f8f8f8;
+      }
+      .total {
+        font-weight: bold;
+        font-size: 18px;
+        text-align: right;
+        padding: 10px 0;
+      }
+      .payment-info {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+      .ticket-code {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #777;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .thank-you {
+        text-align: center;
+        font-size: 20px;
+        color: #3498db;
+        margin: 20px 0;
+      }
+      .barcode {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .barcode img {
+        max-width: 250px;
+      }
+      .note {
+        font-style: italic;
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="invoice-box">
+      <div class="header">
+        <h1>INVOICE PEMBELIAN TIKET</h1>
+        <p>Tanggal: {{.Now.Format "02 January 2006"}}</p>
+      </div>
+
+      <div class="info">
+        <p><strong>Nama Pemesan:</strong> {{.Name}}</p>
+        <p>
+          <strong>Tanggal Pemesanan:</strong> {{.Now.Format "02 January 2006
+          15:04"}}
+        </p>
+      </div>
+
+      <div class="ticket-code">KODE TIKET: {{.TicketCode}}</div>
+
+      <table>
+        <tr>
+          <th>Deskripsi</th>
+          <th>Harga Satuan</th>
+          <th>Jumlah</th>
+          <th>Total</th>
+        </tr>
+        <tr>
+          <td>Tiket {{.TicketType}}</td>
+          <td>Rp {{printf "%.0f" .TicketPrice}}</td>
+          <td>{{.OrderCount}}</td>
+          <td>Rp {{printf "%.0f" .TotalPrice}}</td>
+        </tr>
+      </table>
+
+      <div class="total">
+        <p>
+          Total Pembayaran:
+          <span style="color: #3498db">Rp {{printf "%.0f" .TotalPrice}}</span>
+        </p>
+      </div>
+
+      <div class="payment-info">
+        <h3>Informasi Pembayaran:</h3>
+        <p><strong>Metode Pembayaran:</strong> Transfer Bank</p>
+        <p><strong>Transfer ke:</strong> {{.PaymentTo}}</p>
+        <p><strong>Jumlah:</strong> Rp {{printf "%.0f" .TotalPrice}}</p>
+        <p class="note">
+          Mohon lakukan pembayaran dalam waktu 24 jam untuk mengkonfirmasi
+          pesanan Anda.
+        </p>
+      </div>
+
+      <div class="thank-you">Terima Kasih Atas Pemesanan Anda!</div>
+
+      <div class="footer">
+        <p>
+          Simpan email ini sebagai bukti pemesanan. Silakan tunjukkan kode tiket
+          saat check-in.
+        </p>
+        <p>
+          Jika ada pertanyaan, silakan hubungi customer service kami di
+          support@eventname.com
+        </p>
+        <p>
+          &copy; {{.Now.Format "2006"}} Event Organizer. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
