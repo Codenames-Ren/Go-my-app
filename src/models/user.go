@@ -30,3 +30,19 @@ type OTP struct {
 	CreatedAt 		time.Time
 }
 
+type Order struct {
+	ID 					uint	 	`gorm:"primaryKey"`
+	Name 				string 		`gorm:"not null"`
+	Email 				string 		`gorm:"not null"`
+	PhoneNumber 		string 		`gorm:"not null"`
+	TicketType 			string 		`gorm:"not null"`
+	OrderCount 			int 		`gorm:"not null"`
+	PaymentTo 			string 		`gorm:"not null"`
+	Status 				string 		`gorm:"default:pending"`
+	TicketCode 			string 		`gorm:"unique"`
+	UserID 				*string		`gorm:"index"`
+	User				*User		`gorm:"foreignKey:UserID:references:ID"`
+	CreatedAt 			time.Time
+	UpdatedAt 			time.Time
+	DeletedAt	 		gorm.DeletedAt `gorm:"index"`
+}

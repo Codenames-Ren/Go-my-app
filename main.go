@@ -26,6 +26,7 @@ func main() {
 	database.DB.AutoMigrate(
 		&models.User{},
 		&models.OTP{},
+		&models.Order{},
 	)
 
 	//Inisialisasi Server

@@ -77,19 +77,19 @@ bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      Swal.fire({
-        title: "Belum Login!",
-        text: "Anda harus login terlebih dahulu sebelum memesan",
-        icon: "warning",
-        confirmButtonText: "Login Sekarang",
-        showCancelButton: true,
-        cancelButtonText: "Batal",
-      }).then((result) => {
-        if (result.isConfirmed) window.location.href = "/login";
-      });
-      return;
-    }
+    // if (!token) {
+    //   Swal.fire({
+    //     title: "Belum Login!",
+    //     text: "Anda harus login terlebih dahulu sebelum memesan",
+    //     icon: "warning",
+    //     confirmButtonText: "Login Sekarang",
+    //     showCancelButton: true,
+    //     cancelButtonText: "Batal",
+    //   }).then((result) => {
+    //     if (result.isConfirmed) window.location.href = "/login";
+    //   });
+    //   return;
+    // }
 
     const packageName = button.getAttribute("data-package");
     if (packageType)
@@ -127,31 +127,121 @@ if (bookingForm) {
 
     bookingModal?.classList.remove("active");
 
-    const { isConfirmed, value: paymentMethod } = await Swal.fire({
+    const { isConfirmed, value } = await Swal.fire({
       title: "Pilih Metode Pembayaran",
-      input: "radio",
-      inputOptions: {
-        bank: "BCA : 7445866678 - A/N Testing",
-        ewallet: "Dana : 081217778899",
+      html: `
+        <select id="paymentSelect" class="swal2-input" onchange="showSubOptions()">
+          <option value="">-- Pilih Metode --</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="E-Wallet">E-Wallet</option>
+        </select>
+    
+        <div id="subOptions" style="margin-top: 1rem; text-align: left;"></div>
+      `,
+      preConfirm: () => {
+        const selectedMethod = document.getElementById("paymentSelect").value;
+        const checkedSub = document.querySelector(
+          'input[name="subOption"]:checked'
+        );
+        if (!selectedMethod || !checkedSub) {
+          Swal.showValidationMessage(
+            "Pilih metode utama dan salah satu sub-pilihan."
+          );
+          return false;
+        }
+        return {
+          method: selectedMethod,
+          sub: checkedSub.value,
+        };
       },
-      inputValidator: (value) => {
-        if (!value) return "Pilih salah satu metode pembayaran!";
-      },
-      confirmButtonText: "Bayar",
       showCancelButton: true,
+      confirmButtonText: "Bayar",
       cancelButtonText: "Batal",
+      didOpen: () => {
+        // Inject sub-options handler saat swal muncul
+        window.showSubOptions = function () {
+          const method = document.getElementById("paymentSelect").value;
+          const subDiv = document.getElementById("subOptions");
+          if (method === "Transfer Bank") {
+            subDiv.innerHTML = `
+              <label><input type="radio" name="subOption" value="BCA : 7445866678 - A/N Testing"> BCA</label><br>
+              <label><input type="radio" name="subOption" value="BRI : 1234567890 - A/N Testing"> BRI</label><br>
+              <label><input type="radio" name="subOption" value="Mandiri : 9876543210 - A/N Testing"> Mandiri</label>
+            `;
+          } else if (method === "E-Wallet") {
+            subDiv.innerHTML = `
+              <label><input type="radio" name="subOption" value="DANA : 081217778899 - Harmony Music"> DANA</label><br>
+              <label><input type="radio" name="subOption" value="OVO : 081217778899 - Harmony Music"> OVO</label><br>
+              <label><input type="radio" name="subOption" value="GoPay : 081217778899 - Harmony Music"> GoPay</label>
+            `;
+          } else {
+            subDiv.innerHTML = "";
+          }
+        };
+      },
     });
 
-    if (!isConfirmed) return;
+    if (isConfirmed) {
+      let ticketLabel = "";
+      switch (ticketType) {
+        case "1":
+          ticketLabel = "Regular";
+          break;
 
-    Swal.fire({
-      title: "Sukses!",
-      html: `Pesanan kamu telah dikirim!
-      <br><strong>Metode Pembayaran: </strong> ${paymentMethod}`,
-      icon: "success",
-    });
+        case "2":
+          ticketLabel = "VIP";
+          break;
 
-    bookingForm.reset();
+        case "3":
+          ticketLabel = "VVIP";
+          break;
+
+        default:
+          ticketLabel = "Not Defined";
+      }
+
+      const confirmOrder = await Swal.fire({
+        title: "Konfirmasi Pesanan",
+        html: `
+          <div style="text-align: left">
+            <p><strong>Nama:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>No. HP:</strong> ${phoneNumber}</p>
+            <p><strong>Tipe Tiket:</strong> ${ticketLabel}</p>
+            <p><strong>Jumlah Pembelian:</strong> ${guestsCount} Ticket</p>
+            <hr>
+            <p><strong>Pembayaran ke:</strong><br>${value.sub}</p><br>
+            <p style="font-weight: bold; color: #e74c3c;">Harap segera lakukan pembayaran ke nomor tujuan di atas untuk menyelesaikan pesanan Anda.</p>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: "Konfirmasi & Bayar",
+        cancelButtonText: "Batal",
+      });
+
+      if (!confirmOrder.isConfirmed) return;
+
+      await Swal.fire({
+        title: "Menunggu Pembayaran...",
+        text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        timer: 3000,
+        timerProgressBar: true,
+      });
+
+      Swal.fire({
+        title: "Sukses!",
+        html: `Pesanan kamu telah dikirim!<br>
+        <strong>Metode Pembayaran : </strong>${value.method}<br>
+        <strong>Detail : </strong>${value.sub}`,
+        icon: "success",
+      });
+
+      bookingForm.reset();
+    }
   });
 }
 
