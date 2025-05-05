@@ -39,6 +39,7 @@ type Order struct {
 	OrderCount 			int 		`gorm:"not null"`
 	PaymentTo 			string 		`gorm:"not null"`
 	Status 				string 		`gorm:"default:pending"`
+	OrderNumber			string		`gorm:"uniqueIndex"`
 	TicketCode 			string 		`gorm:"unique"`
 	UserID 				*string		`gorm:"index"`
 	User				*User		`gorm:"foreignKey:UserID:references:ID"`
