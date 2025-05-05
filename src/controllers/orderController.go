@@ -4,10 +4,9 @@ import (
 	"net/http"
 	"ren/backend-api/src/models"
 
-	// "ren/backend-api/src/service"
+	"ren/backend-api/src/service"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -40,24 +39,20 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 			}
 		}
 
-		//Generate code Ticket
-		ticketCode := uuid.New().String()[:8]
 
 		//Make Struct Order
-		order := models.Order{
+		orderData := models.Order{
 			Name: 				req.Name,
 			Email: 				req.Email,
 			PhoneNumber: 		req.PhoneNumber,
 			TicketType: 		req.TicketType,
 			OrderCount: 		req.OrderCount,
-			PaymentTo: 			req.PaymentTo,
-			Status: 			"pending",
-			UserID: 			userID,
-			TicketCode: 		ticketCode,	
+			PaymentTo: 			req.PaymentTo,	
 		}
 
-		if err := db.Create(&order).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan order: " + err.Error()})
+		order, err := service.CreateOrder(db, orderData, userID)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal Menyimpan Order : " + err.Error()})
 			return
 		}
 
@@ -73,7 +68,8 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Order berhasil disimpan dan invoice dikirim",
-			"ticket_code": ticketCode,
+			"ticket_code": order.TicketCode,
+			"order_number": order.OrderNumber,
 		})
 	}
 }
