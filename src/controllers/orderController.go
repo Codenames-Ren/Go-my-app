@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"ren/backend-api/src/models"
 
@@ -57,14 +58,11 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// //Invoice via Email
-		// if err := service.SendInvoiceEmail(req.Email, req.Name, req.TicketType, req.OrderCount, req.PaymentTo, ticketCode); err != nil {
-		// 	c.JSON(http.StatusOK, gin.H{
-		// 		"message":     "Order berhasil disimpan tetapi gagal mengirim invoice",
-		// 		"ticket_code": ticketCode,
-		// 		"error":       err.Error(),
-		// 	})
-		// 	return
-		// }
+		go func() {
+			if err := service.SendInvoiceHTML(order); err != nil {
+				fmt.Println("Gagal kirim invoice:", err)
+			}
+		}()
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Order berhasil disimpan dan invoice dikirim",
