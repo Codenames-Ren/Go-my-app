@@ -41,6 +41,7 @@ type Order struct {
 	Status 				string 		`gorm:"default:pending"`
 	OrderNumber			string		`gorm:"unique"`
 	TicketCode 			string 		`gorm:"unique"`
+	TotalPrice 			float64 	`gorm:"not null"`
 	UserID 				*string		`gorm:"index"`
 	User				*User		`gorm:"foreignKey:UserID:references:ID"`
 	CreatedAt 			time.Time

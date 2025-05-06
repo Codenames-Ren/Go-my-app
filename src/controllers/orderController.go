@@ -2,10 +2,11 @@ package controllers
 
 import (
 	// "fmt"
+	"log"
 	"net/http"
 	"ren/backend-api/src/models"
-
 	"ren/backend-api/src/service"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ type OrderRequest struct {
 	PaymentTo 		string	`json:"payment_to" binding:"required"`	
 }
 
-func CreateOrder(db *gorm.DB) gin.HandlerFunc {
+func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.HandlerFunc {
 	return func (c *gin.Context)  {
 		var req OrderRequest
 		if err := c.ShouldBindJSON(&req); err != nil {
@@ -40,6 +41,21 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 			}
 		}
 
+		//ticket Price
+		var ticketPrice float64
+		switch req.TicketType {
+		case "Regular":
+			ticketPrice = 250000
+		case "VIP":
+			ticketPrice = 500000
+		case "VVIP":
+			ticketPrice = 1000000
+		default:
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Tipe tiket tidak valid"})
+			return
+		}
+
+		totalPrice := ticketPrice * float64(req.OrderCount)
 
 		//Make Struct Order
 		orderData := models.Order{
@@ -48,7 +64,8 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 			PhoneNumber: 		req.PhoneNumber,
 			TicketType: 		req.TicketType,
 			OrderCount: 		req.OrderCount,
-			PaymentTo: 			req.PaymentTo,	
+			PaymentTo: 			req.PaymentTo,
+			TotalPrice: 		totalPrice,
 		}
 
 		order, err := service.CreateOrder(db, orderData, userID)
@@ -58,11 +75,20 @@ func CreateOrder(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		// // //Invoice via Email
-		// go func() {
-		// 	if err := service.SendInvoiceHTML(order); err != nil {
-		// 		fmt.Println("Gagal kirim invoice:", err)
-		// 	}
-		// }()
+		invoice := service.InvoiceData{
+			Name: 			order.Name,
+			TicketType: 	order.TicketType,
+			TicketPrice: 	ticketPrice,
+			OrderCount: 	order.OrderCount,
+			TotalPrice: 	totalPrice,
+			PaymentTo: 		order.PaymentTo,
+			TicketCode: 	order.TicketCode,
+			Now: 			time.Now(),
+		}
+
+		if err := invoiceService.SendInvoiceHTML(order.Email, invoice); err != nil {
+			log.Println("Gagal Mengirim Invoice", err)
+		} //Internal Async
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Order berhasil disimpan dan invoice dikirim",

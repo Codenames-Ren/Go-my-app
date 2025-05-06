@@ -64,6 +64,7 @@ func main() {
 
 	//Setup Routing
 	routes.UserRoutes(router, database.DB, otpService, &emailService)
+	routes.OrderRoutes(router, database.DB, &emailService)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")
