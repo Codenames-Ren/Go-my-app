@@ -23,7 +23,7 @@ type InvoiceService struct {
 }
 
 func (s *InvoiceService) SendInvoiceHTML(email string, data InvoiceData) error {
-	tmpl, err := template.ParseFiles("templates/invoiceEmail.html")
+	tmpl, err := template.ParseFiles("src/templates/invoiceEmail.html")
 
 	if err != nil {
 		log.Println("Failed to parse invoice template: ", err)

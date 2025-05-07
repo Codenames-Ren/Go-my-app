@@ -43,7 +43,7 @@ type Order struct {
 	TicketCode 			string 		`gorm:"unique"`
 	TotalPrice 			float64 	`gorm:"not null"`
 	UserID 				*string		`gorm:"index"`
-	User				*User		`gorm:"foreignKey:UserID:references:ID"`
+	User				*User		`gorm:"foreignKey:UserID;references:ID"`
 	CreatedAt 			time.Time
 	UpdatedAt 			time.Time
 	DeletedAt	 		gorm.DeletedAt `gorm:"index"`
