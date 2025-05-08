@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/service"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -55,21 +56,21 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 			return
 		}
 
-		// // // //Invoice via Email
-		// invoice := service.InvoiceData{
-		// 	Name: 			order.Name,
-		// 	TicketType: 	order.TicketType,
-		// 	TicketPrice: 	ticketPrice,
-		// 	OrderCount: 	order.OrderCount,
-		// 	TotalPrice: 	order.TotalPrice,
-		// 	PaymentTo: 		order.PaymentTo,
-		// 	TicketCode: 	order.TicketCode,
-		// 	Now: 			time.Now(),
-		// }
+		// Memanggil struct invoice data dari package service
+		invoice := service.InvoiceData{
+			Name: 			order.Name,
+			TicketType: 	order.TicketType,
+			TicketPrice: 	ticketPrice,
+			OrderCount: 	order.OrderCount,
+			TotalPrice: 	order.TotalPrice,
+			PaymentTo: 		order.PaymentTo,
+			TicketCode: 	order.TicketCode,
+			Now: 			time.Now(),
+		}
 
 		if err := invoiceService.SendInvoiceHTML(order.Email, invoice); err != nil {
 			log.Println("Gagal Mengirim Invoice", err)
-		} //Internal Async
+		}
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Order berhasil disimpan dan invoice dikirim",
