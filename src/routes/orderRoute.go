@@ -18,6 +18,7 @@ func OrderRoutes(router *gin.Engine, db *gorm.DB, emailService *service.EmailSer
 	userOrder := router.Group("/orders", middlewares.AuthMiddleware())
 	{
 		userOrder.POST("/", controllers.CreateOrder(db, invoiceService))
+		// userOrder.POST("/payment/callback", controllers.PaymentCallback(db, invoiceService))
 	}
 
 	//Admin access

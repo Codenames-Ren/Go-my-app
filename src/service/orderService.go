@@ -15,7 +15,24 @@ func GenerateOrderNumber() string {
 	return fmt.Sprintf("ORD-%s-%s", date, random)
 }
 
-func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order, error) {
+func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order, float64, error) {
+
+	//ticket Price
+	var ticketPrice float64
+	switch req.TicketType {
+	case "Regular":
+		ticketPrice = 250000
+	case "VIP":
+		ticketPrice = 500000
+	case "VVIP":
+		ticketPrice = 1000000
+	default:
+		return nil, 0, fmt.Errorf("tipe tiket tidak valid")
+	}
+
+	totalPrice := ticketPrice * float64(req.OrderCount)
+
+
 	order := models.Order {
 		OrderNumber: 		GenerateOrderNumber(),	
 		Name: 				req.Name,
@@ -24,14 +41,15 @@ func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order,
 		TicketType: 		req.TicketType,
 		OrderCount: 		req.OrderCount,
 		PaymentTo: 			req.PaymentTo,
+		TotalPrice:  		totalPrice,
 		Status: 			"pending",
 		UserID: 			userID,
 		TicketCode: 		uuid.New().String()[:8],	
 	}
 
 	if err := db.Create(&order).Error; err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return &order, nil
+	return &order, ticketPrice, nil
 }

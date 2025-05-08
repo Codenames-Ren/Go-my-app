@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/service"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -41,23 +40,6 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 			}
 		}
 
-		//ticket Price
-		var ticketPrice float64
-		switch req.TicketType {
-		case "Regular":
-			ticketPrice = 250000
-		case "VIP":
-			ticketPrice = 500000
-		case "VVIP":
-			ticketPrice = 1000000
-		default:
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Tipe tiket tidak valid"})
-			return
-		}
-
-		totalPrice := ticketPrice * float64(req.OrderCount)
-
-		//Make Struct Order
 		orderData := models.Order{
 			Name: 				req.Name,
 			Email: 				req.Email,
@@ -65,26 +47,25 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 			TicketType: 		req.TicketType,
 			OrderCount: 		req.OrderCount,
 			PaymentTo: 			req.PaymentTo,
-			TotalPrice: 		totalPrice,
 		}
 
-		order, err := service.CreateOrder(db, orderData, userID)
+		order, ticketPrice, err := service.CreateOrder(db, orderData, userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal Menyimpan Order : " + err.Error()})
 			return
 		}
 
-		// // //Invoice via Email
-		invoice := service.InvoiceData{
-			Name: 			order.Name,
-			TicketType: 	order.TicketType,
-			TicketPrice: 	ticketPrice,
-			OrderCount: 	order.OrderCount,
-			TotalPrice: 	totalPrice,
-			PaymentTo: 		order.PaymentTo,
-			TicketCode: 	order.TicketCode,
-			Now: 			time.Now(),
-		}
+		// // // //Invoice via Email
+		// invoice := service.InvoiceData{
+		// 	Name: 			order.Name,
+		// 	TicketType: 	order.TicketType,
+		// 	TicketPrice: 	ticketPrice,
+		// 	OrderCount: 	order.OrderCount,
+		// 	TotalPrice: 	order.TotalPrice,
+		// 	PaymentTo: 		order.PaymentTo,
+		// 	TicketCode: 	order.TicketCode,
+		// 	Now: 			time.Now(),
+		// }
 
 		if err := invoiceService.SendInvoiceHTML(order.Email, invoice); err != nil {
 			log.Println("Gagal Mengirim Invoice", err)
@@ -97,3 +78,4 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 		})
 	}
 }
+
