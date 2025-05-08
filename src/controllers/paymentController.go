@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/service"
-	"time"
+
+	// "time"git
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -31,7 +32,7 @@ func PaymentCallback(db *gorm.DB, invoiceService *service.InvoiceService) gin.Ha
 		}
 
 		if order.Status == "active" {
-			c.JSON(http.StatusOK, gin.H{"message": "Order sudah aktif"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Order sudah aktif"})
 			return
 		}
 
@@ -42,19 +43,19 @@ func PaymentCallback(db *gorm.DB, invoiceService *service.InvoiceService) gin.Ha
 		}
 
 		//send invoice again in some condition
-		ticketPrice := order.TotalPrice / float64(order.OrderCount)
-		invoice := service.InvoiceData{
-			Name: 					order.Name,
-			TicketType: 			order.TicketType,
-			TicketPrice: 			ticketPrice,
-			OrderCount: 			order.OrderCount,
-			TotalPrice: 			order.TotalPrice,
-			PaymentTo: 				order.PaymentTo,
-			TicketCode:				order.TicketCode,
-			Now:					time.Now(),
-		}
+		// ticketPrice := order.TotalPrice / float64(order.OrderCount)
+		// invoice := service.InvoiceData{
+		// 	Name: 					order.Name,
+		// 	TicketType: 			order.TicketType,
+		// 	TicketPrice: 			ticketPrice,
+		// 	OrderCount: 			order.OrderCount,
+		// 	TotalPrice: 			order.TotalPrice,
+		// 	PaymentTo: 				order.PaymentTo,
+		// 	TicketCode:				order.TicketCode,
+		// 	Now:					time.Now(),
+		// }
 
-		go invoiceService.SendInvoiceHTML(order.Email, invoice)
+		// go invoiceService.SendInvoiceHTML(order.Email, invoice)
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Pembayaran sukses, Invoice telah dikirim ke email anda",
