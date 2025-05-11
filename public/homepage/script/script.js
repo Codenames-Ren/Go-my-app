@@ -73,6 +73,8 @@ function setActivePage(pageId) {
 
 // --- PACKAGE BOOKING ---
 const bookPackageButtons = document.querySelectorAll(".book-package");
+let selectedConcertName = "";
+
 bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const token = localStorage.getItem("token");
@@ -92,6 +94,8 @@ bookPackageButtons.forEach((button) => {
     }
 
     const packageName = button.getAttribute("data-package");
+    selectedConcertName = button.getAttribute("data-concert");
+
     if (packageType)
       packageType.textContent =
         packageName.charAt(0).toUpperCase() + packageName.slice(1);
@@ -209,6 +213,7 @@ if (bookingForm) {
       ticket_type: ticketLabel,
       order_count: parseInt(guestsCount),
       payment_to: value.sub,
+      event_name: selectedConcertName,
     };
 
     let orderId = null;
@@ -258,6 +263,7 @@ if (bookingForm) {
             <p><strong>Nama:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>No. HP:</strong> ${phoneNumber}</p>
+            <p><strong>Nama Event:</strong> ${selectedConcertName}</p>
             <p><strong>Tipe Tiket:</strong> ${ticketLabel}</p>
             <p><strong>Jumlah Pembelian:</strong> ${guestsCount} Ticket</p>
             <hr>

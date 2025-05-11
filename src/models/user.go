@@ -35,6 +35,7 @@ type Order struct {
 	Name 				string 		`gorm:"not null"`
 	Email 				string 		`gorm:"not null"`
 	PhoneNumber 		string 		`gorm:"not null"`
+	EventName			string		`gorm:"not null"`
 	TicketType 			string 		`gorm:"not null"`
 	OrderCount 			int 		`gorm:"not null"`
 	PaymentTo 			string 		`gorm:"not null"`

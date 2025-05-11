@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Invoice Pembelian Tiket</title>
+    <title>Invoice Pembelian Tiket Konser</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -105,14 +105,15 @@
   <body>
     <div class="invoice-box">
       <div class="header">
-        <h1>INVOICE PEMBELIAN TIKET</h1>
+        <h1>INVOICE PEMBELIAN TIKET KONSER</h1>
         <p>Tanggal: {{.Now.Format "02 January 2006"}}</p>
       </div>
 
       <div class="info">
-        <p><strong>Nama Pemesan:</strong> {{.Name}}</p>
+        <p><strong>Nama Pemesan :</strong> {{.Name}}</p>
+        <p><strong>Nama Event : {{.EventName}}</strong></p>
         <p>
-          <strong>Tanggal Pemesanan:</strong> {{.Now.Format "02 January 2006 15:04"}}
+          <strong>Tanggal Pemesanan :</strong> {{.Now.Format "02 January 2006 15:04"}}
         </p>
       </div>
 

@@ -111,6 +111,53 @@ h1, h2, h3, h4 {
   transform: rotate(-10deg) scale(1.1);
 }
 
+.lineup-section {
+  padding: 5rem 5%;
+  background-color: #fff8e1;
+  text-align: center;
+}
+
+.lineup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.lineup-card {
+  background-color: var(--card-bg);
+  border: 2px dashed var(--mustard);
+  padding: 2rem;
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lineup-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.lineup-card h3 {
+  font-family: "Staatliches", cursive;
+  color: var(--punk-purple);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.lineup-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.lineup-card ul li {
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+
 .ticket-section {
   padding: 6rem 8%;
   background-color: #fff8e1;
@@ -468,6 +515,7 @@ footer {
   transform: none;
 }
 
+
 @media (max-width: 768px) {
   .nav-menu {
     display: none;
@@ -697,3 +745,35 @@ footer {
   transform: scale(1.05);
 }
 
+.history-table-container {
+  padding: 3rem 5%;
+  overflow-x: auto;
+} 
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.history-table thead {
+  background-color: var(--mustard);
+  color: var(--punk-black);
+}
+.history-table th, .history-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.history-table tbody tr:hover {
+  background-color: #fffbe6;
+}
+.status.paid {
+  color: green;
+  font-weight: bold;
+}
+.status.pending {
+  color: orange;
+  font-weight: bold;
+}

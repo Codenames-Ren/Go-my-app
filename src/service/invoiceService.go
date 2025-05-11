@@ -9,6 +9,7 @@ import (
 
 type InvoiceData struct {
 	Name        string
+	EventName	string
 	TicketType  string
 	TicketPrice float64
 	OrderCount  int

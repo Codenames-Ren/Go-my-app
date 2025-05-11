@@ -16,7 +16,8 @@ import (
 type OrderRequest struct {
 	Name 			string	`json:"name" binding:"required"`	
 	Email 			string	`json:"email" binding:"required,email"`	
-	PhoneNumber 	string	`json:"phone_number" binding:"required"`	
+	PhoneNumber 	string	`json:"phone_number" binding:"required"`
+	EventName		string	`json:"event_name" binding:"required"`	
 	TicketType	 	string	`json:"ticket_type" binding:"required"`	
 	OrderCount 		int		`json:"order_count" binding:"required"`	
 	PaymentTo 		string	`json:"payment_to" binding:"required"`	
@@ -45,6 +46,7 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 			Name: 				req.Name,
 			Email: 				req.Email,
 			PhoneNumber: 		req.PhoneNumber,
+			EventName: 			req.EventName,
 			TicketType: 		req.TicketType,
 			OrderCount: 		req.OrderCount,
 			PaymentTo: 			req.PaymentTo,
@@ -59,6 +61,7 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 		// Memanggil struct invoice data dari package service
 		invoice := service.InvoiceData{
 			Name: 			order.Name,
+			EventName: 		order.EventName,
 			TicketType: 	order.TicketType,
 			TicketPrice: 	ticketPrice,
 			OrderCount: 	order.OrderCount,
