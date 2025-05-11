@@ -32,6 +32,10 @@ func ViewRoute(router *gin.Engine) {
 		c.File("./public/homepage/contact.html")
 	})
 
+	router.GET("/history", func(c *gin.Context) {
+		c.File("./public/homepage/history.html")
+	})
+
 	router.GET("/login", func(c *gin.Context) {
 		c.File("./public/login_form/index.html")
 	})
