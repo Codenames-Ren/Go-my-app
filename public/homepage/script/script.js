@@ -270,58 +270,58 @@ if (bookingForm) {
       cancelButtonText: "Batal",
     });
 
-  //   if (!confirmOrder.isConfirmed) return;
+    if (!confirmOrder.isConfirmed) return;
 
-  //   //Backend Callback (activate status + send invoice)
-  //   try {
-  //     console.log("Sending order id for callback:", orderId);
-  //     const callbackRes = await fetch("/orders/payment/callback", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: localStorage.getItem("token"),
-  //       },
-  //       body: JSON.stringify({ order_id: orderId }),
-  //     });
+    //Backend Callback (activate status + send invoice)
+    try {
+      console.log("Sending order id for callback:", orderId);
+      const callbackRes = await fetch("/orders/payment/callback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ order_id: orderId }),
+      });
 
-  //     console.log("Callback request sent with body:", { order_id: orderId });
+      console.log("Callback request sent with body:", { order_id: orderId });
 
-  //     const callbackData = await callbackRes.json();
+      const callbackData = await callbackRes.json();
 
-  //     console.log("Callback response:", callbackData);
+      console.log("Callback response:", callbackData);
 
-  //     if (!callbackRes.ok) {
-  //       return Swal.fire(
-  //         "Gagal",
-  //         callbackData.error || "Gagal mengkonfirmasi pesanan",
-  //         "error"
-  //       );
-  //     }
+      if (!callbackRes.ok) {
+        return Swal.fire(
+          "Gagal",
+          callbackData.error || "Gagal mengkonfirmasi pesanan",
+          "error"
+        );
+      }
 
-  //     await Swal.fire({
-  //       title: "Menunggu Pembayaran...",
-  //       text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
-  //       allowOutsideClick: false,
-  //       didOpen: () => {
-  //         Swal.showLoading();
-  //       },
-  //       timer: 3000,
-  //       timerProgressBar: true,
-  //     });
+      await Swal.fire({
+        title: "Menunggu Pembayaran...",
+        text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        timer: 3000,
+        timerProgressBar: true,
+      });
 
-  //     Swal.fire({
-  //       title: "Sukses!",
-  //       html: `Pesanan kamu telah dikirim!<br>
-  //       <strong>Metode Pembayaran : </strong>${value.method}<br>
-  //       <strong>Detail : </strong>${value.sub}`,
-  //       icon: "success",
-  //     });
+      Swal.fire({
+        title: "Sukses!",
+        html: `Pesanan kamu telah dikirim!<br>
+        <strong>Metode Pembayaran : </strong>${value.method}<br>
+        <strong>Detail : </strong>${value.sub}`,
+        icon: "success",
+      });
 
-  //     bookingForm.reset();
-  //   } catch (err) {
-  //     Swal.fire("Error", "Gagal menyelesaikan pesanan", "error");
-  //   }
-  // });
+      bookingForm.reset();
+    } catch (err) {
+      Swal.fire("Error", "Gagal menyelesaikan pesanan", "error");
+    }
+  });
 }
 
 // --- CHECK LOGIN STATUS ---
