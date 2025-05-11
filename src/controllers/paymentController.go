@@ -26,36 +26,25 @@ func PaymentCallback(db *gorm.DB, invoiceService *service.InvoiceService) gin.Ha
 		}
 
 		var order models.Order
-		if err := db.First(&order, "id = ?", req.OrderID).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Order tidak ditemukan"})
-			return
-		}
-
-		if order.Status == "active" {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Order sudah aktif"})
+		result := db.Where("order_number = ?", req.OrderID).First(&order)
+		if result.Error != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Order Tidak Ditemukan"})
 			return
 		}
 
 		order.Status = "active"
-		if err := db.Save(&order).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengupdate status"})
-			return
-		}
+		db.Save(&order)
 
-		//send invoice again in some condition
-		// ticketPrice := order.TotalPrice / float64(order.OrderCount)
-		// invoice := service.InvoiceData{
-		// 	Name: 					order.Name,
-		// 	TicketType: 			order.TicketType,
-		// 	TicketPrice: 			ticketPrice,
-		// 	OrderCount: 			order.OrderCount,
-		// 	TotalPrice: 			order.TotalPrice,
-		// 	PaymentTo: 				order.PaymentTo,
-		// 	TicketCode:				order.TicketCode,
-		// 	Now:					time.Now(),
+		// if order.Status == "active" {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Order sudah aktif"})
+		// 	return
 		// }
 
-		// go invoiceService.SendInvoiceHTML(order.Email, invoice)
+		// order.Status = "active"
+		// if err := db.Save(&order).Error; err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengupdate status"})
+		// 	return
+		// }
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Pembayaran sukses, Invoice telah dikirim ke email anda",

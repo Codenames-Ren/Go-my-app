@@ -77,19 +77,19 @@ bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const token = localStorage.getItem("token");
 
-    // if (!token) {
-    //   Swal.fire({
-    //     title: "Belum Login!",
-    //     text: "Anda harus login terlebih dahulu sebelum memesan",
-    //     icon: "warning",
-    //     confirmButtonText: "Login Sekarang",
-    //     showCancelButton: true,
-    //     cancelButtonText: "Batal",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) window.location.href = "/login";
-    //   });
-    //   return;
-    // }
+    if (!token) {
+      Swal.fire({
+        title: "Belum Login!",
+        text: "Anda harus login terlebih dahulu sebelum memesan",
+        icon: "warning",
+        confirmButtonText: "Login Sekarang",
+        showCancelButton: true,
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) window.location.href = "/login";
+      });
+      return;
+    }
 
     const packageName = button.getAttribute("data-package");
     if (packageType)
@@ -127,6 +127,7 @@ if (bookingForm) {
 
     bookingModal?.classList.remove("active");
 
+    //Payment Method
     const { isConfirmed, value } = await Swal.fire({
       title: "Pilih Metode Pembayaran",
       html: `
@@ -181,28 +182,78 @@ if (bookingForm) {
       },
     });
 
-    if (isConfirmed) {
-      let ticketLabel = "";
-      switch (ticketType) {
-        case "1":
-          ticketLabel = "Regular";
-          break;
+    //Buy Button Validation
+    if (!isConfirmed) return;
+    let ticketLabel = "";
+    switch (ticketType) {
+      case "1":
+        ticketLabel = "Regular";
+        break;
 
-        case "2":
-          ticketLabel = "VIP";
-          break;
+      case "2":
+        ticketLabel = "VIP";
+        break;
 
-        case "3":
-          ticketLabel = "VVIP";
-          break;
+      case "3":
+        ticketLabel = "VVIP";
+        break;
 
-        default:
-          ticketLabel = "Not Defined";
+      default:
+        ticketLabel = "Not Defined";
+    }
+
+    const payload = {
+      name,
+      email,
+      phone_number: phoneNumber,
+      ticket_type: ticketLabel,
+      order_count: parseInt(guestsCount),
+      payment_to: value.sub,
+    };
+
+    let orderId = null;
+
+    try {
+      const response = await fetch("/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        return Swal.fire(
+          "Gagal",
+          data.error || "Gagal Menyimpan Pesanan",
+          "error"
+        );
       }
 
-      const confirmOrder = await Swal.fire({
-        title: "Konfirmasi Pesanan",
-        html: `
+      console.log("Server response:", data);
+
+      orderId = data.order_number;
+
+      console.log("Extracted Order ID:", orderId);
+
+      if (!orderId) {
+        return Swal.fire(
+          "Error",
+          "Tidak dapat mendapatkan ID pesanan dari server",
+          "error"
+        );
+      }
+    } catch (err) {
+      console.error("Error Creating Order:", err);
+      return Swal.fire("error", "Gagal Menyimpan pesanan ke server", "error");
+    }
+
+    //Confirmation Order
+    const confirmOrder = await Swal.fire({
+      title: "Konfirmasi Pesanan",
+      html: `
           <div style="text-align: left">
             <p><strong>Nama:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
@@ -214,35 +265,63 @@ if (bookingForm) {
             <p style="font-weight: bold; color: #e74c3c;">Harap segera lakukan pembayaran ke nomor tujuan di atas untuk menyelesaikan pesanan Anda.</p>
           </div>
         `,
-        showCancelButton: true,
-        confirmButtonText: "Konfirmasi & Bayar",
-        cancelButtonText: "Batal",
-      });
+      showCancelButton: true,
+      confirmButtonText: "Konfirmasi & Bayar",
+      cancelButtonText: "Batal",
+    });
 
-      if (!confirmOrder.isConfirmed) return;
+  //   if (!confirmOrder.isConfirmed) return;
 
-      await Swal.fire({
-        title: "Menunggu Pembayaran...",
-        text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-        timer: 3000,
-        timerProgressBar: true,
-      });
+  //   //Backend Callback (activate status + send invoice)
+  //   try {
+  //     console.log("Sending order id for callback:", orderId);
+  //     const callbackRes = await fetch("/orders/payment/callback", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: localStorage.getItem("token"),
+  //       },
+  //       body: JSON.stringify({ order_id: orderId }),
+  //     });
 
-      Swal.fire({
-        title: "Sukses!",
-        html: `Pesanan kamu telah dikirim!<br>
-        <strong>Metode Pembayaran : </strong>${value.method}<br>
-        <strong>Detail : </strong>${value.sub}`,
-        icon: "success",
-      });
+  //     console.log("Callback request sent with body:", { order_id: orderId });
 
-      bookingForm.reset();
-    }
-  });
+  //     const callbackData = await callbackRes.json();
+
+  //     console.log("Callback response:", callbackData);
+
+  //     if (!callbackRes.ok) {
+  //       return Swal.fire(
+  //         "Gagal",
+  //         callbackData.error || "Gagal mengkonfirmasi pesanan",
+  //         "error"
+  //       );
+  //     }
+
+  //     await Swal.fire({
+  //       title: "Menunggu Pembayaran...",
+  //       text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
+  //       allowOutsideClick: false,
+  //       didOpen: () => {
+  //         Swal.showLoading();
+  //       },
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //     });
+
+  //     Swal.fire({
+  //       title: "Sukses!",
+  //       html: `Pesanan kamu telah dikirim!<br>
+  //       <strong>Metode Pembayaran : </strong>${value.method}<br>
+  //       <strong>Detail : </strong>${value.sub}`,
+  //       icon: "success",
+  //     });
+
+  //     bookingForm.reset();
+  //   } catch (err) {
+  //     Swal.fire("Error", "Gagal menyelesaikan pesanan", "error");
+  //   }
+  // });
 }
 
 // --- CHECK LOGIN STATUS ---
