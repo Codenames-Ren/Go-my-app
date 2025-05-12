@@ -19,6 +19,7 @@ func OrderRoutes(router *gin.Engine, db *gorm.DB, emailService *service.EmailSer
 	{
 		userOrder.POST("/", controllers.CreateOrder(db, invoiceService))
 		userOrder.POST("/payment/callback", controllers.PaymentCallback(db, invoiceService))
+		userOrder.GET("/history", controllers.GetOrderHistoryHandler(db))
 	}
 
 	//Admin access

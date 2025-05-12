@@ -1,13 +1,11 @@
 package controllers
 
 import (
-	// "fmt"
-
+	"log"
 	"net/http"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/service"
-
-	// "time"git
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -32,19 +30,33 @@ func PaymentCallback(db *gorm.DB, invoiceService *service.InvoiceService) gin.Ha
 			return
 		}
 
+		if order.Status == "active" {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Order sudah aktif"})
+			return
+		}
+
 		order.Status = "active"
-		db.Save(&order)
+		if err := db.Save(&order).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengupdate status"})
+			return
+		}
 
-		// if order.Status == "active" {
-		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Order sudah aktif"})
-		// 	return
-		// }
+		
+		invoice := service.InvoiceData{
+			Name:        order.Name,
+			EventName:   order.EventName,
+			TicketType:  order.TicketType,
+			TicketPrice: order.TicketPrice,
+			OrderCount:  order.OrderCount,
+			TotalPrice:  order.TotalPrice,
+			PaymentTo:   order.PaymentTo,
+			TicketCode:  order.TicketCode,
+			Now:         time.Now(),
+		}
 
-		// order.Status = "active"
-		// if err := db.Save(&order).Error; err != nil {
-		// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mengupdate status"})
-		// 	return
-		// }
+		if err := invoiceService.SendInvoiceHTML(order.Email, invoice); err != nil {
+			log.Println("Gagal Mengirim Invoice", err)
+		}
 
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Pembayaran sukses, Invoice telah dikirim ke email anda",

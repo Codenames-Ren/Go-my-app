@@ -37,6 +37,7 @@ type Order struct {
 	PhoneNumber 		string 		`gorm:"not null"`
 	EventName			string		`gorm:"not null"`
 	TicketType 			string 		`gorm:"not null"`
+	TicketPrice 		float64 	`gorm:"not null"`
 	OrderCount 			int 		`gorm:"not null"`
 	PaymentTo 			string 		`gorm:"not null"`
 	Status 				string 		`gorm:"default:pending"`

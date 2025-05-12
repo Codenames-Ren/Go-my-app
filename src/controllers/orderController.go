@@ -2,11 +2,10 @@ package controllers
 
 import (
 	// "fmt"
-	"log"
+
 	"net/http"
 	"ren/backend-api/src/models"
 	"ren/backend-api/src/service"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -52,32 +51,14 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 			PaymentTo: 			req.PaymentTo,
 		}
 
-		order, ticketPrice, err := service.CreateOrder(db, orderData, userID)
+		order, _, err := service.CreateOrder(db, orderData, userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal Menyimpan Order : " + err.Error()})
 			return
 		}
 
-		// Memanggil struct invoice data dari package service
-		invoice := service.InvoiceData{
-			Name: 			order.Name,
-			EventName: 		order.EventName,
-			TicketType: 	order.TicketType,
-			TicketPrice: 	ticketPrice,
-			OrderCount: 	order.OrderCount,
-			TotalPrice: 	order.TotalPrice,
-			PaymentTo: 		order.PaymentTo,
-			TicketCode: 	order.TicketCode,
-			Now: 			time.Now(),
-		}
-
-		if err := invoiceService.SendInvoiceHTML(order.Email, invoice); err != nil {
-			log.Println("Gagal Mengirim Invoice", err)
-		}
-
 		c.JSON(http.StatusOK, gin.H{
-			"message": "Order berhasil disimpan dan invoice dikirim",
-			"ticket_code": order.TicketCode,
+			"message": "Order berhasil disimpan",
 			"order_number": order.OrderNumber,
 		})
 	}
