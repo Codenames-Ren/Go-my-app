@@ -486,7 +486,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td class="status-${order.status.toLowerCase()}">
   ${
     order.status.toLowerCase() === "pending"
-      ? `<button class="btn-confirm" style="display: inline-block; padding: 5px 14px; background-color:rgb(255, 67, 67); color: white; text-decoration: none; border-radius: 15px;" 
+      ? `<button class="btn-confirm" style=" display: inline-block;
+      padding: 5px 14px;
+      background-color:rgb(255, 67, 67);
+      color: white;
+      text-decoration: none;
+      border-radius: 15px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;" 
       data-order='${JSON.stringify(order)}'>Pending</button>`
       : order.status
   }
