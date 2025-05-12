@@ -17,7 +17,9 @@ type HistoryResponse struct {
 	Date         string  `json:"date"`
 	TicketCount  string  `json:"ticket_count"`
 	Cost         float64 `json:"cost"`
+	PaymentTo	 string  `json:"payment_to"`
 	Status       string  `json:"status"`
+	OrderNumber  string  `json:"order_number"`
 }
 
 func GetOrderHistoryHandler(db *gorm.DB) gin.HandlerFunc {
@@ -55,7 +57,9 @@ func GetOrderHistoryHandler(db *gorm.DB) gin.HandlerFunc {
 				Date:					order.CreatedAt.Format("2006-01-02"),
 				TicketCount: 			fmt.Sprintf("%d", order.OrderCount),
 				Cost: 					order.TotalPrice,
+				PaymentTo: 				order.PaymentTo,
 				Status: 				order.Status,
+				OrderNumber: 			order.OrderNumber,
 			})	
 		}
 		c.JSON(http.StatusOK, gin.H{"orders": response})

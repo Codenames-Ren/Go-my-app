@@ -466,13 +466,95 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${order.date}</td>
                 <td>${order.ticket_count}</td>
                 <td>${order.cost.toLocaleString()}</td>
-                <td class="status-${order.status.toLowerCase()}">${
-          order.status
-        }</td>
+                <td class="status-${order.status.toLowerCase()}">
+  ${
+    order.status.toLowerCase() === "pending"
+      ? `<button class="btn-confirm" style="display: inline-block; padding: 5px 14px; background-color:rgb(255, 67, 67); color: white; text-decoration: none; border-radius: 15px;" 
+      data-order='${JSON.stringify(order)}'>Pending</button>`
+      : order.status
+  }
+</td>
             </tr>
         `
       )
       .join("");
     tbody.innerHTML = html;
+
+    document.querySelectorAll(".btn-confirm").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const order = JSON.parse(btn.dataset.order);
+
+        const confirmOrder = await Swal.fire({
+          title: "Konfirmasi Pembayaran",
+          html: `
+        <div style="text-align: left">
+          <p><strong>Nama:</strong> ${order.name}</p>
+          <p><strong>Email:</strong> ${order.email}</p>
+          <p><strong>Event:</strong> ${order.event}</p>
+          <p><strong>Jumlah Tiket:</strong> ${order.ticket_count}</p>
+          <p><strong>Total Bayar:</strong> Rp ${order.cost.toLocaleString()}</p>
+          <hr>
+          <p><strong>Pembayaran ke:</strong><br>${order.payment_to}</p><br>
+          <p style="font-weight: bold; color: #e74c3c;">Lakukan pembayaran ke tujuan di atas untuk menyelesaikan pesanan Anda.</p>
+        </div>
+      `,
+          showCancelButton: true,
+          confirmButtonText: "Konfirmasi & Bayar",
+          cancelButtonText: "Batal",
+        });
+
+        if (!confirmOrder.isConfirmed) return;
+
+        try {
+          console.log(orders);
+          const res = await fetch("/orders/payment/callback", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ order_id: order.order_number }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            return Swal.fire(
+              "Gagal",
+              data.error || "Gagal konfirmasi pembayaran",
+              "error"
+            );
+          }
+
+          await Swal.fire({
+            title: "Menunggu Pembayaran...",
+            text: "Mohon tunggu beberapa detik sementara kami memverifikasi pembayaran Anda.",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+            timer: 3000,
+            timerProgressBar: true,
+          });
+
+          await Swal.fire({
+            title: "Sukses!",
+            html: `Status telah diperbarui. Invoice akan dikirim ke email.`,
+            icon: "success",
+          });
+
+          // Refresh orders
+          const updatedOrders = await fetchOrders(token);
+          renderOrders(updatedOrders);
+        } catch (err) {
+          Swal.fire(
+            "Error",
+            "Terjadi kesalahan saat mengkonfirmasi pembayaran",
+            "error"
+          );
+          console.error(err);
+        }
+      });
+    });
   }
 });
