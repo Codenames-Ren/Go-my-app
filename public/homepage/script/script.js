@@ -71,6 +71,15 @@ function setActivePage(pageId) {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const historyNav = document.getElementById("nav-history");
+  const token = localStorage.getItem("token");
+
+  if (!token && historyNav) {
+    historyNav.style.display = "none"; // Sembunyikan menu History
+  }
+});
+
 // --- PACKAGE BOOKING ---
 const bookPackageButtons = document.querySelectorAll(".book-package");
 let selectedConcertName = "";
@@ -450,9 +459,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderOrders(orders) {
     const tbody = document.querySelector(".history-table tbody");
-    if (orders.length === 0) {
+    if (!Array.isArray(orders) || orders.length === 0) {
       tbody.innerHTML =
-        '<tr><td colspan="7">No payment history found.</td></tr>';
+        '<tr><td colspan="7">Tidak ada riwayat pembelian.</td></tr>';
       return;
     }
 
