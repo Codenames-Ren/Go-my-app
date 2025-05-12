@@ -385,12 +385,20 @@ if (loginBtn) {
           title: "Logout Berhasil",
           text: "Sampai jumpa lagi!",
           icon: "success",
+        }).then(() => {
+          const currentpath = window.location.pathname;
+          if (currentpath === "/history") {
+            window.location.href = "/";
+          } else {
+            window.location.reload();
+          }
         });
       } catch (err) {
         console.error("Logout error:", err);
 
         localStorage.removeItem("token");
         updateLoginButton(false);
+        window.location.reload();
       }
     } else {
       window.location.href = "/login";
