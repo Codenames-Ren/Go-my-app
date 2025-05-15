@@ -255,7 +255,7 @@ input {
 }
 
 .overlay {
-  background-image: url("../assets/overlay_bg4.gif");
+  background-image: url("/public/login_form/assets/Live-Concert-Vector.webp");
   /* background: linear-gradient(135deg, #fcbf49, #d62828); */
   background-repeat: no-repeat;
   background-size: cover;
