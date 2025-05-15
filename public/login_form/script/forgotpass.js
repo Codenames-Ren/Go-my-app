@@ -1,6 +1,50 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Script loaded!");
 
+  //custom sweetalert
+  function showSweetAlert(options) {
+    const scrollPositions = window.pageYOffset;
+    const container = document.getElementById("container");
+
+    if (container) {
+      container.classList.add("swal-active");
+    }
+
+    const customOptions = {
+      target: container || undefined,
+      heightAuto: false,
+      allowOutsideClick: false,
+      backdrop: "rgba(0,0,0,0.4)",
+      didOpen: (popup) => {
+        document.body.style.overflow = "hidden";
+        document.body.style.paddingRight = "0";
+
+        if (container) {
+          container.style.transform = "none";
+          container.style.transition = "none";
+        }
+
+        if (options.didOpen) options.didOpen(popup);
+      },
+      didClose: () => {
+        if (container) {
+          container.classList.remove("swal-active");
+          container.style.transform = "";
+          container.style.transition = "";
+        }
+
+        if (options.didClose) options.didClose();
+
+        window.scrollTo(0, scrollPositions);
+      },
+    };
+
+    return Swal.fire({
+      ...options,
+      ...customOptions,
+    });
+  }
+
   const confirmButton = document.getElementById("confirmation");
   const emailInput = document.querySelector(".email-input");
 
@@ -9,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Email Validation
     if (!email) {
-      await Swal.fire({
+      await showSweetAlert({
         icon: "warning",
         title: "Field Kosong",
         text: "Email tidak boleh kosong!",
@@ -18,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!isValidEmail(email)) {
-      await Swal.fire({
+      await showSweetAlert({
         icon: "warning",
         title: "Email Tidak Valid!",
         text: "Silahkan masukan email yang valid!",
@@ -40,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(data);
 
       if (response.ok) {
-        await Swal.fire({
+        await showSweetAlert({
           title: "Success",
           text: "Kode OTP telah dikirimkan ke email anda. Mohon verifikasi untuk melanjutkan",
           icon: "success",
@@ -50,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
           email
         )}&purpose=reset-password`;
       } else {
-        await Swal.fire({
+        await showSweetAlert({
           title: "Gagal",
           text: data.message || "Email tidak terdaftar!",
           icon: "error",
@@ -58,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error("Error:", error);
-      await Swal.fire({
+      await showSweetAlert({
         icon: "error",
         title: "Oops...",
         text: "Terjadi kesalahan saat memproses permintaan anda!",

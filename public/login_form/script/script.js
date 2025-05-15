@@ -65,6 +65,18 @@ registerForm.addEventListener("submit", async (e) => {
   }
 
   try {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      await showSweetAlert({
+        title: "Password tidak valid",
+        text: "Password minimal 8 karakter, mengandung huruf kapital, angka, dan simbol.",
+        icon: "warning",
+      });
+      return;
+    }
+
     const response = await fetch("/users/register/init", {
       method: "POST",
       headers: {

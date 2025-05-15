@@ -215,12 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .map((input) => input.value)
       .join("");
 
-    console.log("Sending data:", {
-      email: email,
-      purpose: purpose,
-      otpCode: otpCode,
-    });
-
     //for reset-password, only verify otp without resetting password
     if (purpose === "reset-password") {
       fetch("/users/verify-reset-otp", {
@@ -234,11 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }),
       })
         .then((response) => {
-          console.log("response status:", response.status);
           return response.json();
         })
         .then((data) => {
-          console.log("Response data:", data);
           if (data.success || data.message) {
             showSweetAlert({
               title: "Berhasil",
@@ -283,12 +275,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }),
     })
       .then((response) => {
-        console.log("Response status:", response.status);
         return response.json();
       })
 
       .then((data) => {
-        console.log("Response data:", data);
         if (
           data &&
           (data.token || data.message === "OTP verified successfully")
