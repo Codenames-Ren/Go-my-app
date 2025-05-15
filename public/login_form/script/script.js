@@ -1,5 +1,44 @@
 console.log("Script loaded");
 
+//custom sweetalert
+function showSweetAlert(options) {
+  const scrollPositions = window.pageYOffset;
+  const container = document.getElementById("container");
+
+  container.classList.add("swal-active");
+
+  const customOptions = {
+    target: document.getElementById("container"),
+    heightAuto: false,
+    allowOutsideClick: false,
+    backdrop: "rgba(0,0,0,0.4)",
+    didOpen: (popup) => {
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "0";
+
+      container.style.transform = "none";
+      container.style.transition = "none";
+
+      if (options.didOpen) options.didOpen(popup);
+    },
+    didClose: () => {
+      container.classList.remove("swal-active");
+
+      container.style.transform = "";
+      container.style.transition = "";
+
+      if (options.didClose) options.didClose();
+
+      window.scrollTo(0, scrollPositions);
+    },
+  };
+
+  return Swal.fire({
+    ...options,
+    ...customOptions,
+  });
+}
+
 const registerForm = document.querySelector(".register-container form");
 const loginForm = document.querySelector(".login-container form");
 
@@ -17,7 +56,7 @@ registerForm.addEventListener("submit", async (e) => {
   ).value;
 
   if (!username || !email || !password) {
-    await Swal.fire({
+    await showSweetAlert({
       icon: "warning",
       title: "Data tidak lengkap",
       text: "Semua kolom harus diisi!",
@@ -38,7 +77,7 @@ registerForm.addEventListener("submit", async (e) => {
     console.log(data);
 
     if (response.ok) {
-      await Swal.fire({
+      await showSweetAlert({
         title: "Success",
         text: "Kode OTP telah dikirimkan ke email anda. Mohon verifikasi akun anda untuk melanjutkan",
         icon: "success",
@@ -47,7 +86,7 @@ registerForm.addEventListener("submit", async (e) => {
         email
       )}&purpose=register`;
     } else {
-      await Swal.fire({
+      await showSweetAlert({
         title: "Register Failed",
         text: "Register akun gagal. Username atau email sudah terdaftar!",
         icon: "error",
@@ -55,7 +94,7 @@ registerForm.addEventListener("submit", async (e) => {
     }
   } catch (error) {
     console.error("Error:", error);
-    await Swal.fire({
+    await showSweetAlert({
       icon: "error",
       title: "Oops...",
       text: "Something went wrong!",
@@ -75,7 +114,7 @@ loginForm.addEventListener("submit", async (e) => {
   ).value;
 
   if (!email || !password) {
-    await Swal.fire({
+    await showSweetAlert({
       icon: "warning",
       title: "Data tidak lengkap",
       text: "Semua kolom harus diisi!",
@@ -96,7 +135,7 @@ loginForm.addEventListener("submit", async (e) => {
     console.log(data);
 
     if (response.ok) {
-      await Swal.fire({
+      await showSweetAlert({
         title: "Success",
         text: "Kode OTP telah dikirimkan ke email anda. Mohon verifikasi akun anda untuk melanjutkan",
         icon: "success",
@@ -105,7 +144,7 @@ loginForm.addEventListener("submit", async (e) => {
         email
       )}&purpose=login`;
     } else {
-      await Swal.fire({
+      await showSweetAlert({
         title: "Login Gagal",
         text: "Email atau password salah!",
         icon: "error",
@@ -113,7 +152,7 @@ loginForm.addEventListener("submit", async (e) => {
     }
   } catch (error) {
     console.error("Error:", error);
-    await Swal.fire({
+    await showSweetAlert({
       icon: "error",
       title: "Oops...",
       text: "Something went wrong!",
