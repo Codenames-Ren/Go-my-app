@@ -3,11 +3,53 @@ document.addEventListener("DOMContentLoaded", function () {
   const email = urlParams.get("email");
   const purpose = urlParams.get("purpose");
 
-  console.log("URL Parameters:", { email, purpose });
+  //custom sweetalert
+  function showSweetAlert(options) {
+    const scrollPositions = window.pageYOffset;
+    const container = document.getElementById("container");
+
+    if (container) {
+      container.classList.add("swal-active");
+    }
+
+    const customOptions = {
+      target: container || undefined,
+      heightAuto: false,
+      allowOutsideClick: false,
+      backdrop: "rgba(0,0,0,0.4)",
+      didOpen: (popup) => {
+        document.body.style.overflow = "hidden";
+        document.body.style.paddingRight = "0";
+
+        if (container) {
+          container.style.transform = "none";
+          container.style.transition = "none";
+        }
+
+        if (options.didOpen) options.didOpen(popup);
+      },
+      didClose: () => {
+        if (container) {
+          container.classList.remove("swal-active");
+          container.style.transform = "";
+          container.style.transition = "";
+        }
+
+        if (options.didClose) options.didClose();
+
+        window.scrollTo(0, scrollPositions);
+      },
+    };
+
+    return Swal.fire({
+      ...options,
+      ...customOptions,
+    });
+  }
 
   //first validation
   if (!email || !purpose) {
-    Swal.fire({
+    showSweetAlert({
       title: "Verifikasi gagal",
       text: "Parameter tidak lengkap",
       icon: "error",
@@ -38,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const endpoint = endpoints[purpose];
   if (!endpoint) {
-    Swal.fire({
+    showSweetAlert({
       title: "Verifikasi gagal",
       text: "Tipe Verifikasi tidak dikenali",
       icon: "error",
@@ -150,16 +192,20 @@ document.addEventListener("DOMContentLoaded", function () {
           showPopup();
           startTimer();
         } else {
-          Swal.fire(
-            "Gagal",
-            data.message || "Gagal mengirim ulang OTP",
-            "error"
-          );
+          showSweetAlert({
+            title: "Gagal",
+            text: data.message || "Gagal mengirim ulang OTP",
+            icon: "error",
+          });
         }
       })
 
       .catch((err) => {
-        Swal.fire("Error", "Gagal mengirim ulang OTP.", "error");
+        showSweetAlert({
+          title: "Error",
+          text: "Gagal mengirim ulang OTP.",
+          icon: "error",
+        });
         console.error(err);
       });
   });
@@ -194,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           console.log("Response data:", data);
           if (data.success || data.message) {
-            swal.fire({
+            showSweetAlert({
               title: "Berhasil",
               text: "Kode OTP berhasil diverifikasi.",
               icon: "success",
@@ -208,16 +254,20 @@ document.addEventListener("DOMContentLoaded", function () {
               window.location.href = redirect;
             }, 2000);
           } else {
-            Swal.fire(
-              "Gagal",
-              data.error || "Kode OTP salah atau kadaluarsa",
-              "error"
-            );
+            showSweetAlert({
+              title: "Gagal",
+              text: data.error || "Kode OTP salah atau kadaluarsa",
+              icon: "error",
+            });
           }
         })
         .catch((err) => {
           console.error("Error details:", err);
-          Swal.fire("Error", "Gagal Menghubungi Server.", "error");
+          showSweetAlert({
+            title: "Error",
+            text: "Gagal Menghubungi Server.",
+            icon: "error",
+          });
         });
       return;
     }
@@ -247,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("token", data.token);
             localStorage.setItem("isLoggedIn", "true");
           }
-          Swal.fire({
+          showSweetAlert({
             title: "Berhasil",
             text: "Kode OTP berhasil di verifikasi.",
             icon: "success",
@@ -260,17 +310,21 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/home";
           }, 2000);
         } else {
-          Swal.fire(
-            "Gagal",
-            data.error || "Kode OTP salah atau kadaluarsa",
-            "error"
-          );
+          showSweetAlert({
+            title: "Gagal",
+            text: data.error || "Kode OTP salah atau kadaluarsa",
+            icon: "error",
+          });
         }
       })
 
       .catch((err) => {
         console.error("Error details:", err);
-        Swal.fire("Error", "Gagal Menghubungi Server.", "error");
+        showSweetAlert({
+          title: "Error",
+          text: "Gagal Menghubungi Server.",
+          icon: "error",
+        });
       });
   });
 
