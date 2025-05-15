@@ -1,3 +1,47 @@
+//custom sweetalert
+function showSweetAlert(options) {
+  const scrollPositions = window.pageYOffset;
+  const container = document.getElementById("container");
+
+  if (container) {
+    container.classList.add("swal-active");
+  }
+
+  const customOptions = {
+    target: container || undefined,
+    heightAuto: false,
+    allowOutsideClick: false,
+    backdrop: "rgba(0,0,0,0.4)",
+    didOpen: (popup) => {
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "0";
+
+      if (container) {
+        container.style.transform = "none";
+        container.style.transition = "none";
+      }
+
+      if (options.didOpen) options.didOpen(popup);
+    },
+    didClose: () => {
+      if (container) {
+        container.classList.remove("swal-active");
+        container.style.transform = "";
+        container.style.transition = "";
+      }
+
+      if (options.didClose) options.didClose();
+
+      window.scrollTo(0, scrollPositions);
+    },
+  };
+
+  return Swal.fire({
+    ...options,
+    ...customOptions,
+  });
+}
+
 function isValidPassword(password) {
   const minLength = 8;
   const hasUppercase = /[A-Z]/.test(password);
@@ -19,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const otpCode = sessionStorage.getItem("resetOTP");
 
   if (!email || !otpCode) {
-    Swal.fire({
+    showSweetAlert({
       title: "Akses tidak valid",
       text: "Anda belum melakukan verifikasi OTP.",
       icon: "error",
@@ -35,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Validasi form kosong
     if (!newPassword || !confirmPassword) {
-      await Swal.fire({
+      await showSweetAlert({
         icon: "warning",
         title: "Form tidak lengkap",
         text: "Silahkan isi semua kolom password.",
@@ -45,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //validate same password
     if (newPassword !== confirmPassword) {
-      await Swal.fire({
+      await showSweetAlert({
         icon: "error",
         title: "Password Tidak Sama",
         text: "Password baru dan konfirmasi password harus sama.",
@@ -55,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //validate regex password
     if (!isValidPassword(newPassword)) {
-      await Swal.fire({
+      await showSweetAlert({
         icon: "warning",
         title: "Password tidak valid",
         text: "Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, dan symbol!",
@@ -82,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Response:", data);
 
       if (response.ok) {
-        await Swal.fire({
+        await showSweetAlert({
           title: "Berhasil",
           text: "Password berhasil di reset. Silahkan login kembali.",
           icon: "success",
@@ -94,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.location.href = "/login";
       } else {
-        await Swal.fire({
+        await showSweetAlert({
           title: "Gagal",
           text: data.message || "Reset password gagal.",
           icon: "error",
@@ -102,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error:", error);
-      await Swal.fire({
+      await showSweetAlert({
         icon: "error",
         title: "Oops...",
         text: "Gagal terhubung ke server",
