@@ -4,103 +4,205 @@
     <meta charset="UTF-8" />
     <title>Invoice Pembelian Tiket Konser</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+      :root {
+        --punk-purple: #6a0dad;
+        --punk-green: #39ff14;
+        --punk-black: #000000;
+        --bg-light: #fefae0;
+        --text-dark: #1e1e1e;
+        --text-light: #fff;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
+        font-family: "Poppins", sans-serif;
+        background-color: #fefae0;
+        color: #1e1e1e;
         max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
+        margin: 40px auto;
+        padding: 20px 30px;
+        line-height: 1.5;
       }
+
       .invoice-box {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        background: #fffef7;
+        border: 1.5px solid #ccc;
+        border-radius: 12px;
+        padding: 30px 40px;
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
       }
-      .header {
+     .header {
         text-align: center;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 20px;
         margin-bottom: 20px;
+        border-bottom: 1.5px solid #ccc;
+        padding-bottom: 15px;
       }
+
       .header h1 {
-        color: #3498db;
+        font-weight: 600;
+        font-size: 1.8rem;
+        color: #333;
         margin: 0;
       }
-      .header img {
-        max-width: 200px;
-        margin-bottom: 10px;
-      }
+
       .info {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
       }
+
       .info p {
-        margin: 5px 0;
+        margin: 6px 0;
+        font-size: 1rem;
       }
+
+      .ticket-code {
+        background-color: #2b2d42;
+        color: #fcbf49;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 25px 0;
+        letter-spacing: 1.5px;
+        border: 1.5px solid #fcbf49;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin-top: 10px;
+        font-size: 1rem;
       }
-      table th,
-      table td {
-        padding: 12px;
+
+      table th, table td {
         text-align: left;
+        padding: 12px 15px;
         border-bottom: 1px solid #ddd;
       }
+
       table th {
-        background-color: #f8f8f8;
+        background-color: #fcbf49;
+        color: #2b2d42;
+        font-weight: 600;
+        text-transform: uppercase;
       }
+
       .total {
-        font-weight: bold;
-        font-size: 18px;
+        margin-top: 20px;
         text-align: right;
-        padding: 10px 0;
+        font-weight: 600;
+        font-size: 1.3rem;
+        color: #2b2d42;
+        border-top: 1.5px solid #fcbf49;
+        padding-top: 10px;
       }
+
       .payment-info {
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 20px 0;
-      }
-      .ticket-code {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin: 20px 0;
-        padding: 15px;
-        background-color: #3498db;
-        color: white;
-        border-radius: 5px;
-      }
-      .footer {
+        background-color: #fff8e1;
+        border: 1.5px solid #fcbf49;
+        border-radius: 10px;
+        padding: 20px 25px;
         margin-top: 30px;
-        font-size: 12px;
-        color: #777;
+      }
+
+      .payment-info h3 {
+        font-weight: 600;
+        color: #2b2d42;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #fcbf49;
+        padding-bottom: 6px;
+      }
+
+      .payment-info p {
+        margin: 6px 0;
+        font-size: 1rem;
+      }
+
+      .thank-you {
+        margin-top: 30px;
         text-align: center;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #d62828;
+        border-top: 1.5px solid #fcbf49;
+        padding-top: 12px;
+      }
+
+      .footer {
+        margin-top: 40px;
+        font-size: 0.85rem;
+        text-align: center;
+        color: #666;
         border-top: 1px solid #ddd;
         padding-top: 20px;
       }
-      .thank-you {
-        text-align: center;
-        font-size: 20px;
-        color: #3498db;
-        margin: 20px 0;
-      }
-      .barcode {
-        text-align: center;
-        margin: 20px 0;
-      }
-      .barcode img {
-        max-width: 250px;
-      }
+
       .note {
         font-style: italic;
-        font-size: 12px;
-        color: #666;
+        font-size: 0.9rem;
+        color: #888;
+        margin-top: 12px;
       }
+
+      @media (max-width: 600px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .invoice-box {
+        padding: 20px 16px;
+      }
+
+      .header h1 {
+        font-size: 1.4rem;
+      }
+
+      .info p,
+      .payment-info p {
+        font-size: 0.95rem;
+        text-align: left;
+      }
+
+      .ticket-code {
+        font-size: 1rem;
+        padding: 10px;
+      }
+
+      table {
+        font-size: 0.95rem;
+      }
+
+      table th, table td {
+        padding: 10px 8px;
+      }
+
+      .total {
+        font-size: 1.1rem;
+      }
+
+      .payment-info h3 {
+        font-size: 1rem;
+      }
+
+      .thank-you {
+        font-size: 1.2rem;
+      }
+
+      .footer {
+        font-size: 0.75rem;
+      }
+
+      .note {
+        font-size: 0.85rem;
+      }
+    }
+
     </style>
+
+
   </head>
   <body>
     <div class="invoice-box">
