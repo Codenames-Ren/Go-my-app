@@ -28,7 +28,7 @@
 body {
   font-family: "Poppins", sans-serif;
   background-color: var(--cream);
-  background-image: url('https://www.transparenttextures.com/patterns/cream-pixels.png');
+  background-image: url("https://www.transparenttextures.com/patterns/cream-pixels.png");
   background-repeat: repeat;
   background-size: auto;
   color: var(--text-dark);
@@ -39,7 +39,10 @@ body {
   padding-top: 70px;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Staatliches", cursive;
   color: var(--navy);
   letter-spacing: 0.5px;
@@ -87,15 +90,21 @@ h1, h2, h3, h4 {
 }
 
 @keyframes slideDown {
-  0% { transform: translateY(-100%); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: 'Concert One', cursive;
+  font-family: "Concert One", cursive;
   font-size: 1.4rem;
   color: var(--navy);
   text-decoration: none;
@@ -157,7 +166,6 @@ h1, h2, h3, h4 {
   font-size: 0.95rem;
 }
 
-
 .ticket-section {
   padding: 6rem 8%;
   background-color: #fff8e1;
@@ -165,7 +173,7 @@ h1, h2, h3, h4 {
 }
 
 .ticket-title {
-  font-family: 'Concert One', cursive;
+  font-family: "Concert One", cursive;
   font-size: 3rem;
   color: #d32f2f;
   margin-bottom: 0.5rem;
@@ -203,7 +211,7 @@ h1, h2, h3, h4 {
 }
 
 .ticket-card h3 {
-  font-family: 'Staatliches', cursive;
+  font-family: "Staatliches", cursive;
   font-size: 1.8rem;
   color: #c2185b;
   margin-bottom: 0.8rem;
@@ -219,7 +227,7 @@ h1, h2, h3, h4 {
   background-color: #fff7e6;
   padding: 80px 20px;
   text-align: center;
-  font-family: 'Concert One', sans-serif;
+  font-family: "Concert One", sans-serif;
 }
 
 .ticket-benefits-container {
@@ -252,12 +260,10 @@ h1, h2, h3, h4 {
   border-bottom: 2px solid #ffd966;
 }
 
-
 .ticket-section ul {
   list-style: none;
   padding-left: 0;
 }
-
 
 .nav-menu {
   display: flex;
@@ -333,8 +339,14 @@ h1, h2, h3, h4 {
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-title {
@@ -469,8 +481,12 @@ footer {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .footer-section h3 {
@@ -515,7 +531,6 @@ footer {
   transform: none;
 }
 
-
 @media (max-width: 768px) {
   .nav-menu {
     display: none;
@@ -545,7 +560,8 @@ footer {
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
   }
-  .card, .email-card {
+  .card,
+  .email-card {
     padding: 1.2rem;
   }
   .card-grid {
@@ -712,7 +728,6 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-
 .concert-card-title {
   font-size: 1.4rem;
   margin-top: 1rem;
@@ -748,7 +763,7 @@ footer {
 .history-table-container {
   padding: 3rem 5%;
   overflow-x: auto;
-} 
+}
 .history-table {
   width: 100%;
   border-collapse: collapse;
@@ -761,7 +776,8 @@ footer {
   background-color: var(--mustard);
   color: var(--punk-black);
 }
-.history-table th, .history-table td {
+.history-table th,
+.history-table td {
   padding: 1rem;
   text-align: center;
   border-bottom: 1px solid #ddd;

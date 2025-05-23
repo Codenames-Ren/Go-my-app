@@ -17,6 +17,11 @@ func GenerateOrderNumber() string {
 
 func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order, float64, error) {
 
+	var event models.Event
+	if err := db.First(&event, "id = ?", req.EventID).Error; err != nil {
+		return nil, 0, fmt.Errorf("event not found")
+	}
+
 	//ticket Price
 	var ticketPrice float64
 	switch req.TicketType {
@@ -38,7 +43,8 @@ func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order,
 		Name: 				req.Name,
 		Email: 				req.Email,
 		PhoneNumber: 		req.PhoneNumber,
-		EventName: 			req.EventName,
+		EventID:		 	event.ID,
+		EventName: 			event.EventName,
 		TicketType: 		req.TicketType,
 		TicketPrice: 		ticketPrice,
 		OrderCount: 		req.OrderCount,

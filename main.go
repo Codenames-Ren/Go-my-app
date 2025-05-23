@@ -27,6 +27,7 @@ func main() {
 		&models.User{},
 		&models.OTP{},
 		&models.Order{},
+		&models.Event{},
 	)
 
 	//Inisialisasi Server
@@ -65,6 +66,7 @@ func main() {
 	//Setup Routing
 	routes.UserRoutes(router, database.DB, otpService, &emailService)
 	routes.OrderRoutes(router, database.DB, &emailService)
+	routes.EventRoute(router, database.DB)
 
 	//Server berjalan di port 8080
 	port := os.Getenv("PORT")

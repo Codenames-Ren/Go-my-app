@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- PACKAGE BOOKING ---
 const bookPackageButtons = document.querySelectorAll(".book-package");
 let selectedConcertName = "";
+let selectedEventId = null;
 
 bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -104,6 +105,7 @@ bookPackageButtons.forEach((button) => {
 
     const packageName = button.getAttribute("data-package");
     selectedConcertName = button.getAttribute("data-concert");
+    selectedEventId = button.getAttribute("data-event-id");
 
     if (packageType)
       packageType.textContent =
@@ -134,6 +136,14 @@ if (bookingForm) {
       return Swal.fire({
         title: "Error",
         text: "Harap isi semua field yang diperlukan!",
+        icon: "error",
+      });
+    }
+
+    if (!selectedEventId) {
+      return Swal.fire({
+        title: "Error",
+        text: "Gagal mendapatkan id event, silahkan coba lagi nanti.",
         icon: "error",
       });
     }
@@ -222,7 +232,7 @@ if (bookingForm) {
       ticket_type: ticketLabel,
       order_count: parseInt(guestsCount),
       payment_to: value.sub,
-      event_name: selectedConcertName,
+      event_id: selectedEventId,
     };
 
     let orderId = null;
@@ -563,7 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           await Swal.fire({
             title: "Sukses!",
-            html: `Status telah diperbarui. Invoice akan dikirim ke email.`,
+            html: `Pembayaran telah di konfirmasi. Invoice akan segera dikirimkan ke email kamu`,
             icon: "success",
           });
 
