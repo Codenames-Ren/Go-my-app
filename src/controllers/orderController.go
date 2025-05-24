@@ -110,3 +110,23 @@ func GetAllOrders(db *gorm.DB) gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"orders": orders})
 	}
 }
+
+func DeleteOrder(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		orderID := c.Param("id")
+		var order models.Order
+
+		if err := db.First(&order, "id = ?", orderID).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Order not found"})
+			return
+		}
+
+		if err := db.Delete(&order).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete order"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Order deleted successfully!"})
+	}
+}
+
