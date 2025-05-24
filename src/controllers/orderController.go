@@ -130,3 +130,32 @@ func DeleteOrder(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+type UpdateOrderStatusRequest struct {
+	Status string `json:"status" binding:"required"`
+}
+
+func UpdateOrderStatus(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		orderID := c.Param("id")
+		var req UpdateOrderStatusRequest
+
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		var order models.Order
+		if err := db.First(&order, "id = ?", orderID).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Order not found"})
+			return
+		}
+
+		order.Status = req.Status
+		if err := db.Save(&order).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to change order"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Order updated successfully!"})
+	}
+}
