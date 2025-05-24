@@ -14,9 +14,54 @@ function formatRupiah(angka) {
 // Fetch ticket data from backend
 async function fetchTicketData() {
   try {
-    const response = await fetch("/api/orders");
-    if (!response.ok) throw new Error("Gagal mengambil data dari server");
-    ticketSalesData = await response.json();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      swal
+        .fire({
+          icon: "error",
+          title: "Unauthorized",
+          text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
+        })
+        .then(() => {
+          window.location.href = "/login";
+        });
+      return;
+    }
+
+    const response = await fetch("/admin/orders", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+
+    if (response.status === 401 || response.status === 403) {
+      const errorData = await response.json();
+      Swal.fire({
+        icon: "error",
+        title: "Akses Ditolak!",
+        text:
+          errorData.error ||
+          "Anda tidak memiliki izin untuk mengakses sumber daya ini.",
+      }).then(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "/login";
+      });
+      return;
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      ticketSalesData = data.orders || [];
+      throw new Error(errorData.error || "Gagal mengambil data dari server");
+    }
+
+    const data = await response.json();
+    ticketSalesData = data.orders || [];
     filterAndPaginateSales();
   } catch (error) {
     Swal.fire({
@@ -53,24 +98,26 @@ function filterAndPaginateSales() {
 
   if (monthFilter) {
     filteredData = filteredData.filter((sale) => {
-      const saleMonth = new Date(sale.date).getMonth() + 1;
+      const saleMonth = new Date(sale.created_at).getMonth() + 1;
       return saleMonth === parseInt(monthFilter);
     });
   }
 
   if (dayFilter) {
-    filteredData = filteredData.filter((sale) => sale.date === dayFilter);
+    filteredData = filteredData.filter((sale) =>
+      sale.created_at.startsWith(dayFilter)
+    );
   }
 
   if (statusFilter) {
     filteredData = filteredData.filter(
-      (sale) => sale.status.toLowerCase() === statusFilter
+      (sale) => sale.status?.toLowerCase() === statusFilter
     );
   }
 
   let totalSales = 0;
   filteredData.forEach((sale) => {
-    totalSales += sale.quantity * sale.price;
+    totalSales += (sale.order_count || 0) * (sale.price || 0);
   });
 
   document.getElementById(
@@ -95,20 +142,20 @@ function populateSalesTable(data) {
   tableBody.innerHTML = "";
 
   data.forEach((sale) => {
-    const total = sale.quantity * sale.price;
+    const total = (sale.order_count || 0) * (sale.price || 0);
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${sale.id}</td>
-      <td>${sale.concert}</td>
-      <td>${sale.type}</td>
-      <td>${sale.quantity}</td>
-      <td>${formatRupiah(sale.price)}</td>
+      <td>${sale.event_name || "-"}</td>
+      <td>${sale.ticket_type || "-"}</td>
+      <td>${sale.order_count || 0}</td>
+      <td>${formatRupiah(sale.price || 0)}</td>
       <td>${formatRupiah(total)}</td>
-      <td class="status-${sale.status.toLowerCase()}">${
-      sale.status.charAt(0).toUpperCase() + sale.status.slice(1)
+      <td class="status-${sale.status?.toLowerCase() || "unknown"}">${
+      sale.status?.charAt(0).toUpperCase() + sale.status?.slice(1)
     }</td>
-      <td>${moment(sale.date).format("DD MMM YYYY")}</td>
+      <td>${moment(sale.created_at).format("DD MMM YYYY")}</td>
     `;
 
     tableBody.appendChild(row);

@@ -119,7 +119,10 @@ func LoginComplete(c *gin.Context) {
 	}
 
 	//return token
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+		"role": user.Role,
+	})
 
 	log.Printf("User %s logged in successfully", user.ID)
 	log.Printf("OTP verified for user: %s", user.ID)
