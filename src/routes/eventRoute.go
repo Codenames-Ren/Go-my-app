@@ -9,7 +9,7 @@ import (
 )
 
 func EventRoute(router *gin.Engine, db *gorm.DB){
-	adminEvent := router.Group("/admin/event", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), middlewares.SuperAdminMiddleware())
+	adminEvent := router.Group("/admin/event", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	{
 		adminEvent.GET("/", controllers.GetAllEvent(db))
 		adminEvent.POST("/", controllers.CreateEvent(db))
