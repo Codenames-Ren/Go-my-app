@@ -56,7 +56,7 @@ async function fetchTicketData() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      ticketSalesData = data.orders || [];
+      ticketSalesData = [];
       throw new Error(errorData.error || "Gagal mengambil data dari server");
     }
 
@@ -69,6 +69,7 @@ async function fetchTicketData() {
       title: "Oops!",
       text: error.message,
     });
+    console.error("Error fetching data:", error);
   }
 }
 
@@ -98,26 +99,26 @@ function filterAndPaginateSales() {
 
   if (monthFilter) {
     filteredData = filteredData.filter((sale) => {
-      const saleMonth = new Date(sale.created_at).getMonth() + 1;
+      const saleMonth = new Date(sale.CreatedAt).getMonth() + 1;
       return saleMonth === parseInt(monthFilter);
     });
   }
 
   if (dayFilter) {
     filteredData = filteredData.filter((sale) =>
-      sale.created_at.startsWith(dayFilter)
+      sale.CreatedAt.startsWith(dayFilter)
     );
   }
 
   if (statusFilter) {
     filteredData = filteredData.filter(
-      (sale) => sale.status?.toLowerCase() === statusFilter
+      (sale) => sale.Status?.toLowerCase() === statusFilter
     );
   }
 
   let totalSales = 0;
   filteredData.forEach((sale) => {
-    totalSales += (sale.order_count || 0) * (sale.price || 0);
+    totalSales += (sale.OrderCount || 0) * (sale.TicketPrice || 0);
   });
 
   document.getElementById(
@@ -142,20 +143,20 @@ function populateSalesTable(data) {
   tableBody.innerHTML = "";
 
   data.forEach((sale) => {
-    const total = (sale.order_count || 0) * (sale.price || 0);
+    const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${sale.id}</td>
-      <td>${sale.event_name || "-"}</td>
-      <td>${sale.ticket_type || "-"}</td>
-      <td>${sale.order_count || 0}</td>
-      <td>${formatRupiah(sale.price || 0)}</td>
+      <td>${sale.EventName || "-"}</td>
+      <td>${sale.TicketType || "-"}</td>
+      <td>${sale.OrderCount || 0}</td>
+      <td>${formatRupiah(sale.TicketPrice || 0)}</td>
       <td>${formatRupiah(total)}</td>
-      <td class="status-${sale.status?.toLowerCase() || "unknown"}">${
-      sale.status?.charAt(0).toUpperCase() + sale.status?.slice(1)
+      <td class="status-${sale.Status?.toLowerCase() || "unknown"}">${
+      sale.Status?.charAt(0).toUpperCase() + sale.Status?.slice(1)
     }</td>
-      <td>${moment(sale.created_at).format("DD MMM YYYY")}</td>
+      <td>${moment(sale.CreatedAt).format("DD MMM YYYY")}</td>
     `;
 
     tableBody.appendChild(row);
