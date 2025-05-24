@@ -23,10 +23,10 @@ func OrderRoutes(router *gin.Engine, db *gorm.DB, emailService *service.EmailSer
 	}
 
 	//Admin access
-	// adminOrder := router.Group("/admin/orders", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
-	// {
-	// 	// adminOrder.GET("/", controllers.GetAllOrders(db))
-	// }
+	adminOrder := router.Group("/admin/orders", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), middlewares.SuperAdminMiddleware())
+	{
+		adminOrder.GET("/", controllers.GetAllOrders(db))
+	}
 
 	// //superadmin
 	// superOrder := router.Group("/sp-admin/orders", middlewares.AuthMiddleware(), middlewares.SuperAdminMiddleware())

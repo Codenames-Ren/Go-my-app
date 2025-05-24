@@ -81,3 +81,32 @@ func CreateOrder(db *gorm.DB, invoiceService *service.InvoiceService) gin.Handle
 	}
 }
 
+func GetAllOrders(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var orders []models.Order
+
+		status := c.Query("status")
+		date := c.Query("date")
+
+		query := db.Model(&models.Order{})
+
+		if status != "" {
+			query = query.Where("status = ?", status)
+		}
+
+		if date != "" {
+			if parseDate, err := time.Parse("2006-01-02", date); err == nil {
+				query = query.Where("DATE(created_at) = ?", parseDate.Format("2006-01-02"))
+			} else {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format (user YYYY-MM-DD)"})
+				return
+			}
+		}
+
+		if err := query.Order("created_at desc").Find(&orders).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get order"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"orders": orders})
+	}
+}
