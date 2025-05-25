@@ -60,7 +60,10 @@ document.addEventListener("DOMContentLoaded", function () {
       tbodyEvent.innerHTML = "";
 
       if (!events || events.length === 0) {
-        tbodyEvent.innerHTML = `<tr><td colspan="7" style="text-align-center;">Belum ada data event.</td></tr>`;
+        const colCount = tbodyEvent
+          .closest("table")
+          .querySelectorAll("thead th").length;
+        tbodyEvent.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center;">Belum ada data event.</td></tr>`;
         return;
       }
 
@@ -124,7 +127,10 @@ document.addEventListener("DOMContentLoaded", function () {
         title: error.message,
         text: "Terjadi kesalahan saat mengambil data.",
       });
-      tbodyEvent.innerHTML = `<tr><td colspan="7" style="text-align:center;">Gagal memuat data. ${error.message}</td></tr>`;
+      const colCount = tbodyEvent
+        .closest("table")
+        .querySelectorAll("thead th").length;
+      tbodyEvent.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center;">Gagal memuat data. ${error.message}</td></tr>`;
     }
   }
 
@@ -390,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
           })
           .then((data) => {
-            console.log("Respon API logoutL", error);
+            console.log("Respon API logout:", data);
           });
       } else {
         console.log("Tidak ada token untuk dikirim ke API logout");

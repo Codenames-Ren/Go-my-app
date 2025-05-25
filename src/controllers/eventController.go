@@ -25,6 +25,12 @@ func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		var existing models.Event
+		if err := db.Where("event_name = ?", req.EventName).First(&existing).Error; err == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "event name already exists"})
+			return
+		}
+
 		id, err := service.GenerateEventID(db)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate event id"})
@@ -138,7 +144,14 @@ func ToggleEventStatus(db *gorm.DB) gin.HandlerFunc {
 func DeleteEvent(db *gorm.DB) gin.HandlerFunc{
 	return func(c *gin.Context) {
 		id := c.Param("id")
-		if err := db.Where("id = ?", id).Delete(&models.Event{}).Error; err != nil {
+		
+		var event models.Event
+		if err := db.Where("id = ?", id).First(&event).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "event not found"})
+			return
+		}
+
+		if err := db.Delete(&event).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete event"})
 			return
 		}
@@ -151,7 +164,7 @@ func DeleteEvent(db *gorm.DB) gin.HandlerFunc{
 
 func ValidateEvent (db *gorm.DB, eventName string) (*models.Event, error) {
 	var event models.Event
-	if err := db.Where("name = ?", eventName).First(&event).Error; err != nil {
+	if err := db.Where("event_name = ?", eventName).First(&event).Error; err != nil {
 		return nil, fmt.Errorf("event not found")
 	}
 
