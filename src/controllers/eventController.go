@@ -13,6 +13,7 @@ import (
 
 type EventRequest struct {
 	EventName		string		`json:"event_name" binding:"required"`
+	OrderDeadline	time.Time	`json:"order_deadline" binding:"required"`
 	EndDate			time.Time	`json:"end_date" binding:"required"`
 }
 
@@ -29,6 +30,11 @@ func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate event id"})
 		}
 
+		if req.OrderDeadline.After(req.EndDate) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline cannot be later than the concert time."})
+			return
+		}
+
 		if req.EndDate.Before(time.Now()) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "End date must be in the future"})
 			return
@@ -37,6 +43,7 @@ func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 		event := models.Event{
 			ID: 			id,
 			EventName:		req.EventName,
+			OrderDeadline: 	req.OrderDeadline,
 			EndDate: 		req.EndDate,
 			IsActive:		true,
 		}
@@ -76,12 +83,18 @@ func UpdateEvent(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		if req.OrderDeadline.After(req.EndDate) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline cannot be later than the concert time."})
+			return
+		}
+
 		if req.EndDate.Before(time.Now()) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "End date must be in the future"})
 			return
 		}
 
 		event.EventName = req.EventName
+		event.OrderDeadline = req.OrderDeadline
 		event.EndDate = req.EndDate
 
 		if err := db.Save(&event).Error; err != nil {

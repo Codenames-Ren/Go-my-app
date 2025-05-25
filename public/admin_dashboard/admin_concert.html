@@ -68,7 +68,7 @@
           <form id="form-event">
             <input type="hidden" id="event-id" />
             <div class="form-group">
-              <label for="event-name">Nama Event:</label>
+              <label for="event-name">Nama Event :</label>
               <input
                 type="text"
                 id="event-name"
@@ -79,7 +79,19 @@
             </div>
 
             <div class="form-group">
-              <label for="event-end-date">Tanggal Selesai Event:</label>
+              <label for="event-order-deadline"
+                >Batas Waktu Pembelian Tiket :</label
+              >
+              <input
+                type="datetime-local"
+                id="event-order-deadline"
+                name="event-order-deadline"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="event-end-date">Tanggal Event :</label>
               <input
                 type="datetime-local"
                 id="event-end-date"
@@ -110,7 +122,8 @@
                 <tr>
                   <th>ID Event</th>
                   <th>Nama Event</th>
-                  <th>Tanggal Selesai</th>
+                  <th>Batas Waktu Pembelian Tiket</th>
+                  <th>Tanggal Event</th>
                   <th>Status Aktif</th>
                   <th>Dibuat Pada</th>
                   <th>Aksi</th>

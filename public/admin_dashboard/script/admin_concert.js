@@ -5,6 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const formEventTitle = document.getElementById("form-event-title");
   const btnResetFormEvent = document.getElementById("btn-reset-form-event");
 
+  const eventNameInput = document.getElementById("event-name");
+  const eventOrderDeadlineInput = document.getElementById(
+    "event-order-deadline"
+  );
+  const eventEndDateInput = document.getElementById("event-end-date");
+
   const currentDateElement = document.getElementById("current-date-konser");
   if (currentDateElement) {
     currentDateElement.textContent = moment().format("dddd, DD MMMM");
@@ -54,55 +60,71 @@ document.addEventListener("DOMContentLoaded", function () {
       tbodyEvent.innerHTML = "";
 
       if (!events || events.length === 0) {
-        tbodyEvent.innerHTML = `<tr><td colspan="6" style="text-align-center;">Belum ada data event.</td></tr>`;
+        tbodyEvent.innerHTML = `<tr><td colspan="7" style="text-align-center;">Belum ada data event.</td></tr>`;
         return;
       }
 
       events.forEach((event) => {
         const row = tbodyEvent.insertRow();
         row.innerHTML = `
-                <td>${event.ID || "-"}</td>
-                <td>${event.EventName || "-"}</td>
-                <td>${
-                  event.EndDate
-                    ? moment(event.EndDate).format("DD MMM YYYY, HH:mm")
-                    : "-"
-                }</td>
-                <td>
-                    <span class="status-${
-                      event.IsActive ? "active" : "inactive"
+          <td>${event.ID || "-"}</td>
+          <td>${event.EventName || "-"}</td>
+          <td>${
+            event.OrderDeadline
+              ? moment(event.OrderDeadline).format("DD MMM YYYY, HH:mm")
+              : "-"
+          }</td>
+          <td>${
+            event.EndDate
+              ? moment(event.EndDate).format("DD MMM YYYY, HH:mm")
+              : "-"
+          }</td>
+          <td>
+            <span class="status-${event.IsActive ? "active" : "inactive"}">
+              ${event.IsActive ? "Aktif" : "Tidak Aktif"}
+            </span>
+          </td>
+          <td>${
+            event.CreatedAt
+              ? moment(event.CreatedAt).format("DD MMM YYYY, HH:mm")
+              : "-"
+          }</td>
+          <td>
+            <button class="btn btn-sm btn-toggle-status" data-id="${
+              event.ID
+            }" data-status="${event.IsActive}">
+              ${event.IsActive ? "Nonaktifkan" : "Aktifkan"}
+            </button>
+            <button class="btn btn-sm btn-edit" data-id="${event.ID}" 
+                    data-name="${event.EventName}" 
+                    data-orderdeadline="${
+                      event.OrderDeadline
+                        ? moment(event.OrderDeadline).format("YYYY-MM-DDTHH:mm")
+                        : ""
+                    }"
+                    data-enddate="${
+                      event.EndDate
+                        ? moment(event.EndDate).format("YYYY-MM-DDTHH:mm")
+                        : ""
                     }">
-                        ${event.IsActive ? "Aktif" : "Tidak Aktif"}
-                    </span>
-                </td>
-                <td>${
-                  event.CreatedAt
-                    ? moment(event.CreatedAt).format("DD MM YYYY, HH:mm")
-                    : "-"
-                }<td>
-                <td>
-                    <button class="btn btn-sm btn-edit" data-id="${event.ID}"
-                        data-name="${event.EventName}" data-enddate="${moment(
-          event.EndDate
-        ).format("YYYY-MM-DDTHH:mm")}">
-                        Edit
-                    </button>
-                    <button class="btn btn-sm btn-delete" data-id="${
-                      event.ID
-                    }">Hapus</button>
-                </td>
-                `;
+                Edit
+            </button>
+            <button class="btn btn-sm btn-delete" data-id="${
+              event.ID
+            }">Hapus</button>
+          </td>
+        `;
       });
 
       addEventListenertoDynamicButtons();
     } catch (error) {
       console.error("Error fetching events:", error);
-      swal.fire({
+      Swal.fire({
         icon: "error",
         title: error.message,
         text: "Terjadi kesalahan saat mengambil data.",
       });
-      tbodyEvent.innerHTML = `<tr><td colspan="6" style="text-align:center;">Gagal memuat data. ${error.message}</td></tr>`;
+      tbodyEvent.innerHTML = `<tr><td colspan="7" style="text-align:center;">Gagal memuat data. ${error.message}</td></tr>`;
     }
   }
 
@@ -110,21 +132,23 @@ document.addEventListener("DOMContentLoaded", function () {
   formEvent.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const eventName = document.getElementById("event-name").value;
-    const endDateInput = document.getElementById("event-end-date").value;
+    const eventName = eventNameInput.value;
+    const orderDeadlineValue = eventOrderDeadlineInput.value;
+    const endDateValue = eventEndDateInput.value;
 
-    if (!eventName.trim() || !endDateInput) {
+    if (!eventName.trim() || !orderDeadlineValue || !endDateValue) {
       Swal.fire({
         icon: "warning",
         title: "Input Tidak Lengkap!",
-        text: "Nama event dan tanggal event wajib diisi.",
+        text: "Nama event, batas waktu pembelian dan tanggal event wajib diisi.",
       });
       return;
     }
 
     const eventDataForBackend = {
-      event_name: eventName,
-      end_date: moment(endDateInput).toISOString(),
+      event_name: eventName.trim(),
+      order_deadline: moment(orderDeadlineValue).toISOString(),
+      end_date: moment(endDateValue).toISOString(),
     };
 
     const currentEventId = eventIdInput.value;
@@ -136,15 +160,13 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        swal
-          .fire({
-            icon: "error",
-            title: "Unauthorized",
-            text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
-          })
-          .then(() => {
-            window.location.href = "/login";
-          });
+        Swal.fire({
+          icon: "error",
+          title: "Unauthorized",
+          text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
+        }).then(() => {
+          window.location.href = "/login";
+        });
         return;
       }
 
@@ -164,14 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(errorData.error || `Gagal menyimpan event`);
       }
 
-      const result = await response.json();
-      Swal.fire(
-        "Berhasil",
+      const resultMessage =
         method === "POST"
           ? "Event berhasil dibuat."
-          : "Event berhasil diupdate.",
-        "success"
-      );
+          : "Event berhasil diupdate.";
+      Swal.fire("Berhasil!", resultMessage, "success");
 
       resetForm();
       fetchAndDisplayEvents();
@@ -190,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     eventIdInput.value = "";
     formEventTitle.textContent = "Tambah Event Baru";
     btnResetFormEvent.style.display = "none";
-    document.getElementById("event-name").focus();
+    eventNameInput.focus();
   }
 
   btnResetFormEvent.addEventListener("click", resetForm);
@@ -200,15 +219,13 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        swal
-          .fire({
-            icon: "error",
-            title: "Unauthorized",
-            text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
-          })
-          .then(() => {
-            window.location.href = "/login";
-          });
+        Swal.fire({
+          icon: "error",
+          title: "Unauthorized",
+          text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
+        }).then(() => {
+          window.location.href = "/login";
+        });
         return;
       }
 
@@ -240,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
       Swal.fire({
         icon: "error",
         title: "Gagal!",
-        text: "Terjadi kesalahan.",
+        text: error.message || "Terjadi kesalahan.",
       });
     }
   }
@@ -250,15 +267,13 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        swal
-          .fire({
-            icon: "error",
-            title: "Unauthorized",
-            text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
-          })
-          .then(() => {
-            window.location.href = "/login";
-          });
+        Swal.fire({
+          icon: "error",
+          title: "Unauthorized",
+          text: "Sesi anda tidak valid atau sudah berakhir. Silahkan login kembali.",
+        }).then(() => {
+          window.location.href = "/login";
+        });
         return;
       }
 
@@ -294,15 +309,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   //populate form
-  function populateFormForEdit(eventData) {
-    eventIdInput.value = eventData.id;
-    document.getElementById("event-name").value = eventData.name;
-    document.getElementById("event-end-date").value = eventData.enddate;
+  function populateFormForEdit(eventDataFromButton) {
+    eventIdInput.value = eventDataFromButton.id;
+    eventNameInput.value = eventDataFromButton.name;
+    eventOrderDeadlineInput.value = eventDataFromButton.orderdeadline;
+    eventEndDateInput.value = eventDataFromButton.enddate;
 
     formEventTitle.textContent = "Edit Event";
     btnResetFormEvent.style.display = "inline-block";
     window.scrollTo(0, formEvent.offsetTop);
-    document.getElementById("event-name").focus();
+    eventNameInput.focus();
   }
 
   //Event listener for toggle, edit and delete
@@ -320,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const eventDataforForm = {
           id: eventId,
           name: targetButton.dataset.name,
+          orderdeadline: targetButton.dataset.orderdeadline,
           enddate: targetButton.dataset.enddate,
         };
         populateFormForEdit(eventDataforForm);
@@ -346,12 +363,39 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchAndDisplayEvents();
 
   //logout logic
-  const logoutButtonKonser = document.getElementById("logout-button-konser");
-  if (logoutButtonKonser) {
-    logoutButtonKonser.addEventListener("click", function () {
+  const logoutButton = document.getElementById("logout-btn");
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      const tokenFromStorage = localStorage.getItem("token");
+
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       localStorage.removeItem("isLoggedIn");
+
+      if (tokenFromStorage) {
+        fetch("/users/logout", {
+          method: "POST",
+          headers: {
+            Authorization: tokenFromStorage,
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              console.warn(
+                "Panggilan API logout backend mungkin gagal atau token tidak valid. Status:",
+                response.status
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Respon API logoutL", error);
+          });
+      } else {
+        console.log("Tidak ada token untuk dikirim ke API logout");
+      }
+
       Swal.fire({
         icon: "success",
         title: "Logout berhasil",

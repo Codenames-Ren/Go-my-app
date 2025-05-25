@@ -57,6 +57,7 @@ type Event struct {
 	ID 					string	 	`gorm:"primaryKey"`
 	EventName 			string 		`gorm:"not null;unique"`
 	IsActive			bool		`gorm:"default:true"`
+	OrderDeadline 		time.Time 	`gorm:"not null"`
 	EndDate 			time.Time 	`gorm:"not null"`
 	CreatedAt 			time.Time
 	UpdatedAt 			time.Time
