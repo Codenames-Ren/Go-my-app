@@ -147,7 +147,7 @@ function populateSalesTable(data) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${sale.id}</td>
+      <td>${sale.UserID || "-"}</td>
       <td>${sale.EventName || "-"}</td>
       <td>${sale.TicketType || "-"}</td>
       <td>${sale.OrderCount || 0}</td>
