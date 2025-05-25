@@ -235,6 +235,52 @@ function initDashboard() {
   });
 
   document.getElementById("export-btn").addEventListener("click", exportData);
+
+  const logoutButton = document.getElementById("logout-btn");
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      const tokenFromStorage = localStorage.getItem("token");
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("isLoggedIn");
+
+      if (tokenFromStorage) {
+        fetch("/users/logout", {
+          method: "POST",
+          headers: {
+            Authorization: tokenFromStorage,
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              console.warn(
+                "Panggilan API logout backend mungkin gagal atau token tidak valid. Status:",
+                response.status
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Respon API logoutL", error);
+          });
+      } else {
+        console.log("Tidak ada token untuk dikirim ke API logout");
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: "Logout berhasil",
+        text: "Kamu akan diarahkan ke halaman utama.",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmationButton: false,
+      }).then(() => {
+        window.location.href = "/home";
+      });
+    });
+  }
 }
 
 // Jalankan saat halaman siap

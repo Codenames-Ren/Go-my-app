@@ -69,6 +69,10 @@ func UserRoutes(router *gin.Engine, db *gorm.DB, otpService *service.OTPService,
 
 		//nambah endpoint buat grup admin disini
 		adminGroup.GET("/users", controllers.GetAllUsers)
+
+		adminGroup.POST("/logout", middlewares.AuthMiddleware(), middlewares.AdminMiddleware(), func(c *gin.Context) {
+			c.JSON(200, gin.H{"message": "Logout successful"})
+		})
 	}
 
 	//superadmin
