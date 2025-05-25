@@ -52,6 +52,10 @@ func ViewRoute(router *gin.Engine) {
 		c.File("./public/admin_dashboard/index.html")
 	})
 
+	router.GET("/admin-concert", func(c *gin.Context) {
+		c.File("./public/admin_dashboard/admin_concert.html")
+	})
+
 	router.GET("/otp", func(c *gin.Context) {
 		email := c.Query("email")
 		purpose := c.Query("purpose")
