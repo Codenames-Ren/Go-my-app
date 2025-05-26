@@ -6,9 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnResetFormEvent = document.getElementById("btn-reset-form-event");
 
   const eventNameInput = document.getElementById("event-name");
+  const eventLocationInput = document.getElementById("event-location");
   const eventOrderDeadlineInput = document.getElementById(
     "event-order-deadline"
   );
+  const eventImageInput = document.getElementById("event-image-name");
   const eventEndDateInput = document.getElementById("event-end-date");
 
   const currentDateElement = document.getElementById("current-date-konser");
@@ -72,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         row.innerHTML = `
           <td>${event.ID || "-"}</td>
           <td>${event.EventName || "-"}</td>
+          <td>${event.Location || "-"}</td>
           <td>${
             event.OrderDeadline
               ? moment(event.OrderDeadline).format("DD MMM YYYY, HH:mm")
@@ -100,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </button>
             <button class="btn btn-sm btn-edit" data-id="${event.ID}" 
                     data-name="${event.EventName}" 
+                    data-location="${event.Location}"
                     data-orderdeadline="${
                       event.OrderDeadline
                         ? moment(event.OrderDeadline).format("YYYY-MM-DDTHH:mm")
@@ -153,8 +157,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const eventDataForBackend = {
       event_name: eventName.trim(),
+      location: eventLocationInput.value.trim(),
       order_deadline: moment(orderDeadlineValue).toISOString(),
       end_date: moment(endDateValue).toISOString(),
+      image_name: eventImageInput.value.trim(),
     };
 
     const currentEventId = eventIdInput.value;
@@ -205,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
       Swal.fire({
         icon: "error",
         title: "Gagal",
-        text: "Terjadi kesalahan saat menyimpan",
+        text: error || "Terjadi kesalahan saat menyimpan",
       });
     }
   });
@@ -318,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function populateFormForEdit(eventDataFromButton) {
     eventIdInput.value = eventDataFromButton.id;
     eventNameInput.value = eventDataFromButton.name;
+    eventLocationInput.value = eventDataFromButton.location || "";
     eventOrderDeadlineInput.value = eventDataFromButton.orderdeadline;
     eventEndDateInput.value = eventDataFromButton.enddate;
 
@@ -342,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const eventDataforForm = {
           id: eventId,
           name: targetButton.dataset.name,
+          location: targetButton.dataset.location,
           orderdeadline: targetButton.dataset.orderdeadline,
           enddate: targetButton.dataset.enddate,
         };

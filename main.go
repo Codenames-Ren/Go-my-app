@@ -33,20 +33,20 @@ func main() {
 	//Inisialisasi Server
 	router := gin.Default()
 	
-	routes.ViewRoute(router)
-
 	router.Use(func (c *gin.Context)  {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, Authorization")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
+	if c.Request.Method == "OPTIONS" {
+		c.AbortWithStatus(204)
+		return
+	}
 
 		c.Next()
 	})
+
+	routes.ViewRoute(router)
+	
 
 	//setup email service
 	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))

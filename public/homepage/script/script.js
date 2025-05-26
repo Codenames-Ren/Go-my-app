@@ -16,6 +16,7 @@ const navMenu = document.getElementById("navMenu");
 // --- INITIALIZE ---
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
+  loadEventFromServer();
   AOS.init({
     duration: 800,
     easing: "ease-in-out",
@@ -23,21 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     mirror: false,
   });
 });
-
-// --- DARK MODE TOGGLE ---
-if (localStorage.getItem("darkMode") === "true") {
-  document.body.classList.add("dark-mode");
-}
-
-if (modeToggle) {
-  modeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem(
-      "darkMode",
-      document.body.classList.contains("dark-mode")
-    );
-  });
-}
 
 // --- MOBILE NAV TOGGLE ---
 if (hamburger && navMenu) {

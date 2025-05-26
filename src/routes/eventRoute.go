@@ -18,3 +18,4 @@ func EventRoute(router *gin.Engine, db *gorm.DB){
 		adminEvent.DELETE("/:id", controllers.DeleteEvent(db))
 	}
 }
+

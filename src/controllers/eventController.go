@@ -13,8 +13,10 @@ import (
 
 type EventRequest struct {
 	EventName		string		`json:"event_name" binding:"required"`
+	Location		string		`json:"location" binding:"required"`
 	OrderDeadline	time.Time	`json:"order_deadline" binding:"required"`
 	EndDate			time.Time	`json:"end_date" binding:"required"`
+	ImageName		string 		`json:"image_name" binding:"required"`
 }
 
 func CreateEvent(db *gorm.DB) gin.HandlerFunc {
@@ -49,8 +51,10 @@ func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 		event := models.Event{
 			ID: 			id,
 			EventName:		req.EventName,
+			Location: 		req.Location,
 			OrderDeadline: 	req.OrderDeadline,
 			EndDate: 		req.EndDate,
+			ImageName: 		req.ImageName,
 			IsActive:		true,
 		}
 
@@ -100,8 +104,10 @@ func UpdateEvent(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		event.EventName = req.EventName
+		event.Location = req.Location
 		event.OrderDeadline = req.OrderDeadline
 		event.EndDate = req.EndDate
+		event.ImageName = req.ImageName
 
 		if err := db.Save(&event).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update event"})
@@ -178,3 +184,4 @@ func ValidateEvent (db *gorm.DB, eventName string) (*models.Event, error) {
 
 	return &event, nil
 }
+
