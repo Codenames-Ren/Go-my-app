@@ -224,7 +224,7 @@ document
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const res = await fetch(`/admin/orders/orders/${orderId}/status`, {
+            const res = await fetch(`/admin/orders/${orderId}/status`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",

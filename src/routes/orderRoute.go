@@ -26,7 +26,7 @@ func OrderRoutes(router *gin.Engine, db *gorm.DB, emailService *service.EmailSer
 	adminOrder := router.Group("/admin/orders", middlewares.AuthMiddleware(), middlewares.AdminMiddleware())
 	{
 		adminOrder.GET("/", controllers.GetAllOrders(db))
-		adminOrder.PUT("/orders/:id/status", controllers.UpdateOrderStatus(db))
+		adminOrder.PUT("/:id/status", controllers.UpdateOrderStatus(db))
 		adminOrder.DELETE("/:id", controllers.DeleteOrder(db))
 	}
 
