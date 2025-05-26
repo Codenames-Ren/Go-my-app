@@ -27,7 +27,7 @@ func OrderRoutes(router *gin.Engine, db *gorm.DB, emailService *service.EmailSer
 	{
 		adminOrder.GET("/", controllers.GetAllOrders(db))
 		adminOrder.PUT("/orders/:id/status", controllers.UpdateOrderStatus(db))
-		adminOrder.DELETE("/orders/:id", controllers.DeleteOrder(db))
+		adminOrder.DELETE("/:id", controllers.DeleteOrder(db))
 	}
 
 	// //superadmin

@@ -157,11 +157,98 @@ function populateSalesTable(data) {
       sale.Status?.charAt(0).toUpperCase() + sale.Status?.slice(1)
     }</td>
       <td>${moment(sale.CreatedAt).format("DD MMM YYYY")}</td>
+      <td>
+        <button class="btn btn-sm btn-update" data-id="${
+          sale.ID
+        }" data-status="${sale.Status}">
+          Update
+        </button>
+        <button class="btn btn-sm btn-delete" data-id="${sale.ID}">
+          Delete
+        </button>
+      </td>
     `;
 
     tableBody.appendChild(row);
   });
 }
+
+document
+  .getElementById("sales-data")
+  .addEventListener("click", async function (e) {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const orderId = btn.dataset.id;
+    const token = localStorage.getItem("token");
+
+    //delete logic
+    if (btn.classList.contains("btn-delete")) {
+      Swal.fire({
+        title: "Hapus Data?",
+        text: "Data yang dihapus tidak dapat dikembalikan.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const res = await fetch(`/admin/orders/${orderId}`, {
+              method: "DELETE",
+              headers: { Authorization: token },
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Gagal menghapus order");
+            Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
+            fetchTicketData();
+          } catch (error) {
+            Swal.fire("Error", error.message, "error");
+          }
+        }
+      });
+    }
+
+    //update logic
+    if (btn.classList.contains("btn-update")) {
+      const currentStatus = btn.dataset.status.toLowerCase();
+      const newStatus = currentStatus === "pending" ? "active" : "pending";
+
+      Swal.fire({
+        title: "Ubah Status ?",
+        text: `Status akan diubah menjadi '${newStatus}'`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "OK",
+        cancelButtonText: "Batal",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const res = await fetch(`/admin/orders/orders/${orderId}/status`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+              body: JSON.stringify({ status: newStatus }),
+            });
+
+            const data = await res.json();
+            if (!res.ok)
+              throw new Error(data.error || "Gagal mengubah status order");
+            Swal.fire(
+              "Berhasil!",
+              "Status order berhasil diperbarui.",
+              "success"
+            );
+            fetchTicketData();
+          } catch (error) {
+            Swal.fire("Error", error.message, "error");
+          }
+        }
+      });
+    }
+  });
 
 // Pagination control
 function updatePagination(totalPages) {
