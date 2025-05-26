@@ -31,10 +31,10 @@ func main() {
 
 	//Inisialisasi Server
 	router := gin.Default()
-	
+
 	routes.ViewRoute(router)
 
-	router.Use(func (c *gin.Context)  {
+	router.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, Authorization")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
@@ -58,7 +58,7 @@ func main() {
 
 	//setup otp service
 	otpService := &service.OTPService{
-		DB: database.DB,
+		DB:           database.DB,
 		EmailService: &emailService,
 	}
 
