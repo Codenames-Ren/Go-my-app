@@ -185,3 +185,14 @@ func ValidateEvent (db *gorm.DB, eventName string) (*models.Event, error) {
 	return &event, nil
 }
 
+func GetPublicEvents(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var events []models.Event
+		if err := db.Where("is_active = ? AND end_date > ?", true, time.Now()).Order("end_date ASC").Find(&events).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch public events"})
+			return
+		}
+
+		c.JSON(http.StatusOK, events)
+	}
+}
