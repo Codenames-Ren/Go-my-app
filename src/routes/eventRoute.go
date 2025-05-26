@@ -19,3 +19,6 @@ func EventRoute(router *gin.Engine, db *gorm.DB){
 	}
 }
 
+func PublicEventRoute(router *gin.Engine, db *gorm.DB) {
+	router.GET("/events", controllers.GetPublicEvents(db))
+}
