@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Manajemen Konser</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin_dashboard/style/style.css" />
+  </head>
+  <body>
+    <div id="dashboard" style="display: block; width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">Admin Dashboard</div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="/admin-dashboard" class="menu-item active">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-ticket-alt"></i>
+            <span class="menu-text">Data Tiket</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="/admin-concert" class="menu-item">
+            <i class="fas fa-music"></i>
+            <span class="menu-text">Data Konser</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">Pengaturan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name">Admin</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Manajemen Data Konser</h1>
+          <div>
+            <span id="current-date-konser"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title" id="form-event-title">Tambah Event Baru</h2>
+          <form id="form-event">
+            <input type="hidden" id="event-id" />
+            <div class="form-group">
+              <label for="event-name">Nama Event :</label>
+              <input
+                type="text"
+                id="event-name"
+                name="event-name"
+                placeholder="Nama Event"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="event-location">Lokasi Event :</label>
+              <input
+                type="text"
+                id="event-location"
+                name="event-location"
+                placeholder="Contoh: Jakarta"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="event-image-name">Nama File Gambar</label>
+              <input
+                type="text"
+                id="event-image-name"
+                placeholder="contoh jakarta.webp"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="event-order-deadline"
+                >Batas Waktu Pembelian Tiket :</label
+              >
+              <input
+                type="datetime-local"
+                id="event-order-deadline"
+                name="event-order-deadline"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="event-end-date">Tanggal Event :</label>
+              <input
+                type="datetime-local"
+                id="event-end-date"
+                name="event-end-date"
+                required
+              />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn">Simpan Event</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="btn-reset-form-event"
+                style="display: none"
+              >
+                Batal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Daftar Event Tersedia</h2>
+          <div style="overflow-x: auto">
+            <table id="tabel-event">
+              <thead>
+                <tr>
+                  <th>ID Event</th>
+                  <th>Nama Event</th>
+                  <th>Lokasi Event</th>
+                  <th>Batas Waktu Pembelian Tiket</th>
+                  <th>Tanggal Event</th>
+                  <th>Status Aktif</th>
+                  <th>Dibuat Pada</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-event"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/public/admin_dashboard/script/admin_concert.js"></script>
+  </body>
+</html>

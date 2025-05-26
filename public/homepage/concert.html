@@ -46,89 +46,7 @@
 
     <main class="container concert-section" style="padding: 6rem 5% 2rem">
       <h2 class="section-title" data-aos="zoom-in">Upcoming Concerts</h2>
-      <div class="concert-grid">
-        <div class="concert-card" data-aos="fade-up" data-aos-delay="100">
-          <img
-            src="/public/homepage/image/jakarta.png"
-            alt="Spring Festival Music"
-            class="concert-img"
-          />
-          <div class="concert-info">
-            <h3 class="concert-card-title">Spring Festival Music</h3>
-            <p class="concert-card-description">
-              Sabtu, 15 Juni 2025 - Jakarta
-            </p>
-            <button
-              class="btn book-package"
-              data-package="spring"
-              data-concert="Spring Festival Music"
-            >
-              Buy Ticket
-            </button>
-          </div>
-        </div>
-
-        <div class="concert-card" data-aos="fade-up" data-aos-delay="200">
-          <img
-            src="/public/homepage/image/bandung.png"
-            alt="Summer Festival Music"
-            class="concert-img"
-          />
-          <div class="concert-info">
-            <h3 class="concert-card-title">Summer Festival Music</h3>
-            <p class="concert-card-description">
-              Minggu, 23 Juni 2025 - Bandung
-            </p>
-            <button
-              class="btn book-package"
-              data-package="summer"
-              data-concert="Summer Festival Music"
-            >
-              Buy Ticket
-            </button>
-          </div>
-        </div>
-
-        <div class="concert-card" data-aos="fade-up" data-aos-delay="300">
-          <img
-            src="/public/homepage/image/surabaya.png"
-            alt="Winter Festa"
-            class="concert-img"
-          />
-          <div class="concert-info">
-            <h3 class="concert-card-title">Winter Festa</h3>
-            <p class="concert-card-description">
-              Sabtu, 29 Juni 2025 - Surabaya
-            </p>
-            <button
-              class="btn book-package"
-              data-package="winter"
-              data-concert="Winter Festa"
-            >
-              Buy Ticket
-            </button>
-          </div>
-        </div>
-
-        <div class="concert-card" data-aos="fade-up" data-aos-delay="400">
-          <img
-            src="/public/homepage/image/yogyakarta.png"
-            alt="Autumn Magic Concert"
-            class="concert-img"
-          />
-          <div class="concert-info">
-            <h3 class="concert-card-title">Autumn Magic Concert</h3>
-            <p class="concert-card-description">
-              Minggu, 6 Juli 2025 - Yogyakarta
-            </p>
-            <button
-              class="btn book-package"
-              data-package="autumn"
-              data-concert="Autumn Magic Concert"
-            >
-              Buy Ticket
-            </button>
-          </div>
+      <div class="concert-grid" id="concertGrid">
         </div>
       </div>
     </main>
@@ -160,6 +78,9 @@
               class="no-spinner"
             />
           </div>
+
+          <input type="hidden" id="bookingEventId" name="event_id" />
+
           <div class="form-group">
             <label for="concertCount">Ticket Variant</label>
             <select id="concertCount" required>

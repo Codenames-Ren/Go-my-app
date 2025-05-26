@@ -35,6 +35,8 @@ type Order struct {
 	Name 				string 		`gorm:"not null"`
 	Email 				string 		`gorm:"not null"`
 	PhoneNumber 		string 		`gorm:"not null"`
+	EventID		      	string     	`gorm:"not null"`
+	Event        		Event      	`gorm:"foreignKey:EventID;references:ID"`
 	EventName			string		`gorm:"not null"`
 	TicketType 			string 		`gorm:"not null"`
 	TicketPrice 		float64 	`gorm:"not null"`
@@ -46,6 +48,19 @@ type Order struct {
 	TotalPrice 			float64 	`gorm:"not null"`
 	UserID 				*string		`gorm:"index"`
 	User				*User		`gorm:"foreignKey:UserID;references:ID"`
+	CreatedAt 			time.Time
+	UpdatedAt 			time.Time
+	DeletedAt	 		gorm.DeletedAt `gorm:"index"`
+}
+
+type Event struct {
+	ID 					string	 	`gorm:"primaryKey"`
+	EventName 			string 		`gorm:"not null;unique"`
+	Location 			string 		`gorm:"not null"`
+	IsActive			bool		`gorm:"default:true"`
+	OrderDeadline 		time.Time 	`gorm:"not null"`
+	EndDate 			time.Time 	`gorm:"not null"`
+	ImageName 			string 		`json:"image_name" gorm:"not null"`
 	CreatedAt 			time.Time
 	UpdatedAt 			time.Time
 	DeletedAt	 		gorm.DeletedAt `gorm:"index"`

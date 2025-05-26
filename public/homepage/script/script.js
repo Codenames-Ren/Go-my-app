@@ -13,9 +13,105 @@ const packageType = document.getElementById("packageType");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("navMenu");
 
+//get event from backend server
+async function loadEventFromServer() {
+  try {
+    const res = await fetch("/events");
+    if (!res.ok) throw new Error("Gagal mengambil event");
+
+    const events = await res.json();
+    const container = document.querySelector(".concert-grid");
+    container.innerHTML = "";
+
+    events.forEach((event) => {
+      if (!event.IsActive) return;
+
+      const eventDate = new Date(event.EndDate).toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+      const deadline = new Date(event.OrderDeadline).toLocaleDateString(
+        "id-ID",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }
+      );
+
+      const city = event.Location.toLowerCase();
+
+      const card = document.createElement("div");
+      card.className = "concert-card";
+      card.setAttribute("data-aos", "fade-up");
+      card.innerHTML = `
+      <img src="/public/homepage/image/${event.image_name}" alt="${
+        event.EventName
+      }" class="concert-img" />
+      <div class="concert-info">
+        <h3 class="concert-card-title">${event.EventName}</h3>
+        <p class="concert-card-description">${eventDate} - ${event.Location}</p>
+        <p class="concert-card-deadline"> Batas waktu pembelian tiket : ${deadline}</p>
+        <button class="btn book-package"
+            data-package="${city.toLowerCase()}"
+            data-concert="${event.EventName}"
+            data-event-id="${event.ID}">
+          Buy Ticket
+        </button>
+      </div>
+      `;
+
+      container.appendChild(card);
+    });
+
+    setupBookingButtons();
+  } catch (error) {
+    console.error("Gagal memuat event:", error);
+    document.querySelector(".concert-grid").innerHTML =
+      "<p>Gagal memuat Konser</p>";
+  }
+}
+
+function setupBookingButtons() {
+  const bookPackageButtons = document.querySelectorAll(".book-package");
+  bookPackageButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        Swal.fire({
+          title: "Belum Login!",
+          text: "Anda harus login terlebih dahulu sebelum memesan",
+          icon: "warning",
+          confirmButtonText: "Login Sekarang",
+          showCancelButton: true,
+          cancelButtonText: "Batal",
+        }).then((result) => {
+          if (result.isConfirmed) window.location.href = "/login";
+        });
+        return;
+      }
+
+      const packageName = button.getAttribute("data-package");
+      selectedConcertName = button.getAttribute("data-concert");
+      selectedEventId = button.getAttribute("data-event-id");
+
+      if (packageType)
+        packageType.textContent =
+          packageName.charAt(0).toUpperCase() + packageName.slice(1);
+      if (bookingModal) bookingModal.classList.add("active");
+    });
+  });
+}
+
 // --- INITIALIZE ---
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
+  loadEventFromServer();
   AOS.init({
     duration: 800,
     easing: "ease-in-out",
@@ -23,21 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     mirror: false,
   });
 });
-
-// --- DARK MODE TOGGLE ---
-if (localStorage.getItem("darkMode") === "true") {
-  document.body.classList.add("dark-mode");
-}
-
-if (modeToggle) {
-  modeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem(
-      "darkMode",
-      document.body.classList.contains("dark-mode")
-    );
-  });
-}
 
 // --- MOBILE NAV TOGGLE ---
 if (hamburger && navMenu) {
@@ -83,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- PACKAGE BOOKING ---
 const bookPackageButtons = document.querySelectorAll(".book-package");
 let selectedConcertName = "";
+let selectedEventId = null;
 
 bookPackageButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -104,6 +186,7 @@ bookPackageButtons.forEach((button) => {
 
     const packageName = button.getAttribute("data-package");
     selectedConcertName = button.getAttribute("data-concert");
+    selectedEventId = button.getAttribute("data-event-id");
 
     if (packageType)
       packageType.textContent =
@@ -134,6 +217,14 @@ if (bookingForm) {
       return Swal.fire({
         title: "Error",
         text: "Harap isi semua field yang diperlukan!",
+        icon: "error",
+      });
+    }
+
+    if (!selectedEventId) {
+      return Swal.fire({
+        title: "Error",
+        text: "Gagal mendapatkan id event, silahkan coba lagi nanti.",
         icon: "error",
       });
     }
@@ -222,7 +313,7 @@ if (bookingForm) {
       ticket_type: ticketLabel,
       order_count: parseInt(guestsCount),
       payment_to: value.sub,
-      event_name: selectedConcertName,
+      event_id: selectedEventId,
     };
 
     let orderId = null;
@@ -563,7 +654,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           await Swal.fire({
             title: "Sukses!",
-            html: `Status telah diperbarui. Invoice akan dikirim ke email.`,
+            html: `Pembayaran telah di konfirmasi. Invoice akan segera dikirimkan ke email kamu`,
             icon: "success",
           });
 

@@ -287,6 +287,11 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem("token", data.token);
             localStorage.setItem("isLoggedIn", "true");
           }
+
+          if (data.role) {
+            localStorage.setItem("role", data.role);
+          }
+
           showSweetAlert({
             title: "Berhasil",
             text: "Kode OTP berhasil di verifikasi.",
@@ -297,7 +302,11 @@ document.addEventListener("DOMContentLoaded", function () {
           verifyButton.disabled = true;
 
           setTimeout(() => {
-            window.location.href = "/home";
+            if (data.role === "admin" || data.role === "super_admin") {
+              window.location.href = "/admin-dashboard";
+            } else {
+              window.location.href = "/home";
+            }
           }, 2000);
         } else {
           showSweetAlert({

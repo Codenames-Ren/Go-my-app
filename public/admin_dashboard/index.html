@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard Harmony Music</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.12/Recharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/public/admin_dashboard/style/style.css" />
+  </head>
+  <body>
+    <!-- Main Dashboard (hidden initially) -->
+    <div id="dashboard" style="display: block; width: 100%">
+      <!-- Sidebar Navigation -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">Admin Dashboard</div>
+        </div>
+        <div class="sidebar-menu">
+          <a href="#" class="menu-item active">
+            <i class="fas fa-chart-line"></i>
+            <span class="menu-text">Dashboard</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-ticket-alt"></i>
+            <span class="menu-text">Data Tiket</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-users"></i>
+            <span class="menu-text">Manajemen User</span>
+          </a>
+          <a href="/admin-concert" class="menu-item">
+            <i class="fas fa-music"></i>
+            <span class="menu-text">Data Konser</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-file-alt"></i>
+            <span class="menu-text">Laporan</span>
+          </a>
+          <a href="#" class="menu-item">
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">Pengaturan</span>
+          </a>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-name">Admin</div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <div class="header">
+          <h1 class="page-title">Dashboard Penjualan Tiket</h1>
+          <div>
+            <span id="current-date"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Grafik Omset Penjualan Bulanan</h2>
+          <div class="chart-container" id="monthly-chart"></div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Daftar Penjualan Tiket</h2>
+          <div class="filter-container">
+            <div>
+              <label for="month-filter">Bulan:</label>
+              <select id="month-filter">
+                <option value="">Semua Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+              </select>
+            </div>
+            <div>
+              <label for="day-filter">Tanggal:</label>
+              <input type="date" id="day-filter" />
+            </div>
+            <div>
+              <label for="status-filter">Status:</label>
+              <select id="status-filter">
+                <option value="">Semua Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <button class="btn" id="filter-btn">Filter</button>
+            <button class="btn" id="reset-btn">Reset</button>
+            <button class="btn btn-export" id="export-btn">
+              <i class="fas fa-file-export"></i> Export
+            </button>
+          </div>
+          <div style="overflow-x: auto">
+            <table id="sales-table">
+              <thead>
+                <tr>
+                  <th>ID User</th>
+                  <th>Tiket Konser</th>
+                  <th>Tipe Tiket</th>
+                  <th>Quantity</th>
+                  <th>Harga Satuan</th>
+                  <th>Total Harga</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="sales-data">
+                <!-- Data will be populated here -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="pagination">
+            <div class="pagination-item pagination-arrow" id="prev-page">
+              <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="pagination-item active">1</div>
+            <div class="pagination-item">2</div>
+            <div class="pagination-item">3</div>
+            <div class="pagination-item pagination-arrow" id="next-page">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="total" id="total-sales">
+              Total Omset Penjualan: Rp 0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/admin_dashboard/script/script.js"></script>
+  </body>
+</html>
