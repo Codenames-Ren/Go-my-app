@@ -46,7 +46,7 @@ func main() {
 	})
 
 	routes.ViewRoute(router)
-	
+	routes.PublicEventRoute(router, database.DB)
 
 	//setup email service
 	smtpPort, _ := strconv.Atoi(os.Getenv("SMTP_PORT"))
