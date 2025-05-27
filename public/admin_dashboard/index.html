@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.12/Recharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -127,6 +128,24 @@
                 </tr>
               </thead>
               <tbody id="sales-data">
+                <!-- Data will be populated here -->
+              </tbody>
+            </table>
+
+            <table id="export-table" style="display: none">
+              <thead>
+                <tr>
+                  <th>ID User</th>
+                  <th>Tiket Konser</th>
+                  <th>Tipe Tiket</th>
+                  <th>Quantity</th>
+                  <th>Harga Satuan</th>
+                  <th>Total Harga</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="export-table-body">
                 <!-- Data will be populated here -->
               </tbody>
             </table>

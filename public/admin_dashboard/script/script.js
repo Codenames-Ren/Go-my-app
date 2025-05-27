@@ -73,6 +73,31 @@ async function fetchTicketData() {
   }
 }
 
+function populateExportTable(data) {
+  const exportBody = document.getElementById("export-table-body");
+  exportBody.innerHTML = "";
+
+  data.forEach((sale) => {
+    const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${sale.UserID || "-"}</td>
+      <td>${sale.EventName || "-"}</td>
+      <td>${sale.TicketType || "-"}</td>
+      <td>${sale.OrderCount || 0}</td>
+      <td>${formatRupiah(sale.TicketPrice || 0)}</td>
+      <td>${formatRupiah(total)}</td>
+      <td class="status-${sale.Status?.toLowerCase() || "unknown"}">${
+      sale.Status?.charAt(0).toUpperCase() + sale.Status?.slice(1)
+    }</td>
+      <td>${moment(sale.CreatedAt).format("DD MMM YYYY")}</td>
+    `;
+
+    exportBody.appendChild(row);
+  });
+}
+
 // Display placeholder chart
 function createMonthlyChart() {
   const chartContainer = document.getElementById("monthly-chart");
@@ -133,7 +158,6 @@ function filterAndPaginateSales() {
     startIndex,
     startIndex + itemsPerPage
   );
-
   populateSalesTable(paginatedData);
 }
 
@@ -291,12 +315,19 @@ function updatePagination(totalPages) {
   pagination.appendChild(next);
 }
 
-// Export data (placeholder)
-function exportData() {
-  Swal.fire({
-    icon: "success",
-    title: "Data Diekspor",
-    text: "Data berhasil diekspor ke CSV (fitur simulasi)",
+function ensureRendered(element, timeout = 300) {
+  return new Promise((resolve) => {
+    const observer = new MutationObserver(() => {
+      observer.disconnect();
+      setTimeout(resolve, timeout);
+    });
+
+    observer.observe(element, { childList: true });
+
+    setTimeout(() => {
+      observer.disconnect();
+      resolve();
+    }, 1000);
   });
 }
 
@@ -321,7 +352,9 @@ function initDashboard() {
     filterAndPaginateSales();
   });
 
-  document.getElementById("export-btn").addEventListener("click", exportData);
+  document
+    .getElementById("export-btn")
+    .addEventListener("click", exportDataToPDF);
 
   const logoutButton = document.getElementById("logout-btn");
 
