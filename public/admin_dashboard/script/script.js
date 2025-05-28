@@ -11,6 +11,82 @@ function formatRupiah(angka) {
   }).format(angka);
 }
 
+let chartInstance = null;
+
+function updateChart(data) {
+  //array
+  const monthlySales = Array(12).fill(0);
+
+  data.forEach((sale) => {
+    const date = new Date(sale.CreatedAt);
+    const monthIndex = date.getMonth();
+    const amount = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+    monthlySales[monthIndex] += amount;
+  });
+
+  const ctx = document.getElementById("sales-bar-chart").getContext("2d");
+  if (!ctx) {
+    console.warn("Canvas element for chart not found");
+    return;
+  }
+
+  const labels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mei",
+    "Jun",
+    "Jul",
+    "Agu",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Des",
+  ];
+
+  if (chartInstance) {
+    chartInstance.data.datasets[0].data = monthlySales;
+    chartInstance.update();
+  } else {
+    chartInstance = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Omset Bulanan (Rp)",
+            backgroundColor: "#4e73df",
+            borderColor: "#4e73df",
+            data: monthlySales,
+            borderRadius: 5,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: "top",
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return "Rp " + value.toLocaleString("id-ID");
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+}
+
 // Fetch ticket data from backend
 async function fetchTicketData() {
   try {
@@ -100,18 +176,7 @@ function populateExportTable(data) {
 
 // Display placeholder chart
 function createMonthlyChart() {
-  const chartContainer = document.getElementById("monthly-chart");
-  chartContainer.innerHTML = `
-    <div style="text-align: center; padding: 50px 0;">
-      <p style="font-size: 16px; color: #666;">
-        [Grafik Batang: Omset Penjualan Bulanan]
-      </p>
-      <p style="font-size: 14px; color: #888;">
-        Data Bulan: Jan - Des 2025<br>
-        Data dari server akan ditampilkan di versi final.
-      </p>
-    </div>
-  `;
+  console.log("Canvas chart berhasil di load");
 }
 
 // Filter & paginate ticket sales data
@@ -159,6 +224,7 @@ function filterAndPaginateSales() {
     startIndex + itemsPerPage
   );
   populateSalesTable(paginatedData);
+  updateChart(filteredData);
 }
 
 // Populate sales table

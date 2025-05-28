@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard Harmony Music</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.12/Recharts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -13,6 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <link rel="stylesheet" href="/public/admin_dashboard/style/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <!-- Main Dashboard (hidden initially) -->
@@ -69,8 +69,19 @@
         </div>
 
         <div class="card">
-          <h2 class="card-title">Grafik Omset Penjualan Bulanan</h2>
-          <div class="chart-container" id="monthly-chart"></div>
+          <h2
+            class="card-title"
+            style="text-align: center; margin-bottom: 20px"
+          >
+            Grafik Omset Penjualan Bulanan
+          </h2>
+          <div
+            class="chart-container"
+            id="monthly-chart"
+            style="position: relative; width: 100%; height: 300px"
+          >
+            <canvas id="sales-bar-chart" width="100%" height="60"></canvas>
+          </div>
         </div>
 
         <div class="card">
