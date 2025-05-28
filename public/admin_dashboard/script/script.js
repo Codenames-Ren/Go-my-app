@@ -364,7 +364,7 @@ async function exportData() {
     return;
   }
 
-  // Hitung total
+  //total count
   let totalSales = 0;
   filteredData.forEach((sale) => {
     totalSales += (sale.OrderCount || 0) * (sale.TicketPrice || 0);
@@ -391,7 +391,6 @@ async function exportData() {
     transition: opacity 0.3s ease !important;
   `;
 
-  // Buat container preview yang responsive
   const exportDiv = document.createElement("div");
   exportDiv.id = "pdf-export-container";
   exportDiv.style.cssText = `
@@ -404,24 +403,27 @@ async function exportData() {
     color: black !important;
     border-radius: 10px !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-    overflow-y: visible !important;
+    overflow-y: auto !important;
     transform: scale(0.8) !important;
     transition: transform 0.3s ease !important;
     position: relative !important;
   `;
 
-  // Buat container khusus untuk konten PDF (tanpa button)
+  //pdf content for export purpose
   const pdfContent = document.createElement("div");
   pdfContent.id = "pdf-content-only";
+  window.scrollTo(0, 0);
   pdfContent.style.cssText = `
+    width: 1123px !important;
+    height: auto;
     color: black !important;
     background: white !important;
     margin-top: 40px;
     margin-bottom: 80px;
     padding-bottom: 20px;
   `;
+  pdfContent.style.zoom = "100%";
 
-  // Tombol X untuk menutup preview
   const closeButton = document.createElement("button");
   closeButton.innerHTML = "x";
   closeButton.style.cssText = `
@@ -445,22 +447,17 @@ async function exportData() {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
   `;
 
-  // Hover effect untuk tombol X
   closeButton.onmouseenter = () => {
-    // closeButton.style.background = "#c82333";
     closeButton.style.transform = "scale(1.1)";
   };
   closeButton.onmouseleave = () => {
-    // closeButton.style.background = "#dc3545";
     closeButton.style.transform = "scale(1)";
   };
 
-  // Event listener untuk tombol X
   closeButton.onclick = () => {
     closePreview();
   };
 
-  // Tombol Download PDF (di bawah kanan)
   const downloadButton = document.createElement("button");
   downloadButton.innerHTML = '<i class="fas fa-download"></i> Download PDF';
   downloadButton.style.cssText = `
@@ -480,7 +477,6 @@ async function exportData() {
     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
   `;
 
-  // Hover effect untuk tombol download
   downloadButton.onmouseenter = () => {
     downloadButton.style.background = "#218838";
     downloadButton.style.transform = "translateY(-2px)";
@@ -490,7 +486,6 @@ async function exportData() {
     downloadButton.style.transform = "translateY(0)";
   };
 
-  // Event listener untuk tombol download
   downloadButton.onclick = () => {
     generatePDF();
   };
@@ -510,8 +505,7 @@ async function exportData() {
   // Function untuk generate PDF
   const generatePDF = async () => {
     try {
-      // Tunggu DOM konten PDF selesai render sebelum snapshot
-      await ensureRendered(pdfContent, 300); // <== ini kunci agar table ikut
+      await ensureRendered(pdfContent, 300);
 
       Swal.fire({
         title: "Membuat PDF...",
@@ -521,30 +515,35 @@ async function exportData() {
         showConfirmButton: false,
       });
 
-      await new Promise((res) => setTimeout(res, 300)); // stabilisasi kecil
+      await new Promise((res) => setTimeout(res, 300));
 
       const options = {
-        margin: [0.5, 0.5, 0.5, 0.5],
+        margin: [0.3, 0.3, 0.3, 0.3],
         filename: `laporan-penjualan-tiket-harmony-music-${moment().format(
           "YYYY-MM-DD-HHmm"
         )}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
+        image: { type: "jpeg", quality: 0.95 },
         html2canvas: {
           scale: 2,
           useCORS: true,
           backgroundColor: "#ffffff",
+          width: 1123,
         },
         jsPDF: {
           unit: "in",
           format: "a4",
           orientation: "landscape",
         },
-        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        pagebreak: {
+          mode: ["avoid-all", "css", "legacy"],
+          avoid: "tr",
+        },
       };
 
-      console.log("Starting PDF generation with landscape orientation...");
+      console.log(
+        "Starting PDF generation with optimized landscape orientation..."
+      );
 
-      // Generate PDF - HANYA dari pdfContent (tanpa button)
       await html2pdf()
         .from(pdfContent)
         .set(options)
@@ -554,7 +553,6 @@ async function exportData() {
           console.log("PDF generated successfully!");
           console.log("Total pages:", pdf.internal.getNumberOfPages());
 
-          // Add page numbers
           const totalPages = pdf.internal.getNumberOfPages();
           for (let i = 1; i <= totalPages; i++) {
             pdf.setPage(i);
@@ -569,10 +567,8 @@ async function exportData() {
         })
         .save();
 
-      // Close preview after successful download
       closePreview();
 
-      // Success message
       Swal.fire({
         icon: "success",
         title: "Export Berhasil!",
@@ -583,8 +579,6 @@ async function exportData() {
       });
     } catch (error) {
       console.error("PDF generation error:", error);
-
-      // Remove overlay on error
       closePreview();
 
       Swal.fire({
@@ -596,14 +590,13 @@ async function exportData() {
     }
   };
 
-  // Konten PDF (TANPA BUTTON) - ini yang akan di-export
   pdfContent.innerHTML = `
     <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
       <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
         LAPORAN PENJUALAN TIKET HARMONY MUSIC
       </h1>
       <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
-        Tanggal Export: ${new Date().toLocaleDateString("id-ID", {
+        Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",
           month: "long",
@@ -621,18 +614,18 @@ async function exportData() {
       </div>
     </div>
     
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 12px; table-layout: auto !important;">
+    <div style="overflow-x: visible; width: 100%;">
+      <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 14px; table-layout: fixed !important;">
         <thead style="display: table-header-group !important;">
           <tr style="background: #2c3e50 !important; color: white !important;">
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 80px;">User ID</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 150px;">Nama Event</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 120px;">Tipe Tiket</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 60px;">Qty</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 100px;">Harga Satuan</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 100px;">Total Harga</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 80px;">Status</th>
-            <th style="border: 1px solid #ddd; padding: 12px 8px; text-align: center; min-width: 100px;">Tanggal</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">User ID</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 22%;">Nama Event</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Tipe Tiket</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 6%;">Qty</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Harga Satuan</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Total Harga</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Status</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Tanggal Pembelian</th>
           </tr>
         </thead>
 
@@ -650,30 +643,30 @@ async function exportData() {
 
               return `
               <tr style="background: ${rowBg} !important;">
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center;">${
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
                   sale.UserID || "-"
                 }</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center;">${
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word;">${
                   sale.EventName || "-"
                 }</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center;">${
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
                   sale.TicketType || "-"
                 }</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center; font-weight: bold;">${
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center;  font-size: 14px;">${
                   sale.OrderCount || 0
                 }</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center;">${formatRupiah(
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${formatRupiah(
                   sale.TicketPrice || 0
                 )}</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center; font-weight: bold;">${formatRupiah(
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center;  font-size: 14px;">${formatRupiah(
                   total
                 )}</td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; text-align: center;">
-                  <span style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-weight: bold; font-size: 14px;">
+                  <span style="color: ${statusColor}; padding: 3px 6px; border-radius: 12px; font-size: 14px; font-weight: bold;">
                     ${sale.Status?.toUpperCase() || "Unknown"}
                   </span>
                 </td>
-                <td style="border: 1px solid #ddd; padding: 10px 8px; color: black !important; text-align: center;">${moment(
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${moment(
                   sale.CreatedAt
                 ).format("DD/MM/YYYY")}</td>
               </tr>
@@ -693,25 +686,19 @@ async function exportData() {
     </div>
   `;
 
-  // Tambahkan pdfContent ke exportDiv
   exportDiv.appendChild(pdfContent);
-
-  // Tambahkan tombol-tombol ke export div
   exportDiv.appendChild(closeButton);
   exportDiv.appendChild(downloadButton);
 
-  // Tambahkan ke overlay
   overlay.appendChild(exportDiv);
   document.body.appendChild(overlay);
 
-  // Event listener untuk menutup dengan klik overlay (area gelap)
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) {
       closePreview();
     }
   });
 
-  // Event listener untuk ESC key
   const escapeHandler = (e) => {
     if (e.key === "Escape") {
       closePreview();
@@ -720,13 +707,12 @@ async function exportData() {
   };
   document.addEventListener("keydown", escapeHandler);
 
-  // Smooth entrance animation
   setTimeout(() => {
     overlay.style.opacity = "1";
     exportDiv.style.transform = "scale(1)";
   }, 10);
 
-  console.log("Preview opened with interactive controls");
+  console.log("Preview opened with interactive controls - optimized for PDF");
 }
 
 // Initialize dashboard
@@ -799,5 +785,4 @@ function initDashboard() {
   }
 }
 
-// Jalankan saat halaman siap
 window.addEventListener("DOMContentLoaded", initDashboard);
