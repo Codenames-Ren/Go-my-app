@@ -57,7 +57,9 @@ async function loadEventFromServer() {
         <p class="concert-card-description">${eventDate} - ${event.Location}</p>
         <p class="concert-card-deadline"> Batas waktu pembelian tiket : ${deadline}</p>
         <button class="btn book-package"
-            data-package="${city.toLowerCase()}"
+            data-package="${event.EventName.split(" ")
+              .slice(0, 2)
+              .join(" ")} Ticket"
             data-concert="${event.EventName}"
             data-event-id="${event.ID}">
           Buy Ticket
