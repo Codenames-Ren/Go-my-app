@@ -192,6 +192,12 @@ select:focus {
   font-size: 13px;
 }
 
+.btn,
+.btn-sm,
+.btn-update {
+  margin: 5px;
+}
+
 .btn:hover {
   background-color: #2980b9;
 }
