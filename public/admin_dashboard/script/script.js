@@ -145,7 +145,6 @@ async function fetchTicketData() {
       title: "Oops!",
       text: error.message,
     });
-    console.error("Error fetching data:", error);
   }
 }
 
@@ -236,6 +235,10 @@ function populateSalesTable(data) {
     const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
     const row = document.createElement("tr");
 
+    const displayStatus =
+      sale.Status?.charAt(0).toUpperCase() +
+      sale.Status?.slice(1).toLowerCase();
+
     row.innerHTML = `
       <td>${sale.UserID || "-"}</td>
       <td>${sale.EventName || "-"}</td>
@@ -244,13 +247,13 @@ function populateSalesTable(data) {
       <td>${formatRupiah(sale.TicketPrice || 0)}</td>
       <td>${formatRupiah(total)}</td>
       <td class="status-${sale.Status?.toLowerCase() || "unknown"}">${
-      sale.Status?.charAt(0).toUpperCase() + sale.Status?.slice(1)
+      displayStatus || "Unknown"
     }</td>
       <td>${moment(sale.CreatedAt).format("DD MMM YYYY")}</td>
       <td>
         <button class="btn btn-sm btn-update" data-id="${
           sale.ID
-        }" data-status="${sale.Status}">
+        }" data-status="${sale.Status}" data-order-number="${sale.OrderNumber}">
           Update
         </button>
         <button class="btn btn-sm btn-delete" data-id="${sale.ID}">
@@ -270,9 +273,11 @@ document
     if (!btn) return;
 
     const orderId = btn.dataset.id;
+    const orderNumber = btn.dataset.orderNumber;
+    const currentStatus = btn.dataset.status;
     const token = localStorage.getItem("token");
 
-    //delete logic
+    // Delete logic
     if (btn.classList.contains("btn-delete")) {
       Swal.fire({
         title: "Hapus Data?",
@@ -291,7 +296,7 @@ document
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Gagal menghapus order");
             Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
-            fetchTicketData();
+            await fetchTicketData();
           } catch (error) {
             Swal.fire("Error", error.message, "error");
           }
@@ -299,14 +304,14 @@ document
       });
     }
 
-    //update logic
+    // Update logic
     if (btn.classList.contains("btn-update")) {
-      const currentStatus = btn.dataset.status.toLowerCase();
-      const newStatus = currentStatus === "pending" ? "active" : "pending";
+      const statusLower = currentStatus.toLowerCase();
+      const newStatus = statusLower === "pending" ? "active" : "pending";
 
       Swal.fire({
-        title: "Ubah Status ?",
-        text: `Status akan diubah menjadi '${newStatus}'`,
+        title: "Ubah Status?",
+        text: `Status akan diubah dari '${currentStatus}' menjadi '${newStatus}'`,
         icon: "question",
         showCancelButton: true,
         confirmButtonText: "OK",
@@ -314,25 +319,117 @@ document
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const res = await fetch(`/admin/orders/${orderId}/status`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: token,
+            Swal.fire({
+              title: "Mengubah Status...",
+              text: "Mohon tunggu sebentar.",
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
               },
-              body: JSON.stringify({ status: newStatus }),
             });
 
-            const data = await res.json();
-            if (!res.ok)
-              throw new Error(data.error || "Gagal mengubah status order");
-            Swal.fire(
-              "Berhasil!",
-              "Status order berhasil diperbarui.",
-              "success"
-            );
-            fetchTicketData();
+            if (statusLower === "pending" && newStatus === "active") {
+              try {
+                const callbackRes = await fetch("/orders/payment/callback", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                  },
+                  body: JSON.stringify({ order_id: orderNumber }),
+                });
+
+                const callbackData = await callbackRes.json();
+                if (!callbackRes.ok) {
+                  console.warn("Callback gagal:", callbackData.error);
+
+                  // Update status order
+                  const res = await fetch(`/admin/orders/${orderId}/status`, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: token,
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                  });
+
+                  const data = await res.json();
+                  if (!res.ok) {
+                    throw new Error(
+                      data.error || "Gagal mengubah status order"
+                    );
+                  }
+
+                  Swal.fire({
+                    icon: "success",
+                    title: "Status Berhasil Diubah!",
+                    text: "Status order berhasil diperbarui, tetapi gagal mengirim invoice. Silakan kirim manual jika diperlukan.",
+                  });
+                } else {
+                  console.log("Callback berhasil:", callbackData);
+                  Swal.fire({
+                    icon: "success",
+                    title: "Berhasil!",
+                    text: "Status order berhasil diperbarui dan invoice telah dikirim.",
+                  });
+                }
+              } catch (callbackError) {
+                console.error("Error saat callback:", callbackError);
+                try {
+                  const res = await fetc(`/admin/orders/${orderId}/status`, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: token,
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                  });
+
+                  const data = await res.json();
+                  if (!res.ok) {
+                    throw new Error(
+                      data.error || "Gagal mengubah status order"
+                    );
+                  }
+
+                  Swal.fire({
+                    icon: "warning",
+                    title: "Status Berhasil Diubah",
+                    text: "Status order berhasil diperbarui, tetapi gagal mengirim invoice. Silakan kirim manual jika diperlukan.",
+                  });
+                } catch (manualError) {
+                  throw new Error(
+                    "Gagal mengubah status order: " + manualError
+                  );
+                }
+              }
+            } else {
+              // Untuk perubahan status lainnya (active ke pending)
+
+              const res = await fetch(`/admin/orders/${orderId}/status`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: token,
+                },
+                body: JSON.stringify({ status: newStatus }),
+              });
+
+              const data = await res.json();
+              if (!res.ok) {
+                throw new Error(data.error || "Gagal mengubah status");
+              }
+
+              Swal.fire({
+                icon: "success",
+                title: "Berhasil!",
+                text: "Status order berhasil diperbarui.",
+              });
+            }
+
+            await fetchTicketData();
           } catch (error) {
+            console.error("Error saat update status:", error);
             Swal.fire("Error", error.message, "error");
           }
         }
