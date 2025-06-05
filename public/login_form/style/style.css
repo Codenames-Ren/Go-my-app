@@ -100,23 +100,23 @@ button {
 }
 
 .login-btn {
-  background: linear-gradient(135deg, #fcbf49, #d62828);
-  border: 1px solid #d62828;
+  background: linear-gradient(135deg, #aba69c, #141414);
+  border: 1px solid #141414;
 }
 
 .login-btn:hover {
-  background: linear-gradient(135deg, #d62828, #fcbf49);
+  background: linear-gradient(135deg, #141414, #aba69c);
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .register-btn {
-  background: linear-gradient(135deg, #fcbf49, #d62828);
-  border: 1px solid #d62828;
+  background: linear-gradient(135deg, #aba69c, #141414);
+  border: 1px solid #141414;
 }
 
 .register-btn:hover {
-  background: linear-gradient(135deg, #d62828, #fcbf49);
+  background: linear-gradient(135deg, #141414, #aba69c);
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
@@ -134,7 +134,7 @@ button:focus {
 }
 
 button.ghost {
-  background-color: transparent;
+  background-color: #141414;
   border: 2px solid #fff;
   color: #fff;
 }
@@ -164,7 +164,7 @@ button.ghost:hover i.login {
 }
 
 form {
-  background: linear-gradient(135deg, #d62828, #fcbf49);
+  background: linear-gradient(135deg, #141414, #aba69c);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +184,7 @@ input {
 }
 
 .container {
-  background: linear-gradient(135deg, #ef3b3b, #fac864);
+  background: linear-gradient(135deg, #141414, #aba69c);
   border-radius: 25px;
   box-shadow: 0 14px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
@@ -255,7 +255,7 @@ input {
 }
 
 .overlay {
-  background-image: url("/public/login_form/assets/Live-Concert-Vector.webp");
+  background-image: url("/public/login_form/assets/overlay2.jpg");
   /* background: linear-gradient(135deg, #fcbf49, #d62828); */
   background-repeat: no-repeat;
   background-size: cover;
@@ -322,7 +322,7 @@ input {
 }
 
 .social-container a:hover {
-  border-color: #d62828;
+  border-color: #141414;
 }
 
 .social-container .social {
@@ -330,7 +330,7 @@ input {
 }
 
 .social-container .social:hover {
-  background: linear-gradient(135deg, #d62828, #fcbf49);
+  background: linear-gradient(135deg, #141414, #aba69c);
   transform: scale(1.05);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }

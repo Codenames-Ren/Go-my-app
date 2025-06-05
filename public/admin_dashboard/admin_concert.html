@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Manajemen Konser</title>
+    <title>Admin Dashboard - Manajemen Umroh</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link
@@ -26,7 +26,7 @@
           </a>
           <a href="#" class="menu-item">
             <i class="fas fa-ticket-alt"></i>
-            <span class="menu-text">Data Tiket</span>
+            <span class="menu-text">Data Destinasi</span>
           </a>
           <a href="#" class="menu-item">
             <i class="fas fa-users"></i>
@@ -34,7 +34,7 @@
           </a>
           <a href="/admin-concert" class="menu-item">
             <i class="fas fa-music"></i>
-            <span class="menu-text">Data Konser</span>
+            <span class="menu-text">Data Paket Umroh</span>
           </a>
           <a href="#" class="menu-item">
             <i class="fas fa-file-alt"></i>
@@ -57,34 +57,34 @@
       </div>
       <div class="main-content">
         <div class="header">
-          <h1 class="page-title">Manajemen Data Konser</h1>
+          <h1 class="page-title">Manajemen Paket Umroh</h1>
           <div>
             <span id="current-date-konser"></span>
           </div>
         </div>
 
         <div class="card">
-          <h2 class="card-title" id="form-event-title">Tambah Event Baru</h2>
+          <h2 class="card-title" id="form-event-title">Tambah Paket Baru</h2>
           <form id="form-event">
             <input type="hidden" id="event-id" />
             <div class="form-group">
-              <label for="event-name">Nama Event :</label>
+              <label for="event-name">Nama Paket :</label>
               <input
                 type="text"
                 id="event-name"
                 name="event-name"
-                placeholder="Nama Event"
+                placeholder="Nama Paket Umroh"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label for="event-location">Lokasi Event :</label>
+              <label for="event-location">Lokasi Keberangkatan :</label>
               <input
                 type="text"
                 id="event-location"
                 name="event-location"
-                placeholder="Contoh: Jakarta"
+                placeholder="Contoh: Bandara Soekarno-Hatta, Tangerang"
                 required
               />
             </div>
@@ -94,15 +94,13 @@
               <input
                 type="text"
                 id="event-image-name"
-                placeholder="contoh jakarta.webp"
+                placeholder="contoh umroh.jpg"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label for="event-order-deadline"
-                >Batas Waktu Pembelian Tiket :</label
-              >
+              <label for="event-order-deadline">Batas Waktu Pemesanan :</label>
               <input
                 type="datetime-local"
                 id="event-order-deadline"
@@ -112,7 +110,7 @@
             </div>
 
             <div class="form-group">
-              <label for="event-end-date">Tanggal Event :</label>
+              <label for="event-end-date">Tanggal Keberangkatan :</label>
               <input
                 type="datetime-local"
                 id="event-end-date"
@@ -122,7 +120,7 @@
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn">Simpan Event</button>
+              <button type="submit" class="btn">Simpan Data</button>
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -136,16 +134,16 @@
         </div>
 
         <div class="card">
-          <h2 class="card-title">Daftar Event Tersedia</h2>
+          <h2 class="card-title">Daftar Paket Yang Tersedia</h2>
           <div style="overflow-x: auto">
             <table id="tabel-event">
               <thead>
                 <tr>
-                  <th>ID Event</th>
-                  <th>Nama Event</th>
-                  <th>Lokasi Event</th>
-                  <th>Batas Waktu Pembelian Tiket</th>
-                  <th>Tanggal Event</th>
+                  <th>ID Paket</th>
+                  <th>Nama Paket</th>
+                  <th>Lokasi Keberangkatan</th>
+                  <th>Batas Waktu Pemesanan</th>
+                  <th>Tanggal Keberangkatan</th>
                   <th>Status Aktif</th>
                   <th>Dibuat Pada</th>
                   <th>Aksi</th>

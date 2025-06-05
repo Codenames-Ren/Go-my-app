@@ -682,7 +682,7 @@ async function exportData() {
 
       const options = {
         margin: [0.3, 0.3, 0.3, 0.3],
-        filename: `laporan-penjualan-tiket-harmony-music-${moment().format(
+        filename: `laporan-penjualan-paket-umroh-azmi${moment().format(
           "YYYY-MM-DD-HHmm"
         )}.pdf`,
         image: { type: "jpeg", quality: 0.95 },
@@ -756,7 +756,7 @@ async function exportData() {
   pdfContent.innerHTML = `
     <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
       <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
-        LAPORAN PENJUALAN TIKET HARMONY MUSIC
+        LAPORAN PENJUALAN PAKET UMROH - AZMI TRAVEL UMROH
       </h1>
       <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
         Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
@@ -782,13 +782,13 @@ async function exportData() {
         <thead style="display: table-header-group !important;">
           <tr style="background: #2c3e50 !important; color: white !important;">
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">User ID</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 22%;">Nama Event</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Tipe Tiket</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 22%;">Pilihan Paket</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Tipe Paket</th>
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 6%;">Qty</th>
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Harga Satuan</th>
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Total Harga</th>
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Status</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Tanggal Pembelian</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Tanggal Pemesanan</th>
           </tr>
         </thead>
 

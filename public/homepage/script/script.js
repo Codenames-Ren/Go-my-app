@@ -54,15 +54,15 @@ async function loadEventFromServer() {
       }" class="concert-img" />
       <div class="concert-info">
         <h3 class="concert-card-title">${event.EventName}</h3>
-        <p class="concert-card-description">${eventDate} - ${event.Location}</p>
-        <p class="concert-card-deadline"> Batas waktu pembelian tiket : ${deadline}</p>
+        <p class="concert-card-description">Jadwal Keberangkatan : ${eventDate} - ${
+        event.Location
+      }</p>
+        <p class="concert-card-deadline"> Batas Pendaftaran : ${deadline}</p>
         <button class="btn book-package"
-            data-package="${event.EventName.split(" ")
-              .slice(0, 2)
-              .join(" ")} Ticket"
+            data-package="${event.EventName.split(" ").slice(0, 2).join(" ")}"
             data-concert="${event.EventName}"
             data-event-id="${event.ID}">
-          Buy Ticket
+          Daftar Sekarang
         </button>
       </div>
       `;
@@ -74,7 +74,7 @@ async function loadEventFromServer() {
   } catch (error) {
     console.error("Gagal memuat event:", error);
     document.querySelector(".concert-grid").innerHTML =
-      "<p>Gagal memuat Konser</p>";
+      "<p>Gagal memuat paket umroh</p>";
   }
 }
 
@@ -293,15 +293,15 @@ if (bookingForm) {
     let ticketLabel = "";
     switch (ticketType) {
       case "1":
-        ticketLabel = "Regular";
+        ticketLabel = "Ekonomi";
         break;
 
       case "2":
-        ticketLabel = "VIP";
+        ticketLabel = "Reguler";
         break;
 
       case "3":
-        ticketLabel = "VVIP";
+        ticketLabel = "VIP";
         break;
 
       default:
@@ -365,9 +365,9 @@ if (bookingForm) {
             <p><strong>Nama:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>No. HP:</strong> ${phoneNumber}</p>
-            <p><strong>Nama Event:</strong> ${selectedConcertName}</p>
-            <p><strong>Tipe Tiket:</strong> ${ticketLabel}</p>
-            <p><strong>Jumlah Pembelian:</strong> ${guestsCount} Ticket</p>
+            <p><strong>Nama Paket:</strong> ${selectedConcertName}</p>
+            <p><strong>Kelas Paket:</strong> ${ticketLabel}</p>
+            <p><strong>Jumlah Jamaah:</strong> ${guestsCount}</p>
             <hr>
             <p><strong>Pembayaran ke:</strong><br>${value.sub}</p><br>
             <p style="font-weight: bold; color: #e74c3c;">Harap segera lakukan pembayaran ke nomor tujuan di atas untuk menyelesaikan pesanan Anda.</p>
@@ -419,7 +419,7 @@ if (bookingForm) {
 
       Swal.fire({
         title: "Sukses!",
-        html: `Pesanan kamu telah dikirim!<br>
+        html: `Pemesanan Berhasil!<br>
         <strong>Metode Pembayaran : </strong>${value.method}<br>
         <strong>Detail : </strong>${value.sub}`,
         icon: "success",

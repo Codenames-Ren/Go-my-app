@@ -46,7 +46,7 @@ p {
 }
 
 .email-input:focus {
-  border: #fcbf49;
+  border: #141414;
   box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
   outline: none;
 }
@@ -54,7 +54,7 @@ p {
 button {
   padding: 12px 0;
   width: 100%;
-  background: linear-gradient(135deg, #fcbf49, #d62828);
+  background: linear-gradient(135deg, #141414, #aba69c);
   color: white;
   border: none;
   border-radius: 5px;
@@ -65,5 +65,5 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(135deg, #d62828, #fcbf49);
+  background: linear-gradient(135deg, #aba69c, #141414);
 }

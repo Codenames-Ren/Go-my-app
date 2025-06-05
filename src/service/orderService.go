@@ -25,12 +25,12 @@ func CreateOrder (db *gorm.DB, req models.Order, userID *string) (*models.Order,
 	//ticket Price
 	var ticketPrice float64
 	switch req.TicketType {
-	case "Regular":
-		ticketPrice = 250000
+	case "Ekonomi":
+		ticketPrice = 27000000
+	case "Reguler":
+		ticketPrice = 30000000
 	case "VIP":
-		ticketPrice = 500000
-	case "VVIP":
-		ticketPrice = 1000000
+		ticketPrice = 35000000
 	default:
 		return nil, 0, fmt.Errorf("tipe tiket tidak valid")
 	}

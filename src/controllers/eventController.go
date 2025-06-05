@@ -39,7 +39,7 @@ func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if req.OrderDeadline.After(req.EndDate) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline cannot be later than the concert time."})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline must not be longer than than the departure time"})
 			return
 		}
 
