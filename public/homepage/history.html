@@ -1,108 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mukromah Hijrah | Payment History</title>
-        <link rel="stylesheet" href="/public/homepage/style/style.css" />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap"
-          rel="stylesheet"
-        />
-        <style>
-          .btn-confirm:hover {
-            background-color: rgb(220, 50, 50);
-            transform: scale(1.05);
-          }
-        </style>
-      </head>
-      <body>
-        <nav class="navbar">
-          <div class="logo">
-            <a href="/home">
-              <img src="/public/homepage/image/icons8-96.png" alt="logo" />
-              MukromahHijrah
-            </a>
-          </div>
-          <ul class="nav-menu" id="navMenu">
-            <li><a href="/home" class="active">Home</a></li>
-            <li><a href="/concert">Order</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li>
-              <a href="/history" class="active" id="nav-history">History</a>
-            </li>
-          </ul>
-          <div class="nav-links">
-            <a href="#" class="btn" id="loginBtn">Login</a>
-          </div>
-        </nav>
-
-        <!-- Hero Section -->
-        <section
-          class="hero-section"
-          style="background: linear-gradient(135deg, #ff9a9e, #fad0c4)"
-          data-aos="fade-up"
-        >
-          <div class="hero-content">
-            <h1 class="hero-title">Your Payment Records</h1>
-            <p class="hero-description">
-              Check your purchases and transaction status below.
-            </p>
-          </div>
-        </section>
-
-        <!-- Main Content -->
-        <main class="payment-history-section" data-aos="fade-up">
-          <h2 class="section-title">Payment History</h2>
-          <div class="history-table-container">
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>Nama</th>
-                  <th>Email</th>
-                  <th>Pilihan Paket</th>
-                  <th>Tanggal</th>
-                  <th>Jumlah Pemesanan</th>
-                  <th>Biaya</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </main>
-
-        <footer data-aos="fade-up">
-          <div class="footer-section">
-            <h3>Follow</h3>
-            <div class="social-links">
-              <a href="#"><i class="fab fa-facebook"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
-          <div class="footer-bottom">
-            <p>&copy; 2025 Mukromah Hijrah Mamunda. All rights reserved.</p>
-          </div>
-        </footer>
-
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script src="/public/homepage/script/script.js"></script>
-        <script>
-          AOS.init();
-        </script>
-      </body>
-    </html>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mukromah Hijrah | Payment History</title>
+    <link rel="stylesheet" href="/public/homepage/style/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .btn-confirm:hover {
+        background-color: rgb(220, 50, 50);
+        transform: scale(1.05);
+      }
+    </style>
   </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/home">
+          <img src="/public/homepage/image/icons8-96.png" alt="logo" />
+          MukromahHijrah
+        </a>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/home" class="active">Home</a></li>
+        <li><a href="/concert">Order</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li>
+          <a href="/history" class="active" id="nav-history">History</a>
+        </li>
+      </ul>
+      <div class="nav-links">
+        <a href="#" class="btn" id="loginBtn">Login</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="hero-section"
+      style="background: linear-gradient(135deg, #ff9a9e, #fad0c4)"
+      data-aos="fade-up"
+    >
+      <div class="hero-content">
+        <h1 class="hero-title">Your Payment Records</h1>
+        <p class="hero-description">
+          Check your purchases and transaction status below.
+        </p>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="payment-history-section" data-aos="fade-up">
+      <h2 class="section-title">Payment History</h2>
+      <div class="history-table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Pilihan Paket</th>
+              <th>Tanggal</th>
+              <th>Jumlah Pemesanan</th>
+              <th>Biaya</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer data-aos="fade-up">
+      <div class="footer-section">
+        <h3>Follow our social networks</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Mukromah Hijrah Mamunda. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/public/homepage/script/script.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
 </html>
