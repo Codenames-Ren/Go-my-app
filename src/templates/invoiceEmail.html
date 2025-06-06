@@ -4,617 +4,200 @@
     <meta charset="UTF-8" />
     <title>Invoice Pemesanan Paket Umroh</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-
-      :root {
-        --primary-green: #0f766e;
-        --secondary-green: #14b8a6;
-        --accent-gold: #f59e0b;
-        --light-gold: #fef3c7;
-        --bg-cream: #fefdf8;
-        --bg-white: #ffffff;
-        --text-dark: #1f2937;
-        --text-muted: #6b7280;
-        --border-light: #e5e7eb;
-        --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        --gradient-main: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
-        --gradient-gold: linear-gradient(135deg, var(--accent-gold) 0%, #f97316 100%);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #fefdf8;
-        color: var(--text-dark);
-        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        background-color: #f9fafb;
         padding: 20px;
-        line-height: 1.6;
+        color: #1f2937;
       }
 
       .container {
-        max-width: 850px;
-        margin: 0 auto;
-        background: var(--bg-white);
-        border-radius: 20px;
-        box-shadow: var(--shadow-medium);
-        overflow: hidden;
-        position: relative;
-      }
-
-      /* Decorative Islamic Pattern */
-      .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: var(--gradient-main);
+        max-width: 720px;
+        margin: auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
 
       .header {
-        background: var(--gradient-main);
-        color: white;
-        padding: 40px 50px;
         text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .header::before {
-        content: '☪';
-        position: absolute;
-        top: 20px;
-        left: 50px;
-        font-size: 24px;
-        opacity: 0.3;
-      }
-
-      .header::after {
-        content: '🕌';
-        position: absolute;
-        top: 20px;
-        right: 50px;
-        font-size: 24px;
-        opacity: 0.3;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
       }
 
       .header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        color: #0f766e;
       }
 
-      .header p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        font-weight: 300;
-      }
-
-      .content {
-        padding: 50px;
-      }
-
-      .info-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin-bottom: 40px;
-      }
-
-      .info-card {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border: 1px solid var(--border-light);
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: var(--shadow-soft);
-      }
-
-      .info-card h3 {
-        color: var(--primary-green);
-        font-size: 1.1rem;
+      .section-title {
         font-weight: 600;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        margin-bottom: 10px;
+        color: #0f766e;
+        font-size: 1.1rem;
       }
 
-      .info-card p {
-        margin-bottom: 8px;
-        color: var(--text-dark);
+      .info-table,
+      .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
       }
 
-      .info-card strong {
-        color: var(--primary-green);
-        font-weight: 600;
+      .info-table td,
+      .payment-table td {
+        padding: 8px 12px;
+        vertical-align: top;
+      }
+
+      .info-table td:first-child,
+      .payment-table td:first-child {
+        font-weight: 500;
+        width: 40%;
+        color: #374151;
       }
 
       .ticket-code {
-        background: var(--gradient-gold);
+        background-color: #f59e0b;
         color: white;
+        padding: 12px;
         text-align: center;
-        padding: 20px;
-        border-radius: 16px;
-        margin: 40px 0;
-        box-shadow: var(--shadow-soft);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .ticket-code::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: repeating-linear-gradient(
-          45deg,
-          transparent,
-          transparent 10px,
-          rgba(255, 255, 255, 0.1) 10px,
-          rgba(255, 255, 255, 0.1) 20px
-        );
-        animation: shimmer 3s linear infinite;
-      }
-
-      @keyframes shimmer {
-        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-      }
-
-      .ticket-code h2 {
-        font-size: 1.4rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .ticket-number {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-top: 8px;
-        letter-spacing: 3px;
-        position: relative;
-        z-index: 1;
+        font-size: 1.2rem;
+        border-radius: 8px;
+        margin: 20px 0;
       }
 
       .order-table {
-        background: var(--bg-white);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: var(--shadow-soft);
-        border: 1px solid var(--border-light);
-        margin: 30px 0;
-      }
-
-      table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 20px;
       }
 
-      thead {
-        background: var(--gradient-main);
-        color: white;
-      }
-
-      thead th {
-        padding: 20px 25px;
-        font-weight: 600;
-        font-size: 1rem;
+      .order-table th,
+      .order-table td {
+        padding: 12px;
+        border: 1px solid #e5e7eb;
         text-align: left;
       }
 
-      tbody td {
-        padding: 20px 25px;
-        border-bottom: 1px solid #f3f4f6;
-        color: var(--text-dark);
+      .order-table th {
+        background-color: #0f766e;
+        color: white;
       }
 
-      tbody tr:last-child td {
-        border-bottom: none;
-      }
-
-      tbody tr:hover {
-        background: #f9fafb;
-      }
-
-      .total-section {
-        background: linear-gradient(135deg, var(--light-gold) 0%, #fef9c3 100%);
-        border: 2px solid var(--accent-gold);
-        border-radius: 16px;
-        padding: 25px;
-        margin: 30px 0;
+      .total {
         text-align: right;
-      }
-
-      .total-amount {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--primary-green);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      }
-
-      .payment-section {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        border: 2px solid #0ea5e9;
-        border-radius: 16px;
-        padding: 30px;
-        margin: 40px 0;
-      }
-
-      .payment-section h3 {
-        color: #0c4a6e;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .payment-details {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 20px;
-      }
-
-      .payment-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .payment-label {
-        font-weight: 600;
-        color: #0c4a6e;
-        font-size: 0.9rem;
-      }
-
-      .payment-value {
-        font-size: 1.1rem;
-        color: var(--text-dark);
-      }
-
-      .payment-note {
-        background: #fef3c7;
-        border: 1px solid var(--accent-gold);
-        border-radius: 12px;
-        padding: 15px;
-        font-style: italic;
-        color: #92400e;
-      }
-
-      .instruction-section {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border: 2px solid #f87171;
-        border-radius: 16px;
-        padding: 30px;
-        margin: 40px 0;
-      }
-
-      .instruction-section h3 {
-        color: #dc2626;
         font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        font-weight: bold;
+        color: #0f766e;
+        margin-bottom: 30px;
       }
 
-      .instruction-section p {
-        margin-bottom: 12px;
-        color: #7f1d1d;
-        line-height: 1.7;
+      .note {
+        background-color: #fef3c7;
+        padding: 12px 16px;
+        border-left: 4px solid #f59e0b;
+        font-style: italic;
+        font-size: 0.95rem;
+        color: #92400e;
+        border-radius: 4px;
+      }
+
+      .instructions {
+        background-color: #fef2f2;
+        border: 1px dashed #dc2626;
+        padding: 16px;
+        border-radius: 6px;
+        margin-top: 20px;
       }
 
       .thank-you {
         text-align: center;
-        padding: 40px 0;
-        border-top: 2px solid var(--border-light);
-        margin-top: 40px;
+        margin-top: 30px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 20px;
       }
 
       .thank-you h2 {
-        color: var(--primary-green);
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-bottom: 15px;
-      }
-
-      .thank-you p {
-        color: var(--text-muted);
-        font-size: 1.1rem;
+        color: #0f766e;
+        margin-bottom: 10px;
       }
 
       .footer {
-        background: #f8fafc;
-        padding: 30px 50px;
+        font-size: 0.9rem;
+        color: #6b7280;
         text-align: center;
-        border-top: 1px solid var(--border-light);
-        color: var(--text-muted);
-      }
-
-      .footer p {
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-      }
-
-      .footer strong {
-        color: var(--primary-green);
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        body {
-          padding: 15px;
-        }
-
-        .content {
-          padding: 25px 20px;
-        }
-
-        .header {
-          padding: 25px 20px;
-        }
-
-        .header h1 {
-          font-size: 1.8rem;
-        }
-
-        .info-section {
-          grid-template-columns: 1fr;
-          gap: 15px;
-        }
-
-        .info-card {
-          padding: 20px;
-        }
-
-        .payment-details {
-          grid-template-columns: 1fr;
-        }
-
-        .payment-section {
-          padding: 25px 20px;
-        }
-
-        .instruction-section {
-          padding: 25px 20px;
-        }
-
-        .total-section {
-          padding: 20px;
-        }
-
-        .footer {
-          padding: 25px 20px;
-        }
-
-        table {
-          font-size: 0.85rem;
-        }
-
-        thead th, tbody td {
-          padding: 12px 10px;
-        }
-
-        .ticket-number {
-          font-size: 1.4rem;
-        }
-
-        .total-amount {
-          font-size: 1.6rem;
-        }
-      }
-
-      @media (max-width: 480px) {
-        body {
-          padding: 10px;
-        }
-
-        .container {
-          margin: 0;
-          border-radius: 15px;
-        }
-
-        .content {
-          padding: 20px 15px;
-        }
-
-        .header {
-          padding: 20px 15px;
-        }
-
-        .header h1 {
-          font-size: 1.5rem;
-        }
-        
-        .ticket-code {
-          padding: 15px;
-          margin: 25px 0;
-        }
-        
-        .ticket-code h2 {
-          font-size: 1rem;
-        }
-        
-        .ticket-number {
-          font-size: 1.2rem;
-          letter-spacing: 2px;
-        }
-
-        .info-card {
-          padding: 15px;
-        }
-
-        .payment-section, .instruction-section {
-          padding: 20px 15px;
-        }
-
-        .total-section {
-          padding: 15px;
-        }
-
-        .total-amount {
-          font-size: 1.4rem;
-        }
-
-        .footer {
-          padding: 20px 15px;
-        }
-
-        thead th, tbody td {
-          padding: 10px 8px;
-          font-size: 0.8rem;
-        }
-
-        .thank-you h2 {
-          font-size: 1.4rem;
-        }
-
-        .thank-you p {
-          font-size: 1rem;
-        }
-      }
-
-      @media (max-width: 360px) {
-        body {
-          padding: 8px;
-        }
-
-        .container {
-          border-radius: 12px;
-        }
-
-        .content {
-          padding: 15px 12px;
-        }
-
-        .header {
-          padding: 18px 12px;
-        }
-
-        .info-card, .payment-section, .instruction-section, .total-section {
-          padding: 15px 12px;
-        }
-
-        .footer {
-          padding: 18px 12px;
-        }
+        margin-top: 40px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 15px;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h1>INVOICE UMROH</h1>
+        <h1>INVOICE PEMESANAN PAKET UMROH</h1>
         <p>Tanggal Invoice: {{.Now.Format "02 January 2006"}}</p>
       </div>
 
-      <div class="content">
-        <div class="info-section">
-          <div class="info-card">
-            <h3>👤 Informasi Jamaah</h3>
-            <p><strong>Nama:</strong> {{.Name}}</p>
-            <p><strong>Paket:</strong> {{.EventName}}</p>
-          </div>
-          <div class="info-card">
-            <h3>📅 Detail Pemesanan</h3>
-            <p><strong>Tanggal:</strong> {{.Now.Format "02 January 2006"}}</p>
-            <p><strong>Waktu:</strong> {{.Now.Format "15:04 WIB"}}</p>
-          </div>
-        </div>
+      <table class="info-table">
+        <tr><td>Nama Jamaah</td><td>{{.Name}}</td></tr>
+        <tr><td>Paket Umroh yang Pesan</td><td>{{.EventName}}</td></tr>
+        <tr><td>Tanggal</td><td>{{.Now.Format "02 January 2006"}}</td></tr>
+        <tr><td>Waktu</td><td>{{.Now.Format "15:04 WIB"}}</td></tr>
+      </table>
 
-        <div class="ticket-code">
-          <h2>KODE TIKET UMROH</h2>
-          <div class="ticket-number">{{.TicketCode}}</div>
-        </div>
+      <div class="ticket-code">Kode Tiket: {{.TicketCode}}</div>
 
-        <div class="order-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Deskripsi Paket</th>
-                <th>Harga Satuan</th>
-                <th>Jumlah</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <strong>Paket Umroh {{.TicketType}}</strong>
-                  <br>
-                  <small style="color: #6b7280;">{{.EventName}}</small>
-                </td>
-                <td>Rp {{printf "%.0f" .TicketPrice}}</td>
-                <td>{{.OrderCount}} orang</td>
-                <td><strong>Rp {{printf "%.0f" .TotalPrice}}</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>Deskripsi</th>
+            <th>Harga</th>
+            <th>Jumlah</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Paket Umroh {{.TicketType}}<br><small>{{.EventName}}</small></td>
+            <td>Rp {{printf "%.0f" .TicketPrice}}</td>
+            <td>{{.OrderCount}} orang</td>
+            <td><strong>Rp {{printf "%.0f" .TotalPrice}}</strong></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <div class="total-section">
-          <h3 style="margin-bottom: 10px; color: var(--primary-green);">Total Pembayaran</h3>
-          <div class="total-amount">Rp {{printf "%.0f" .TotalPrice}}</div>
-        </div>
+      <div class="total">Total Pembayaran: Rp {{printf "%.0f" .TotalPrice}}</div>
 
-        <div class="payment-section">
-          <h3>💳 Detail Pembayaran</h3>
-          <div class="payment-details">
-            <div class="payment-item">
-              <span class="payment-label">Metode Pembayaran : &nbsp;</span>
-              <span class="payment-value">Transfer Bank</span>
-            </div>
-            <div class="payment-item">
-              <span class="payment-label">Transfer ke Rekening : &nbsp;</span>
-              <span class="payment-value">{{.PaymentTo}}</span>
-            </div>
-            <div class="payment-item">
-              <span class="payment-label">Jumlah Transfer : &nbsp;</span>
-              <span class="payment-value"><strong>Rp {{printf "%.0f" .TotalPrice}}</strong></span>
-            </div>
-            <div class="payment-item">
-              <span class="payment-label">Status :&nbsp;</span>
-              <span class="payment-value" style="color: #1eed3d;">Paid</span>
-            </div>
-          </div>
-          <div class="payment-note">
-            💡 <strong>Catatan:</strong> Mohon simpan invoice ini baik-baik sebagai bukti pemesanan anda.
-          </div>
-        </div>
+      <table class="payment-table">
+        <tr><td>Metode Pembayaran</td><td>Transfer Bank</td></tr>
+        <tr><td>Transfer ke Rekening</td><td>{{.PaymentTo}}</td></tr>
+        <tr><td>Status</td><td style="color: #10b981; font-weight: bold;">Paid</td></tr>
+      </table>
 
-        <div class="instruction-section">
-          <h3>⚠️ Petunjuk Penting</h3>
-          <p>Setelah menerima invoice ini, Anda <strong>diwajibkan hadir langsung</strong> ke kantor kami dalam waktu maksimal <strong>30 hari</strong> untuk melengkapi seluruh dokumen persyaratan umroh.</p>
-          <p>Jika melebihi batas waktu tersebut, pihak kami akan menghubungi Anda untuk penjadwalan ulang atau pembatalan otomatis sesuai syarat dan ketentuan yang berlaku.</p>
-          <p><strong>Dokumen yang perlu disiapkan:</strong> KTP, KK, Passport, Foto 4x6, Surat Keterangan Sehat, dan dokumen pendukung lainnya.</p>
-        </div>
+      <div class="note">
+        💡 <strong>Catatan:</strong> Mohon simpan invoice ini baik-baik sebagai bukti pemesanan Anda.
+      </div>
 
-        <div class="thank-you">
-          <h2>Barakallahu fiikum</h2>
-          <p>Terima kasih telah mempercayakan perjalanan ibadah umroh Anda bersama kami. Semoga Allah memudahkan dan memberikan keberkahan dalam perjalanan suci ini.</p>
-        </div>
+      <div class="instructions">
+        <strong>⚠️ Penting:</strong>
+        <p>Silakan datang ke kantor kami maksimal <strong>30 hari</strong> setelah pemesanan untuk melengkapi dokumen.</p>
+        <p>Dokumen yang dibutuhkan: KTP, KK, Passport, Foto 4x6, Surat Sehat, dll.</p>
+      </div>
+
+      <div class="thank-you">
+        <h2>Barakallahu fiikum</h2>
+        <p>Terima kasih telah mempercayakan ibadah umroh Anda bersama kami.</p>
       </div>
 
       <div class="footer">
-        <p><strong>Invoice ini merupakan bukti sah pemesanan paket umroh.</strong></p>
-        <p>Untuk pertanyaan lebih lanjut, hubungi kami di: <strong>admin@umrohbersama.id</strong></p>
-        <p>WhatsApp: <strong>+62 812-3456-7890</strong></p>
-        <p>&copy; {{.Now.Format "2006"}} Umroh Bersama. Hak cipta dilindungi undang-undang.</p>
+        <p>Invoice ini sah dan dikeluarkan oleh Mukromah Hijrah Mamunda.</p>
+        <p>Hubungi kami: <strong>admin@mukromahmamun.id</strong> | WhatsApp: <strong>+62 812-3456-7890</strong></p>
+        <p>&copy; {{.Now.Format "2006"}} Mukromah Hijrah Mamunda. All rights reserved.</p>
       </div>
     </div>
   </body>
