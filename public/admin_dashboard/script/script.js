@@ -241,6 +241,8 @@ function populateSalesTable(data) {
 
     row.innerHTML = `
       <td>${sale.UserID || "-"}</td>
+      <td>${sale.Name || "-"}</td>
+      <td>${sale.PhoneNumber || "-"}</td>
       <td>${sale.EventName || "-"}</td>
       <td>${sale.TicketType || "-"}</td>
       <td>${sale.OrderCount || 0}</td>
@@ -756,7 +758,7 @@ async function exportData() {
   pdfContent.innerHTML = `
     <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
       <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
-        LAPORAN PENJUALAN PAKET UMROH - AZMI TRAVEL UMROH
+        LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA
       </h1>
       <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
         Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
@@ -781,14 +783,16 @@ async function exportData() {
       <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 14px; table-layout: fixed !important;">
         <thead style="display: table-header-group !important;">
           <tr style="background: #2c3e50 !important; color: white !important;">
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">User ID</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 22%;">Pilihan Paket</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Tipe Paket</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 6%;">Qty</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Harga Satuan</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">Total Harga</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 5%;">User ID</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Nama Pemesan</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">No Telepon</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Pilihan Paket</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Tipe Paket</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 5%;">Qty</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Harga Satuan</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Total Harga</th>
             <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Status</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Tanggal Pemesanan</th>
+            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Tanggal Pemesanan</th>
           </tr>
         </thead>
 
@@ -808,6 +812,12 @@ async function exportData() {
               <tr style="background: ${rowBg} !important;">
                 <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
                   sale.UserID || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
+                  sale.Name || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
+                  sale.PhoneNumber || "-"
                 }</td>
                 <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word;">${
                   sale.EventName || "-"
