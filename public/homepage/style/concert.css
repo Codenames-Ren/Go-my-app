@@ -313,7 +313,7 @@ form select:focus {
 }
 
 .concert-card .btn:hover {
-  background: rgb(52, 188, 10);
+  background: rgb(58, 217, 9);
   color: #fff;
   transform: scale(1.05);
 }
