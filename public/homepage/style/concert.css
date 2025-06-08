@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   background-color: #f8f9f6;
   color: #4a4a4a;
   font-size: 16px;
@@ -31,7 +31,7 @@ body {
 .logo a {
   display: flex;
   align-items: center;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.8rem;
   color: #3c4a3f;
   text-decoration: none;
@@ -93,7 +93,7 @@ body {
 /* Section Title */
 .section-title {
   font-size: 2.5rem;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   color: #8ca78c;
   text-align: center;
   margin-bottom: 3rem;
@@ -189,7 +189,7 @@ body {
 }
 
 .modal-title {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.8rem;
   color: #8ca78c;
   margin-bottom: 1.5rem;
@@ -210,9 +210,9 @@ form {
   font-size: 1rem;
 }
 
-form input[type='text'],
-form input[type='email'],
-form input[type='tel'],
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
 form select {
   width: 100%;
   padding: 0.55rem 0.75rem;
@@ -222,9 +222,9 @@ form select {
   transition: border-color 0.3s ease;
 }
 
-form input[type='text']:focus,
-form input[type='email']:focus,
-form input[type='tel']:focus,
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="tel"]:focus,
 form select:focus {
   border-color: #8ca78c;
   outline: none;
@@ -257,6 +257,98 @@ form select:focus {
   color: #fff;
 }
 
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 0 5%;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.card i {
+  margin-bottom: 1rem;
+  color: var(--mustard);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+}
+
+.card:hover i {
+  transform: rotate(5deg);
+}
+
+.concert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.concert-card {
+  background-color: var(--card-bg);
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.concert-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.concert-card img.concert-img {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.concert-card-title {
+  font-size: 1.4rem;
+  margin-top: 1rem;
+  font-family: "Staatliches", cursive;
+  color: var(--punk-purple);
+  text-shadow: 1px 1px var(--punk-black);
+}
+
+.concert-card-description {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.concert-card .btn {
+  margin-top: 1rem;
+  background: var(--punk-purple);
+  color: var(--text-light);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.concert-card .btn:hover {
+  background: var(--punk-green);
+  color: #000;
+  transform: scale(1.05);
+}
+
 /* Footer */
 footer {
   background-color: #a7bfa3;
@@ -266,7 +358,7 @@ footer {
 }
 
 .footer-section h3 {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.6rem;
   margin-bottom: 1rem;
 }
@@ -309,5 +401,3 @@ footer {
     padding: 1.5rem;
   }
 }
-
-
