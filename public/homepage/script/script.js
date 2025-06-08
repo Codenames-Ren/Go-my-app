@@ -1,7 +1,3 @@
-// script.js - Versi fix + animasi tambahan
-
-console.log("Script Loaded!");
-
 // --- DOM SELECTORS ---
 const modeToggle = document.getElementById("modeToggle");
 const loginBtn = document.getElementById("loginBtn");
@@ -12,6 +8,10 @@ const bookingForm = document.getElementById("bookingForm");
 const packageType = document.getElementById("packageType");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("navMenu");
+
+// Global variables
+let selectedConcertName = "";
+let selectedEventId = null;
 
 //get event from backend server
 async function loadEventFromServer() {
@@ -79,8 +79,16 @@ async function loadEventFromServer() {
 }
 
 function setupBookingButtons() {
+  const existingButtons = document.querySelectorAll(".book-package");
+
+  existingButtons.forEach((button) => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+  });
+
+  // Setup event listener
   const bookPackageButtons = document.querySelectorAll(".book-package");
-  bookPackageButtons.forEach((button) => {
+  bookPackageButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
       const token = localStorage.getItem("token");
 
@@ -102,10 +110,17 @@ function setupBookingButtons() {
       selectedConcertName = button.getAttribute("data-concert");
       selectedEventId = button.getAttribute("data-event-id");
 
-      if (packageType)
+      if (packageType) {
         packageType.textContent =
           packageName.charAt(0).toUpperCase() + packageName.slice(1);
-      if (bookingModal) bookingModal.classList.add("active");
+      }
+
+      if (bookingModal) {
+        bookingModal.classList.add("active");
+        bookingModal.style.display = "flex";
+      } else {
+        console.error("Booking modal not found!");
+      }
     });
   });
 }
@@ -163,47 +178,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- PACKAGE BOOKING ---
-const bookPackageButtons = document.querySelectorAll(".book-package");
-let selectedConcertName = "";
-let selectedEventId = null;
-
-bookPackageButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      Swal.fire({
-        title: "Belum Login!",
-        text: "Anda harus login terlebih dahulu sebelum memesan",
-        icon: "warning",
-        confirmButtonText: "Login Sekarang",
-        showCancelButton: true,
-        cancelButtonText: "Batal",
-      }).then((result) => {
-        if (result.isConfirmed) window.location.href = "/login";
-      });
-      return;
-    }
-
-    const packageName = button.getAttribute("data-package");
-    selectedConcertName = button.getAttribute("data-concert");
-    selectedEventId = button.getAttribute("data-event-id");
-
-    if (packageType)
-      packageType.textContent =
-        packageName.charAt(0).toUpperCase() + packageName.slice(1);
-    if (bookingModal) bookingModal.classList.add("active");
-  });
+// --- CLOSE MODAL ---
+closeBookingModal?.addEventListener("click", () => {
+  bookingModal?.classList.remove("active");
+  if (bookingModal) bookingModal.style.display = "none";
 });
 
-// --- CLOSE MODAL ---
-closeBookingModal?.addEventListener("click", () =>
-  bookingModal?.classList.remove("active")
-);
-cancelBooking?.addEventListener("click", () =>
-  bookingModal?.classList.remove("active")
-);
+cancelBooking?.addEventListener("click", () => {
+  bookingModal?.classList.remove("active");
+  if (bookingModal) bookingModal.style.display = "none";
+});
+
+// Close modal when clicking outside
+bookingModal?.addEventListener("click", (e) => {
+  if (e.target === bookingModal) {
+    bookingModal.classList.remove("active");
+    bookingModal.style.display = "none";
+  }
+});
 
 // --- FORM SUBMIT ---
 if (bookingForm) {
@@ -232,6 +224,7 @@ if (bookingForm) {
     }
 
     bookingModal?.classList.remove("active");
+    if (bookingModal) bookingModal.style.display = "none";
 
     //Payment Method
     const { isConfirmed, value } = await Swal.fire({
@@ -339,11 +332,7 @@ if (bookingForm) {
         );
       }
 
-      console.log("Server response:", data);
-
       orderId = data.order_number;
-
-      console.log("Extracted Order ID:", orderId);
 
       if (!orderId) {
         return Swal.fire(
@@ -382,7 +371,6 @@ if (bookingForm) {
 
     //Backend Callback (activate status + send invoice)
     try {
-      console.log("Sending order id for callback:", orderId);
       const callbackRes = await fetch("/orders/payment/callback", {
         method: "POST",
         headers: {
@@ -392,11 +380,7 @@ if (bookingForm) {
         body: JSON.stringify({ order_id: orderId }),
       });
 
-      console.log("Callback request sent with body:", { order_id: orderId });
-
       const callbackData = await callbackRes.json();
-
-      console.log("Callback response:", callbackData);
 
       if (!callbackRes.ok) {
         return Swal.fire(
@@ -450,7 +434,6 @@ async function checkLoginStatus() {
       throw new Error("Invalid token");
     }
   } catch (error) {
-    console.error("Login check error:", error);
     localStorage.removeItem("token");
     updateLoginButton(false);
   }
@@ -458,8 +441,6 @@ async function checkLoginStatus() {
 
 // --- HANDLE LOGIN/LOGOUT ---
 if (loginBtn) {
-  console.log("Setup login button click handler");
-
   loginBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -503,6 +484,7 @@ function updateLoginButton(loggedIn) {
   if (loginBtn) loginBtn.textContent = loggedIn ? "Logout" : "Login";
 }
 
+// HISTORY PAGE FUNCTIONALITY
 document.addEventListener("DOMContentLoaded", () => {
   const historyTable = document.querySelector(".history-table tbody");
 
