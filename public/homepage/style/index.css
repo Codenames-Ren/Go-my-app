@@ -176,8 +176,15 @@ body {
 }
 
 .lineup-card ul li {
-  margin-bottom: 0.7rem;
+  margin: 0.7rem 0;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #d4e1d0;
 }
+
+.lineup-card ul li:last-child {
+  border-bottom: none; /* jangan kasih garis di item terakhir */
+}
+
 
 .lineup-card:last-child:nth-child(4) {
   grid-column: 2 / span 1;
@@ -222,7 +229,20 @@ body {
   padding: 0;
   color: #4a4a4a;
   font-weight: 500;
+  font-size: 1.05rem;
   line-height: 1.7;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.ticket-benefits li {
+  margin: 0.7rem 0;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #d4e1d0;
+}
+
+.ticket-benefits li:last-child {
+  border-bottom: none;
 }
 
 /* Why Choose Us */
