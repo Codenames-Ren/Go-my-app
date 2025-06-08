@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   background-color: #f8f9f6;
   color: #4a4a4a;
   line-height: 1.6;
@@ -29,7 +29,7 @@ body {
 .logo a {
   display: flex;
   align-items: center;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.8rem;
   color: #3c4a3f;
   text-decoration: none;
@@ -52,7 +52,7 @@ body {
   color: #3c4a3f;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding-bottom: 0.3rem;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
@@ -91,7 +91,7 @@ body {
 
 .hero-title {
   font-size: 3rem;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   margin-bottom: 1rem;
   letter-spacing: 1.2px;
 }
@@ -112,7 +112,7 @@ body {
 
 /* Section Title */
 .section-title {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 2.4rem;
   color: #8ca78c;
   text-align: center;
@@ -148,7 +148,7 @@ footer {
 }
 
 .footer-section h3 {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }

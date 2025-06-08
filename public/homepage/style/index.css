@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   background-color: #f8f9f6;
   color: #4a4a4a;
   font-size: 16px;
@@ -30,7 +30,7 @@ body {
 .logo a {
   display: flex;
   align-items: center;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.8rem;
   color: #3c4a3f;
   text-decoration: none;
@@ -53,7 +53,7 @@ body {
   color: #3c4a3f;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.3rem;
   padding-bottom: 0.3rem;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
@@ -92,7 +92,7 @@ body {
 
 .hero-title {
   font-size: 3.4rem;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   margin-bottom: 1rem;
   letter-spacing: 1px;
 }
@@ -129,7 +129,7 @@ body {
 /* Section Title */
 .section-title {
   font-size: 2.5rem;
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   color: #8ca78c;
   text-align: center;
   margin-bottom: 3rem;
@@ -149,7 +149,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 5px 20px rgba(140, 167, 140, 0.1);
   transition: 0.3s;
-  text-align: center; 
+  text-align: center;
 }
 
 .lineup-card:hover {
@@ -184,7 +184,6 @@ body {
 .lineup-card ul li:last-child {
   border-bottom: none; /* jangan kasih garis di item terakhir */
 }
-
 
 .lineup-card:last-child:nth-child(4) {
   grid-column: 2 / span 1;
@@ -292,7 +291,7 @@ footer {
 }
 
 .footer-section h3 {
-  font-family: 'Merriweather', serif;
+  font-family: "Merriweather", serif;
   font-size: 1.6rem;
   margin-bottom: 1rem;
 }
@@ -336,5 +335,3 @@ footer {
     gap: 1.5rem;
   }
 }
-
-
