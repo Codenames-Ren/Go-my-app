@@ -1,4 +1,4 @@
-/* ===== index.css ===== */
+/* ===== contact.css ===== */
 /* Reset dasar */
 * {
   margin: 0;
@@ -103,22 +103,6 @@ body {
   margin: 0 auto 2rem;
 }
 
-.hero-section .btn {
-  background-color: #d7e3d4;
-  color: #3c4a3f;
-  padding: 0.8rem 2.2rem;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.hero-section .btn:hover {
-  background-color: #8ca78c;
-  color: #fff;
-}
-
 /* Container */
 .container {
   max-width: 1100px;
@@ -135,153 +119,73 @@ body {
   margin-bottom: 3rem;
 }
 
-/* Lineup Cards */
-.lineup-grid {
+/* Contact Cards */
+.contact-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   justify-content: center;
 }
 
-.lineup-card {
-  background-color: #fff;
-  padding: 1.8rem;
-  border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(140, 167, 140, 0.1);
-  transition: 0.3s;
-  text-align: center; 
-}
-
-.lineup-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(140, 167, 140, 0.2);
-}
-
-.lineup-card h3 {
-  font-size: 1.6rem;
-  color: #8ca78c;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.lineup-card ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-  color: #4a4a4a;
-  font-weight: 500;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  text-align: center;
-}
-
-.lineup-card ul li {
-  margin: 0.7rem 0;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid #d4e1d0;
-}
-
-.lineup-card ul li:last-child {
-  border-bottom: none; /* jangan kasih garis di item terakhir */
-}
-
-
-.lineup-card:last-child:nth-child(4) {
-  grid-column: 2 / span 1;
-  justify-self: center;
-}
-
-/* Ticket Cards */
-.ticket-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
-}
-
-.ticket-card {
+.contact-card {
   background-color: #fff;
   padding: 2rem;
   border-radius: 16px;
-  text-align: center;
   box-shadow: 0 5px 20px rgba(140, 167, 140, 0.1);
+  text-align: center;
   transition: 0.3s;
 }
 
-.ticket-card:hover {
-  transform: translateY(-5px);
+.contact-card:hover {
   box-shadow: 0 12px 25px rgba(140, 167, 140, 0.2);
 }
 
-.ticket-card h3 {
-  font-size: 1.8rem;
+.contact-card i {
   color: #8ca78c;
-  margin-bottom: 0.5rem;
-}
-
-.ticket-card .price {
-  font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #444;
 }
 
-.ticket-benefits {
-  list-style: none;
-  padding: 0;
+.contact-card p {
+  font-weight: 600;
   color: #4a4a4a;
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+}
+
+.contact-card a {
+  color: #3c4a3f;
   font-weight: 500;
   font-size: 1.05rem;
-  line-height: 1.7;
-  text-align: center;
-  margin-top: 1rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  word-break: break-word;
 }
 
-.ticket-benefits li {
-  margin: 0.7rem 0;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid #d4e1d0;
+.contact-card a:hover {
+  color: #6b8c6a;
 }
 
-.ticket-benefits li:last-child {
-  border-bottom: none;
-}
-
-/* Why Choose Us */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-}
-
-.card {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(140, 167, 140, 0.15);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(140, 167, 140, 0.3);
-}
-
-.card i {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #8ca78c;
-}
-
-.card h3 {
-  font-size: 1.5rem;
-  color: #8ca78c;
-  margin-bottom: 0.5rem;
-}
-
-.card p {
+.contact-card address {
+  font-style: normal;
   color: #555;
-  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 0.3rem;
 }
+
+.contact-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+}
+
+.contact-card {
+  width: 100%;
+  max-width: 320px; /* Membatasi lebar kartu */
+  margin: 0 auto;
+}
+
 
 /* Footer */
 footer {
@@ -329,12 +233,8 @@ footer {
     gap: 1rem;
   }
 
-  .lineup-grid,
-  .ticket-grid,
-  .card-grid {
+  .contact-section {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 }
-
-

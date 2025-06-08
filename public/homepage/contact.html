@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mukromah Hijrah | Contact</title>
+    <title>Mukromah Hijrah | Kontak</title>
     <link
       rel="icon"
       href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
@@ -14,22 +14,28 @@
       href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
       type="image/x-icon"
     />
-    <link rel="stylesheet" href="/public/homepage/style/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/public/homepage/style/contact.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Concert+One&family=Poppins&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav class="navbar">
       <div class="logo">
-        <a href="/public/homepage/index.html">
-          <img src="/public/homepage/image/icons8-96.png" alt="logo" /> MukromahHijrah
+        <a href="/home">
+          <img src="/public/homepage/image/umroh.jpg" alt="logo" /> MukromahHijrah
         </a>
       </div>
       <ul class="nav-menu" id="navMenu">
         <li><a href="/home">Home</a></li>
-        <li><a href="/concert">Order</a></li>
-        <li><a href="/about" class="active">About</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/order">Order</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact" class="active">Contact</a></li>
         <li><a href="/history" id="nav-history">History</a></li>
       </ul>
       <div class="nav-links">
@@ -37,32 +43,58 @@
       </div>
     </nav>
 
-    <section class="hero-section" style="background: linear-gradient(135deg, #118ab2, #06d6a0);" data-aos="fade-up">
+    <section
+      class="hero-section"
+      data-aos="fade-up"
+    >
       <div class="hero-content">
-        <h1 class="hero-title">Have Question?</h1>
-        <p class="hero-description">If you have any questions, complaints or feedback, do not hesitate to contact us.</p>
+        <h1 class="hero-title">Ada Pertanyaan?</h1>
+        <p class="hero-description">
+          Jika Anda memiliki pertanyaan, keluhan, atau ingin berkonsultasi seputar paket umroh, jangan ragu untuk menghubungi kami.
+        </p>
       </div>
     </section>
 
     <section class="container contact-section" data-aos="fade-up">
-        <h2 class="section-title" data-aos="zoom-in">Contact Us</h2>
-        <div class="email-card" data-aos="fade-up">
-          <i class="fas fa-envelope fa-2x"></i>
-          <p>Reach us at:</p>
-          <a href="mailto:diasmayri15@gmail.com" class="email-link">diasmayri15@gmail.com</a>
+      <h2 class="section-title">Hubungi Kami</h2>
+
+      <div class="contact-cards-wrapper">
+        <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-phone fa-2x"></i>
+          <p>Telepon:</p>
+          <a href="tel:+6281234567890" class="phone-link">+62 812-3456-7890</a>
         </div>
-      </section>
-      
+
+        <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-envelope fa-2x"></i>
+          <p>Email:</p>
+          <a href="mailto:info@mukromahhijrah.com" class="email-link">info@mukromahhijrah.com</a>
+        </div>
+
+        <div class="contact-card" data-aos="fade-up" data-aos-delay="300">
+          <i class="fab fa-whatsapp fa-2x"></i>
+          <p>WhatsApp:</p>
+          <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-link">+62 812-3456-7890</a>
+        </div>
+
+        <div class="contact-card" data-aos="fade-up" data-aos-delay="400">
+          <i class="fas fa-map-marker-alt fa-2x"></i>
+          <p>Alamat Kantor:</p>
+          <address>Jl. Hijrah No.123, Jakarta Selatan, Indonesia</address>
+        </div>
+      </div>
+    </section>
+
+
 
     <footer data-aos="fade-up">
-        <div class="footer-section">
-          <h3>Follow our social networks </h3>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-          </div>
+      <div class="footer-section">
+        <h3>Follow our social networks</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -73,6 +105,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/public/homepage/script/script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init();</script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

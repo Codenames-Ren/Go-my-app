@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mukromah Hijrah | Order</title>
+    <title>Mukromah Hijrah | Pemesanan Paket Umroh</title>
     <link
       rel="icon"
       href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
@@ -14,7 +14,7 @@
       href="/public/login_form/assets/icons8-rock-music-ios-17-filled-32.png"
       type="image/x-icon"
     />
-    <link rel="stylesheet" href="/public/homepage/style/style.css" />
+    <link rel="stylesheet" href="/public/homepage/style/concert.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -27,15 +27,15 @@
   <body>
     <nav class="navbar">
       <div class="logo">
-        <a href="/public/homepage/index.html">
-          <img src="/public/homepage/image/icons8-96.png" alt="logo" />
+        <a href="/home">
+          <img src="/public/homepage/image/umroh.jpg" alt="logo" />
           MukromahHijrah
         </a>
       </div>
       <ul class="nav-menu" id="navMenu">
         <li><a href="/home">Home</a></li>
-        <li><a href="/concert">Order</a></li>
-        <li><a href="/about" class="active">About</a></li>
+        <li><a href="/order" class="active">Order</a></li>
+        <li><a href="/about">About</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/history" id="nav-history">History</a></li>
       </ul>
@@ -46,9 +46,7 @@
 
     <main class="container concert-section" style="padding: 6rem 5% 2rem">
       <h2 class="section-title" data-aos="zoom-in">Daftar Paket Umroh</h2>
-      <div class="concert-grid" id="concertGrid">
-        </div>
-      </div>
+      <div class="concert-grid" id="concertGrid"></div>
     </main>
 
     <!-- Booking Modal -->
@@ -58,11 +56,11 @@
           <i class="fas fa-times"></i>
         </button>
         <h2 class="modal-title">
-          Book Your <span id="packageType">Package</span>
+          Pesan Paket <span id="packageType">Umroh</span>
         </h2>
         <form id="bookingForm">
           <div class="form-group">
-            <label for="bookingName">Full Name</label>
+            <label for="bookingName">Nama Lengkap</label>
             <input type="text" id="bookingName" required />
           </div>
           <div class="form-group">
@@ -70,21 +68,23 @@
             <input type="email" id="bookingEmail" required />
           </div>
           <div class="form-group">
-            <label for="bookingNumber">Phone Number</label>
+            <label for="bookingNumber">Nomor Telepon</label>
             <input
-              type="number"
+              type="tel"
               id="bookingNumber"
               required
               class="no-spinner"
+              pattern="[0-9]{10,15}"
+              title="Masukkan nomor telepon yang valid"
             />
           </div>
 
           <input type="hidden" id="bookingEventId" name="event_id" />
 
           <div class="form-group">
-            <label for="concertCount">Class</label>
+            <label for="concertCount">Kelas Paket</label>
             <select id="concertCount" required>
-              <option value="" disabled selected hidden>Pilih Tiket</option>
+              <option value="" disabled selected hidden>Pilih Kelas Paket</option>
               <option value="1">Ekonomi - IDR 27.000.000</option>
               <option value="2">Reguler - IDR 30.000.000</option>
               <option value="3">VIP - IDR 35.000.000</option>
@@ -93,7 +93,7 @@
           <div class="form-group">
             <label for="guestCount">Jumlah Jamaah</label>
             <select id="guestCount" required>
-              <option value="" disabled selected hidden></option>
+              <option value="" disabled selected hidden>Pilih Jumlah Jamaah</option>
               <option value="1">1 Orang</option>
               <option value="2">2 Orang</option>
               <option value="3">3 Orang</option>
@@ -103,9 +103,9 @@
           </div>
           <div class="form-actions">
             <button type="button" class="btn close-btn" id="cancelBooking">
-              Cancel
+              Batal
             </button>
-            <button type="submit" class="btn">Confirm Booking</button>
+            <button type="submit" class="btn">Konfirmasi Pesanan</button>
           </div>
         </form>
       </div>
@@ -113,7 +113,7 @@
 
     <footer data-aos="fade-up">
       <div class="footer-section">
-        <h3>Follow</h3>
+        <h3>Follow our social networks</h3>
         <div class="social-links">
           <a href="#"><i class="fab fa-facebook"></i></a>
           <a href="#"><i class="fab fa-twitter"></i></a>
@@ -122,7 +122,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; Mukromah Hijrah Mamunda. All rights reserved.</p>
+        <p>&copy; 2025 Mukromah Hijrah Mamunda. All rights reserved.</p>
       </div>
     </footer>
 
