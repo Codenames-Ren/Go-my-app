@@ -248,6 +248,7 @@ function populateSalesTable(data) {
       <td>${sale.OrderCount || 0}</td>
       <td>${formatRupiah(sale.TicketPrice || 0)}</td>
       <td>${formatRupiah(total)}</td>
+            <td>${sale.TicketCode || "-"}</td>
       <td class="status-${sale.Status?.toLowerCase() || "unknown"}">${
       displayStatus || "Unknown"
     }</td>
@@ -559,20 +560,23 @@ async function exportData() {
   const exportDiv = document.createElement("div");
   exportDiv.id = "pdf-export-container";
   exportDiv.style.cssText = `
-    width: 90vw !important;
-    max-width: 1200px !important;
-    max-height: 80vh !important;
-    background: white !important;
-    padding: 30px !important;
-    font-family: 'Arial', sans-serif !important;
-    color: black !important;
-    border-radius: 10px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-    overflow-y: auto !important;
-    transform: scale(0.8) !important;
-    transition: transform 0.3s ease !important;
-    position: relative !important;
-  `;
+  width: 90vw !important;
+  max-width: 1200px !important;
+  max-height: 80vh !important;
+  background: white !important;
+  padding: 30px !important;
+  padding-bottom: 80px !important;
+  font-family: 'Arial', sans-serif !important;
+  color: black !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+  overflow-y: auto !important;
+  transform: scale(0.8) !important;
+  transition: transform 0.3s ease !important;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+`;
 
   //pdf content for export purpose
   const pdfContent = document.createElement("div");
@@ -626,21 +630,18 @@ async function exportData() {
   const downloadButton = document.createElement("button");
   downloadButton.innerHTML = '<i class="fas fa-download"></i> Download PDF';
   downloadButton.style.cssText = `
-    position: absolute !important;
-    bottom: 20px !important;
-    right: 30px !important;
-    background: #28a745 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 25px !important;
-    padding: 12px 24px !important;
-    font-size: 14px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    z-index: 10000 !important;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
-  `;
+  background: #28a745 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 12px 24px !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+  position: relative !important;
+`;
 
   downloadButton.onmouseenter = () => {
     downloadButton.style.background = "#218838";
@@ -756,108 +757,111 @@ async function exportData() {
   };
 
   pdfContent.innerHTML = `
-    <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
-      <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
-        LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA
-      </h1>
-      <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
-        Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </p>
+  <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px; page-break-after: avoid;">
+    <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
+      LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA
+    </h1>
+    <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
+      Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })}
+    </p>
+  </div>
+  
+  <div style="display: flex; justify-content: space-between; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 5px; page-break-after: avoid;">
+    <div style="color: black !important;">
+      <strong>Total Transaksi:</strong> ${filteredData.length}
     </div>
-    
-    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 5px;">
-      <div style="color: black !important;">
-        <strong>Total Transaksi:</strong> ${filteredData.length}
-      </div>
-      <div style="color: black !important;">
-        <strong>Total Omset:</strong> ${formatRupiah(totalSales)}
-      </div>
+    <div style="color: black !important;">
+      <strong>Total Omset:</strong> ${formatRupiah(totalSales)}
     </div>
-    
-    <div style="overflow-x: visible; width: 100%;">
-      <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 14px; table-layout: fixed !important;">
-        <thead style="display: table-header-group !important;">
-          <tr style="background: #2c3e50 !important; color: white !important;">
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 5%;">User ID</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 13%;">Nama Pemesan</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 12%;">No Telepon</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 15%;">Pilihan Paket</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Tipe Paket</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 5%;">Qty</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Harga Satuan</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Total Harga</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Status</th>
-            <th style="border: 1px solid #ddd; padding: 8px 4px; text-align: center; width: 10%;">Tanggal Pemesanan</th>
-          </tr>
-        </thead>
+  </div>
+  
+  <div style="overflow-x: visible; width: 100%; page-break-inside: auto;">
+    <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 16px; table-layout: fixed !important; page-break-inside: auto;">
+      <thead style="display: table-header-group !important;">
+        <tr style="background: #2c3e50 !important; color: white !important; page-break-after: avoid; page-break-inside: avoid;">
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 5%; page-break-inside: avoid;">User ID</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 12%; page-break-inside: avoid;">Nama</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">No HP</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 15%; page-break-inside: avoid;">Paket</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 8%; page-break-inside: avoid;">Tipe</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 5%; page-break-inside: avoid;">Qty</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Harga Satuan</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Total</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 7%; page-break-inside: avoid;">Kode Tiket</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 8%; page-break-inside: avoid;">Status</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Tanggal</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filteredData
+          .map((sale, index) => {
+            const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+            const rowBg = index % 2 === 0 ? "#ffffff" : "#f8f9fa";
+            const statusColor =
+              sale.Status?.toLowerCase() === "active"
+                ? "#28a745"
+                : sale.Status?.toLowerCase() === "pending"
+                ? "#ffc107"
+                : "#6c757d";
 
-        <tbody>
-          ${filteredData
-            .map((sale, index) => {
-              const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
-              const rowBg = index % 2 === 0 ? "#ffffff" : "#f8f9fa";
-              const statusColor =
-                sale.Status?.toLowerCase() === "active"
-                  ? "#28a745"
-                  : sale.Status?.toLowerCase() === "pending"
-                  ? "#ffc107"
-                  : "#6c757d";
-
-              return `
-              <tr style="background: ${rowBg} !important;">
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
-                  sale.UserID || "-"
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
-                  sale.Name || "-"
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
-                  sale.PhoneNumber || "-"
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word;">${
-                  sale.EventName || "-"
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${
-                  sale.TicketType || "-"
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center;  font-size: 14px;">${
-                  sale.OrderCount || 0
-                }</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${formatRupiah(
-                  sale.TicketPrice || 0
-                )}</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center;  font-size: 14px;">${formatRupiah(
-                  total
-                )}</td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-weight: bold; font-size: 14px;">
-                  <span style="color: ${statusColor}; padding: 3px 6px; border-radius: 12px; font-size: 14px; font-weight: bold;">
-                    ${sale.Status?.toUpperCase() || "Unknown"}
-                  </span>
-                </td>
-                <td style="border: 1px solid #ddd; padding: 8px 4px; color: black !important; text-align: center; font-size: 14px;">${moment(
-                  sale.CreatedAt
-                ).format("DD/MM/YYYY")}</td>
-              </tr>
-            `;
-            })
-            .join("")}
-        </tbody>
-      </table>
-    </div>
-    
-    <div style="margin-top: 25px; text-align: center; border-top: 1px solid #ddd; padding-top: 15px;">
-      <p style="color: #666 !important; font-size: 12px; margin: 0;">
-        Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
-          "id-ID"
-        )}
-      </p>
-    </div>
-  `;
+            return `
+            <tr style="background: ${rowBg} !important; page-break-inside: avoid; page-break-after: auto;">
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+                sale.UserID || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word; page-break-inside: avoid;">${
+                sale.Name || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+                sale.PhoneNumber || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word; page-break-inside: avoid;">${
+                sale.EventName || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+                sale.TicketType || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+                sale.OrderCount || 0
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${formatRupiah(
+                sale.TicketPrice || 0
+              )}</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${formatRupiah(
+                total
+              )}</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+                sale.TicketCode || "-"
+              }</td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-weight: bold; font-size: 14px; page-break-inside: avoid;">
+                <span style="color: ${statusColor}; padding: 2px 4px; border-radius: 8px; font-size: 10px; font-weight: bold;">
+                  ${sale.Status?.toUpperCase() || "Unknown"}
+                </span>
+              </td>
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${moment(
+                sale.CreatedAt
+              ).format("DD/MM/YY")}</td>
+            </tr>
+          `;
+          })
+          .join("")}
+      </tbody>
+    </table>
+  </div>
+  
+  <div style="margin-top: 25px; text-align: center; border-top: 1px solid #ddd; padding-top: 15px; page-break-inside: avoid;">
+    <p style="color: #666 !important; font-size: 12px; margin: 0;">
+      Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
+        "id-ID"
+      )}
+    </p>
+  </div>
+`;
 
   exportDiv.appendChild(pdfContent);
   exportDiv.appendChild(closeButton);
