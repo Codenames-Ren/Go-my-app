@@ -1,0 +1,232 @@
+
+/* ===== contact.css FINAL STYLE ===== */
+/* Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Merriweather", serif;
+  background-color: #f8f9f6;
+  color: #4a4a4a;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #a7bfa3;
+  padding: 1rem 4%;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  font-family: "Merriweather", serif;
+  font-size: 1.8rem;
+  color: #3c4a3f;
+  text-decoration: none;
+  gap: 0.8rem;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-menu li a {
+  color: #3c4a3f;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-menu li a.active,
+.nav-menu li a:hover {
+  color: #6b8c6a;
+  border-bottom-color: #92b68a;
+}
+
+.nav-links .btn {
+  background-color: #d7e3d4;
+  color: #3c4a3f;
+  padding: 0.5rem 1.3rem;
+  font-weight: 700;
+  border-radius: 25px;
+  font-size: 1rem;
+  border: none;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-links .btn:hover {
+  background-color: #8ca78c;
+  color: #f0f7f0;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #a7bfa3 0%, #8ca78c 100%);
+  color: #3c4a3f;
+  padding: 6rem 4%;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3.4rem;
+  font-family: "Merriweather", serif;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 4rem auto;
+  padding: 0 1.2rem;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2.5rem;
+  font-family: "Merriweather", serif;
+  color: #8ca78c;
+  text-align: center;
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+/* Contact Cards seperti Why Choose Us */
+.contact-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+
+.contact-card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 250px;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 30px rgba(140, 167, 140, 0.2);
+}
+
+.contact-card i {
+  font-size: 2.8rem;
+  color: #8ca78c;
+  margin-bottom: 1rem;
+}
+
+.contact-card p {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6b8c6a;
+  margin-bottom: 0.4rem;
+}
+
+.contact-card a,
+.contact-card address {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.contact-card a:hover {
+  color: #3c4a3f;
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  background-color: #a7bfa3;
+  color: #42523b;
+  padding: 3rem 4%;
+  text-align: center;
+}
+
+.footer-section h3 {
+  font-family: "Merriweather", serif;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.social-links a {
+  font-size: 1.6rem;
+  margin: 0 0.5rem;
+  color: #42523b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #6b7a8f;
+}
+
+.footer-bottom p {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #6b7a8f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.4rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .nav-menu {
+    gap: 1rem;
+  }
+
+  .contact-cards-wrapper {
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contact-card {
+    width: 90%;
+  }
+}
