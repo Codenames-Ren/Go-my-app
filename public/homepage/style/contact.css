@@ -1,4 +1,5 @@
-/* ===== contact.css ===== */
+
+/* ===== contact.css FINAL GRID STYLE ===== */
 /* Reset dasar */
 * {
   margin: 0;
@@ -117,73 +118,62 @@ body {
   color: #8ca78c;
   text-align: center;
   margin-bottom: 3rem;
+  width: 100%;
 }
 
-/* Contact Cards */
-.contact-section {
+/* Contact Cards dengan grid */
+.contact-cards-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
   justify-content: center;
+  padding: 2rem 0;
+  max-width: 650px; /* tambahkan ini */
+  margin: 0 auto;   /* center-kan grid */
 }
 
 .contact-card {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(140, 167, 140, 0.1);
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
   text-align: center;
-  transition: 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
 }
 
 .contact-card:hover {
-  box-shadow: 0 12px 25px rgba(140, 167, 140, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 25px rgba(140, 167, 140, 0.15);
 }
 
 .contact-card i {
+  font-size: 2.4rem;
   color: #8ca78c;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .contact-card p {
-  font-weight: 600;
-  color: #4a4a4a;
-  margin-bottom: 0.4rem;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #6b8c6a;
+  margin-bottom: 0.3rem;
 }
 
-.contact-card a {
-  color: #3c4a3f;
-  font-weight: 500;
-  font-size: 1.05rem;
+.contact-card a,
+.contact-card address {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
   text-decoration: none;
-  transition: color 0.3s ease;
   word-break: break-word;
 }
 
 .contact-card a:hover {
-  color: #6b8c6a;
-}
-
-.contact-card address {
-  font-style: normal;
-  color: #555;
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-top: 0.3rem;
-}
-
-.contact-cards-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  justify-content: center;
-}
-
-.contact-card {
-  width: 100%;
-  max-width: 320px; /* Membatasi lebar kartu */
-  margin: 0 auto;
+  color: #3c4a3f;
+  font-weight: 600;
 }
 
 /* Footer */
@@ -232,8 +222,12 @@ footer {
     gap: 1rem;
   }
 
-  .contact-section {
+  .contact-cards-wrapper {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.2rem;
+  }
+
+  .contact-card {
+    width: 90%;
   }
 }
