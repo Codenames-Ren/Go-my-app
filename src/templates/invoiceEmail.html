@@ -6,23 +6,23 @@
     <style>
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #f9fafb;
+        background-color: #f8f9f6;
         padding: 20px;
-        color: #1f2937;
+        color: #3c4a3f;
       }
 
       .container {
         max-width: 720px;
         margin: auto;
-        background-color: #fff;
+        background-color: #ffffff;
         padding: 30px;
         border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(140, 167, 140, 0.1);
       }
 
       .header {
         text-align: center;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid #d6e3d2;
         padding-bottom: 15px;
         margin-bottom: 20px;
       }
@@ -30,13 +30,13 @@
       .header h1 {
         font-size: 1.8rem;
         margin-bottom: 5px;
-        color: #0f766e;
+        color: #6b8c6a;
       }
 
       .section-title {
         font-weight: 600;
         margin-bottom: 10px;
-        color: #0f766e;
+        color: #6b8c6a;
         font-size: 1.1rem;
       }
 
@@ -57,7 +57,7 @@
       .payment-table td:first-child {
         font-weight: 500;
         width: 40%;
-        color: #374151;
+        color: #3c4a3f;
       }
 
       .ticket-code {
@@ -79,12 +79,12 @@
       .order-table th,
       .order-table td {
         padding: 12px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #d6e3d2;
         text-align: left;
       }
 
       .order-table th {
-        background-color: #0f766e;
+        background-color: #6b8c6a;
         color: white;
       }
 
@@ -92,7 +92,7 @@
         text-align: right;
         font-size: 1.2rem;
         font-weight: bold;
-        color: #0f766e;
+        color: #6b8c6a;
         margin-bottom: 30px;
       }
 
@@ -108,21 +108,22 @@
 
       .instructions {
         background-color: #fef2f2;
-        border: 1px dashed #dc2626;
+        border: 1px dashed #e11d48;
         padding: 16px;
         border-radius: 6px;
         margin-top: 20px;
+        color: #7f1d1d;
       }
 
       .thank-you {
         text-align: center;
         margin-top: 30px;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #d6e3d2;
         padding-top: 20px;
       }
 
       .thank-you h2 {
-        color: #0f766e;
+        color: #6b8c6a;
         margin-bottom: 10px;
       }
 
@@ -131,8 +132,12 @@
         color: #6b7280;
         text-align: center;
         margin-top: 40px;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #d6e3d2;
         padding-top: 15px;
+      }
+
+      .footer strong {
+        color: #3c4a3f;
       }
     </style>
   </head>
@@ -176,7 +181,7 @@
       <table class="payment-table">
         <tr><td>Metode Pembayaran</td><td>Transfer Bank</td></tr>
         <tr><td>Transfer ke Rekening</td><td>{{.PaymentTo}}</td></tr>
-        <tr><td>Status</td><td style="color: #10b981; font-weight: bold;">Paid</td></tr>
+        <tr><td>Status</td><td style="color: #16a34a; font-weight: bold;">Paid</td></tr>
       </table>
 
       <div class="note">

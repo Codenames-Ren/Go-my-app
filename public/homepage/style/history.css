@@ -1,5 +1,4 @@
-
-/* ===== contact.css FINAL GRID STYLE ===== */
+/* ===== history.css ===== */
 /* Reset dasar */
 * {
   margin: 0;
@@ -31,11 +30,11 @@ body {
 .logo a {
   display: flex;
   align-items: center;
-  font-family: "Merriweather", serif;
   font-size: 1.8rem;
   color: #3c4a3f;
   text-decoration: none;
   gap: 0.8rem;
+  font-family: "Merriweather", serif;
 }
 
 .logo img {
@@ -104,76 +103,46 @@ body {
   margin: 0 auto 2rem;
 }
 
-/* Container */
-.container {
-  max-width: 1100px;
-  margin: 4rem auto;
-  padding: 0 1.2rem;
-}
-
 /* Section Title */
 .section-title {
   font-size: 2.5rem;
   font-family: "Merriweather", serif;
   color: #8ca78c;
   text-align: center;
-  margin-bottom: 3rem;
+  margin: 4rem auto 2rem;
+}
+
+/* History Table */
+.history-table-container {
+  overflow-x: auto;
+  margin: 2rem 4%;
+}
+
+.history-table {
   width: 100%;
-}
-
-/* Contact Cards dengan grid */
-.contact-cards-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  justify-content: center;
-  padding: 2rem 0;
-  max-width: 650px; /* tambahkan ini */
-  margin: 0 auto;   /* center-kan grid */
-}
-
-.contact-card {
+  border-collapse: collapse;
+  font-size: 1rem;
   background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(140, 167, 140, 0.1);
 }
 
-.contact-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 25px rgba(140, 167, 140, 0.15);
+.history-table th,
+.history-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.contact-card i {
-  font-size: 2.4rem;
-  color: #8ca78c;
-  margin-bottom: 0.8rem;
-}
-
-.contact-card p {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #6b8c6a;
-  margin-bottom: 0.3rem;
-}
-
-.contact-card a,
-.contact-card address {
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.4;
-  text-decoration: none;
-  word-break: break-word;
-}
-
-.contact-card a:hover {
+.history-table th {
+  background-color: #d7e3d4;
   color: #3c4a3f;
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.history-table tr:hover {
+  background-color: #f1f5f1;
 }
 
 /* Footer */
@@ -185,9 +154,9 @@ footer {
 }
 
 .footer-section h3 {
-  font-family: "Merriweather", serif;
   font-size: 1.6rem;
   margin-bottom: 1rem;
+  font-family: "Merriweather", serif;
 }
 
 .social-links a {
@@ -222,12 +191,8 @@ footer {
     gap: 1rem;
   }
 
-  .contact-cards-wrapper {
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-  }
-
-  .contact-card {
-    width: 90%;
+  .history-table th,
+  .history-table td {
+    padding: 0.8rem;
   }
 }
