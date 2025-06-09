@@ -1,20 +1,22 @@
-# Concert Ticket Booking Website
+# Umrah Package Booking Website
 
-**Project 1 Repository - E-Commerce System for Concert Tickets**
+**Project 1 Repository – E-Commerce System for Umrah Package Booking**
 
-This repository contains the source code for **Project 1**, a web-based application for concert ticket booking.  
-The system allows users to browse available concerts, select ticket types (Regular, VIP, VVIP), place orders, view history orders and automatically receive payment invoices.
+This repository contains the source code for **Project 1**, a web-based application for booking umrah travel packages.  
+The system allows users to browse available umrah packages, select accommodation classes (Economic, Regular, VIP), place orders, view order history, and automatically receive payment invoices via email.
 
 ---
 
 ## Features
 
-- Dynamic landing page displaying a list of available concerts
-- Ticket categories: Regular, VIP, and VVIP
+- Dynamic landing page displaying a list of available umrah packages
+- Accommodation classes: Economic, Regular, and VIP
 - Booking form with user input validation
+- OTP (One-Time Password) email verification on login
 - Payment confirmation popup (supporting bank transfer and e-wallet methods)
+- Automatic invoice email after successful payment
 - Booking data stored in the database
-- Automatic invoice generation after successful order
+- Admin dashboard with additional fields: Customer Name and Booking Code
 - Modular code structure for easy maintenance and scalability
 
 ---
@@ -24,13 +26,15 @@ The system allows users to browse available concerts, select ticket types (Regul
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Go (Golang) with GIN web framework and GORM
 - **Database**: PostgreSQL
+- **Email**: SMTP (Gmail) for sending OTP and invoice emails
 - **Deployment**: *Coming Soon*
 
 ---
 
 ## Project Status
 
-This project is currently under development as part of a university course final project (Project 1).
+This project is currently under development as part of a university course final project (Project 1).  
+All core features have been implemented, including the revised use case based on lecturer feedback.
 
 ---
 
