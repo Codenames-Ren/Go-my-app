@@ -562,7 +562,7 @@ async function exportData() {
   exportDiv.style.cssText = `
   width: 90vw !important;
   max-width: 1200px !important;
-  max-height: 80vh !important;
+  max-height: 90vh !important;
   background: white !important;
   padding: 30px !important;
   padding-bottom: 80px !important;
@@ -571,8 +571,7 @@ async function exportData() {
   border-radius: 10px !important;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
   overflow-y: auto !important;
-  transform: scale(0.8) !important;
-  transition: transform 0.3s ease !important;
+  transition: opacity 0.3s ease !important;
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
@@ -583,13 +582,15 @@ async function exportData() {
   pdfContent.id = "pdf-content-only";
   window.scrollTo(0, 0);
   pdfContent.style.cssText = `
-    width: 1123px !important;
+    width: 1123px;
     height: auto;
-    color: black !important;
-    background: white !important;
-    margin-top: 40px;
-    margin-bottom: 80px;
-    padding-bottom: 20px;
+    margin: 0 auto;
+    padding: 20px 10px 40px 10px;
+    background: white;
+    color: black;
+    font-family: 'Arial', sans-serif;
+    page-break-inside: auto;
+    overflow: visible;
   `;
   pdfContent.style.zoom = "100%";
 
@@ -690,7 +691,7 @@ async function exportData() {
         )}.pdf`,
         image: { type: "jpeg", quality: 0.95 },
         html2canvas: {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           backgroundColor: "#ffffff",
           width: 1123,
@@ -702,7 +703,7 @@ async function exportData() {
         },
         pagebreak: {
           mode: ["avoid-all", "css", "legacy"],
-          avoid: "tr",
+          avoid: "thead, tr, td",
         },
       };
 
@@ -781,15 +782,15 @@ async function exportData() {
   </div>
   
   <div style="overflow-x: visible; width: 100%; page-break-inside: auto;">
-    <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 16px; table-layout: fixed !important; page-break-inside: auto;">
-      <thead style="display: table-header-group !important;">
-        <tr style="background: #2c3e50 !important; color: white !important; page-break-after: avoid; page-break-inside: avoid;">
+  <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 13px; table-layout: fixed; page-break-inside: auto; display: table;">
+      <thead style="display: table-header-group;">
+        <tr style="background: #2c3e50 !important; color: white !important; page-break-inside: avoid; page-break-after: auto;">
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 5%; page-break-inside: avoid;">User ID</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 12%; page-break-inside: avoid;">Nama</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">No HP</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 11%; page-break-inside: avoid;">No HP</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 15%; page-break-inside: avoid;">Paket</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 8%; page-break-inside: avoid;">Tipe</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 5%; page-break-inside: avoid;">Qty</th>
+          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 4%; page-break-inside: avoid;">Qty</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Harga Satuan</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Total</th>
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 7%; page-break-inside: avoid;">Kode Tiket</th>
@@ -797,7 +798,7 @@ async function exportData() {
           <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Tanggal</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style="display: table-row-group;">
         ${filteredData
           .map((sale, index) => {
             const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
@@ -810,40 +811,40 @@ async function exportData() {
                 : "#6c757d";
 
             return `
-            <tr style="background: ${rowBg} !important; page-break-inside: avoid; page-break-after: auto;">
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+            <tr style="background: ${rowBg}; page-break-inside: avoid; page-break-after: auto;">
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
                 sale.UserID || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; word-wrap: break-word; page-break-inside: avoid;">${
                 sale.Name || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
                 sale.PhoneNumber || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; word-wrap: break-word; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; word-wrap: break-word; page-break-inside: avoid;">${
                 sale.EventName || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
                 sale.TicketType || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
                 sale.OrderCount || 0
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${formatRupiah(
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${formatRupiah(
                 sale.TicketPrice || 0
               )}</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${formatRupiah(
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${formatRupiah(
                 total
               )}</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
                 sale.TicketCode || "-"
               }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-weight: bold; font-size: 14px; page-break-inside: avoid;">
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-weight: bold; font-size: 12px; page-break-inside: avoid;">
                 <span style="color: ${statusColor}; padding: 2px 4px; border-radius: 8px; font-size: 10px; font-weight: bold;">
                   ${sale.Status?.toUpperCase() || "Unknown"}
                 </span>
               </td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 14px; page-break-inside: avoid;">${moment(
+              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${moment(
                 sale.CreatedAt
               ).format("DD/MM/YY")}</td>
             </tr>
@@ -886,7 +887,6 @@ async function exportData() {
 
   setTimeout(() => {
     overlay.style.opacity = "1";
-    exportDiv.style.transform = "scale(1)";
   }, 10);
 
   console.log("Preview opened with interactive controls - optimized for PDF");
