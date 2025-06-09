@@ -497,7 +497,7 @@ function ensureRendered(element, timeout = 300) {
   });
 }
 
-//logic export
+// logic export
 async function exportData() {
   const monthFilter = document.getElementById("month-filter").value;
   const dayFilter = document.getElementById("day-filter").value;
@@ -505,7 +505,6 @@ async function exportData() {
 
   let filteredData = [...ticketSalesData];
 
-  // Apply filters
   if (monthFilter) {
     filteredData = filteredData.filter((sale) => {
       const saleMonth = new Date(sale.CreatedAt).getMonth() + 1;
@@ -530,163 +529,286 @@ async function exportData() {
     return;
   }
 
-  //total count
   let totalSales = 0;
   filteredData.forEach((sale) => {
     totalSales += (sale.OrderCount || 0) * (sale.TicketPrice || 0);
   });
 
-  console.log("Data to export:", filteredData.length, "items");
-  console.log("Total sales:", totalSales);
-
-  // Buat overlay untuk interactive preview
   const overlay = document.createElement("div");
   overlay.id = "pdf-preview-overlay";
   overlay.style.cssText = `
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0, 0, 0, 0.8) !important;
-    z-index: 9998 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
-  `;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.8); z-index: 9998;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;`;
 
   const exportDiv = document.createElement("div");
   exportDiv.id = "pdf-export-container";
   exportDiv.style.cssText = `
-  width: 90vw !important;
-  max-width: 1200px !important;
-  max-height: 90vh !important;
-  background: white !important;
-  padding: 30px !important;
-  padding-bottom: 80px !important;
-  font-family: 'Arial', sans-serif !important;
-  color: black !important;
-  border-radius: 10px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-  overflow-y: auto !important;
-  transition: opacity 0.3s ease !important;
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-`;
+    width: 90vw; max-width: 1200px; max-height: 90vh; background: white;
+    padding: 30px 30px 80px; font-family: 'Arial', sans-serif; color: black;
+    border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow-y: auto; position: relative; display: flex; flex-direction: column;`;
 
-  //pdf content for export purpose
   const pdfContent = document.createElement("div");
   pdfContent.id = "pdf-content-only";
   window.scrollTo(0, 0);
   pdfContent.style.cssText = `
-    width: 1123px;
-    height: auto;
-    margin: 0 auto;
-    padding: 20px 10px 40px 10px;
-    background: white;
-    color: black;
-    font-family: 'Arial', sans-serif;
-    page-break-inside: auto;
-    overflow: visible;
-  `;
-  pdfContent.style.zoom = "100%";
+    width: 1123px; height: auto; margin: 0 auto;
+    padding: 20px 10px 40px 10px; background: white;
+    color: black; font-family: 'Arial', sans-serif;
+    page-break-inside: auto; overflow: visible; zoom: 100%;`;
+
+  // Generate single table for preview
+  const generateSingleTable = (data) => {
+    return `
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px;">
+        <thead style="background: #2c3e50; color: white;">
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">User ID</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Nama</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">No HP</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Paket</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Tipe</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Qty</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Harga</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Total</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Kode Tiket</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Status</th>
+            <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Tanggal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data
+            .map((sale, idx) => {
+              const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+              const bg = idx % 2 === 0 ? "#fff" : "#f8f9fa";
+              const statusColor =
+                sale.Status?.toLowerCase() === "active"
+                  ? "#28a745"
+                  : sale.Status?.toLowerCase() === "pending"
+                  ? "#ffc107"
+                  : "#6c757d";
+              return `
+              <tr style="background: ${bg};">
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.UserID || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.Name || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.PhoneNumber || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.EventName || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.TicketType || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.OrderCount || 0
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${formatRupiah(
+                  sale.TicketPrice || 0
+                )}</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${formatRupiah(
+                  total
+                )}</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                  sale.TicketCode || "-"
+                }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center; font-weight: bold; color: ${statusColor};">${
+                sale.Status?.toUpperCase() || "-"
+              }</td>
+                <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${moment(
+                  sale.CreatedAt
+                ).format("DD/MM/YY")}</td>
+              </tr>`;
+            })
+            .join("")}
+        </tbody>
+      </table>`;
+  };
+
+  // Generate chunked table for PDF
+  const generateTableChunkForPDF = (chunk, isFirstChunk = false) => {
+    const headerRow = `
+      <tr style="background: #2c3e50; color: white;">
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">User ID</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Nama</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">No HP</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Paket</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Tipe</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Qty</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Harga</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Total</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Kode Tiket</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Status</th>
+        <th style="border: 1px solid #ddd; padding: 6px; text-align: center;">Tanggal</th>
+      </tr>`;
+
+    return `
+      <div style="page-break-inside: avoid; ${
+        !isFirstChunk ? "margin-top: 20px;" : ""
+      }">
+        <table style="width: 100%; border-collapse: collapse; margin-top: ${
+          isFirstChunk ? "10px" : "0"
+        }; font-size: 13px;">
+          <thead style="background: #2c3e50; color: white;">
+            ${headerRow}
+          </thead>
+          <tbody>
+            ${chunk
+              .map((sale, idx) => {
+                const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
+                const bg = idx % 2 === 0 ? "#fff" : "#f8f9fa";
+                const statusColor =
+                  sale.Status?.toLowerCase() === "active"
+                    ? "#28a745"
+                    : sale.Status?.toLowerCase() === "pending"
+                    ? "#ffc107"
+                    : "#6c757d";
+                return `
+                <tr style="background: ${bg};">
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.UserID || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.Name || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.PhoneNumber || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.EventName || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.TicketType || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.OrderCount || 0
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${formatRupiah(
+                    sale.TicketPrice || 0
+                  )}</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${formatRupiah(
+                    total
+                  )}</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${
+                    sale.TicketCode || "-"
+                  }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center; font-weight: bold; color: ${statusColor};">${
+                  sale.Status?.toUpperCase() || "-"
+                }</td>
+                  <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${moment(
+                    sale.CreatedAt
+                  ).format("DD/MM/YY")}</td>
+                </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>`;
+  };
+
+  // Create preview content
+  const previewContent = `
+    <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
+      <h1 style="font-size: 20px; margin: 0 0 10px 0;">LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA</h1>
+      <p style="font-size: 12px; margin: 0;">Tanggal Cetak: ${new Date().toLocaleDateString(
+        "id-ID",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      )}</p>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
+      <div>Total Transaksi: ${filteredData.length}</div>
+      <div>Total Omset: ${formatRupiah(totalSales)}</div>
+    </div>
+    ${generateSingleTable(filteredData)}
+    <div style="text-align: center; font-size: 11px; margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+      Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
+        "id-ID"
+      )}
+    </div>`;
+
+  pdfContent.innerHTML = previewContent;
 
   const closeButton = document.createElement("button");
-  closeButton.innerHTML = "x";
-  closeButton.style.cssText = `
-    position: absolute !important;
-    top: 10px !important;
-    right: 15px !important;
-    background: transparent !important;
-    color: black !important;
-    border: none !important;
-    width: 35px !important;
-    height: 35px !important;
-    font-size: 24px !important;
-    font-weight: bold !important;
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    line-height: 1 !important;
-    z-index: 10000 !important;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-  `;
-
-  closeButton.onmouseenter = () => {
-    closeButton.style.transform = "scale(1.1)";
-  };
-  closeButton.onmouseleave = () => {
-    closeButton.style.transform = "scale(1)";
-  };
-
-  closeButton.onclick = () => {
-    closePreview();
-  };
+  closeButton.textContent = "x";
+  closeButton.style.cssText = `position: absolute; top: 10px; right: 15px; font-size: 24px; background: transparent; border: none; cursor: pointer;`;
+  closeButton.onclick = () => closePreview();
 
   const downloadButton = document.createElement("button");
-  downloadButton.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-  downloadButton.style.cssText = `
-  background: #28a745 !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 25px !important;
-  padding: 12px 24px !important;
-  font-size: 14px !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
-  position: relative !important;
-`;
+  downloadButton.innerHTML = "<i class='fas fa-download'></i> Download PDF";
+  downloadButton.style.cssText = `background: #28a745; color: white; border: none; border-radius: 25px; padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer;`;
+  downloadButton.onclick = () => generatePDF();
 
-  downloadButton.onmouseenter = () => {
-    downloadButton.style.background = "#218838";
-    downloadButton.style.transform = "translateY(-2px)";
-  };
-  downloadButton.onmouseleave = () => {
-    downloadButton.style.background = "#28a745";
-    downloadButton.style.transform = "translateY(0)";
-  };
-
-  downloadButton.onclick = () => {
-    generatePDF();
-  };
-
-  // Function untuk menutup preview
-  const closePreview = () => {
+  function closePreview() {
     overlay.style.opacity = "0";
-    exportDiv.style.transform = "scale(0.8)";
+    setTimeout(() => document.body.removeChild(overlay), 300);
+  }
 
-    setTimeout(() => {
-      if (document.body.contains(overlay)) {
-        document.body.removeChild(overlay);
-      }
-    }, 300);
-  };
-
-  // Function untuk generate PDF
-  const generatePDF = async () => {
+  async function generatePDF() {
     try {
-      await ensureRendered(pdfContent, 300);
+      const pdfContentForExport = document.createElement("div");
+      pdfContentForExport.style.cssText = `
+        width: 1123px; height: auto; margin: 0 auto;
+        padding: 20px 10px 60px 10px; background: white;
+        color: black; font-family: 'Arial', sans-serif;
+        page-break-inside: auto; overflow: visible; zoom: 100%;`;
 
+      // Generate PDF content with proper chunking
+      let pdfHtmlBody = "";
+      const chunkSize = 18;
+
+      for (let i = 0; i < filteredData.length; i += chunkSize) {
+        const chunk = filteredData.slice(i, i + chunkSize);
+        pdfHtmlBody += generateTableChunkForPDF(chunk, i === 0);
+
+        // Add page break after each chunk except the last one
+        if (i + chunkSize < filteredData.length) {
+          pdfHtmlBody +=
+            '<div style="page-break-after: always; margin-bottom: 20px;"></div>';
+        }
+      }
+
+      pdfContentForExport.innerHTML = `
+        <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
+          <h1 style="font-size: 20px; margin: 0 0 10px 0;">LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA</h1>
+          <p style="font-size: 12px; margin: 0;">Tanggal Cetak: ${new Date().toLocaleDateString(
+            "id-ID",
+            {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          )}</p>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
+          <div>Total Transaksi: ${filteredData.length}</div>
+          <div>Total Omset: ${formatRupiah(totalSales)}</div>
+        </div>
+        ${pdfHtmlBody}`;
+
+      await ensureRendered(pdfContentForExport, 300);
       Swal.fire({
         title: "Membuat PDF...",
-        html: `...`,
         didOpen: () => Swal.showLoading(),
         allowOutsideClick: false,
         showConfirmButton: false,
       });
-
       await new Promise((res) => setTimeout(res, 300));
 
       const options = {
-        margin: [0.3, 0.3, 0.3, 0.3],
-        filename: `laporan-penjualan-paket-umroh-azmi${moment().format(
+        margin: [0.4, 0.3, 0.6, 0.3], // Increased bottom margin for footer
+        filename: `laporan-penjualan-paket-umroh-mukromah-hijrah${moment().format(
           "YYYY-MM-DD-HHmm"
         )}.pdf`,
         image: { type: "jpeg", quality: 0.95 },
@@ -695,201 +817,86 @@ async function exportData() {
           useCORS: true,
           backgroundColor: "#ffffff",
           width: 1123,
+          height: window.innerHeight,
+          scrollX: 0,
+          scrollY: 0,
         },
-        jsPDF: {
-          unit: "in",
-          format: "a4",
-          orientation: "landscape",
-        },
+        jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
         pagebreak: {
           mode: ["avoid-all", "css", "legacy"],
-          avoid: "thead, tr, td",
+          avoid: ["thead", "tr", "td", "th"],
+          before: ".page-break-before",
+          after: ".page-break-after",
         },
       };
 
-      console.log(
-        "Starting PDF generation with optimized landscape orientation..."
-      );
-
       await html2pdf()
-        .from(pdfContent)
+        .from(pdfContentForExport)
         .set(options)
         .toPdf()
         .get("pdf")
-        .then(function (pdf) {
-          console.log("PDF generated successfully!");
-          console.log("Total pages:", pdf.internal.getNumberOfPages());
-
+        .then((pdf) => {
           const totalPages = pdf.internal.getNumberOfPages();
+          const footerText = `Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
+            "id-ID"
+          )}`;
+
           for (let i = 1; i <= totalPages; i++) {
             pdf.setPage(i);
             pdf.setFontSize(10);
             pdf.setTextColor(150);
+
+            // Add page number
             pdf.text(
               `Halaman ${i} dari ${totalPages}`,
               pdf.internal.pageSize.getWidth() - 1.5,
               pdf.internal.pageSize.getHeight() - 0.3
+            );
+
+            pdf.setFontSize(9);
+            pdf.text(
+              footerText,
+              pdf.internal.pageSize.getWidth() / 2,
+              pdf.internal.pageSize.getHeight() - 0.15,
+              { align: "center" }
             );
           }
         })
         .save();
 
       closePreview();
-
       Swal.fire({
         icon: "success",
         title: "Export Berhasil!",
-        text: "Data berhasil di export. Silahkan check folder download anda.",
+        text: "Data berhasil di export.",
         timer: 4000,
         showConfirmButton: true,
-        confirmButtonText: "OK",
       });
     } catch (error) {
       console.error("PDF generation error:", error);
       closePreview();
-
       Swal.fire({
         icon: "error",
         title: "Export Gagal",
-        text: `Terjadi kesalahan saat membuat file. ${error.message}`,
+        text: `Terjadi kesalahan: ${error.message}`,
         confirmButtonText: "OK",
       });
     }
-  };
-
-  pdfContent.innerHTML = `
-  <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px; page-break-after: avoid;">
-    <h1 style="color: black !important; font-size: 24px; margin: 0 0 10px 0; font-weight: bold;">
-      LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA
-    </h1>
-    <p style="color: #666 !important; margin: 5px 0; font-size: 14px;">
-      Tanggal Cetak : ${new Date().toLocaleDateString("id-ID", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })}
-    </p>
-  </div>
-  
-  <div style="display: flex; justify-content: space-between; margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 5px; page-break-after: avoid;">
-    <div style="color: black !important;">
-      <strong>Total Transaksi:</strong> ${filteredData.length}
-    </div>
-    <div style="color: black !important;">
-      <strong>Total Omset:</strong> ${formatRupiah(totalSales)}
-    </div>
-  </div>
-  
-  <div style="overflow-x: visible; width: 100%; page-break-inside: auto;">
-  <table style="width: 100%; border-collapse: collapse; margin: 0; color: black !important; font-size: 13px; table-layout: fixed; page-break-inside: auto; display: table;">
-      <thead style="display: table-header-group;">
-        <tr style="background: #2c3e50 !important; color: white !important; page-break-inside: avoid; page-break-after: auto;">
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 5%; page-break-inside: avoid;">User ID</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 12%; page-break-inside: avoid;">Nama</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 11%; page-break-inside: avoid;">No HP</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 15%; page-break-inside: avoid;">Paket</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 8%; page-break-inside: avoid;">Tipe</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 4%; page-break-inside: avoid;">Qty</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Harga Satuan</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Total</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 7%; page-break-inside: avoid;">Kode Tiket</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 8%; page-break-inside: avoid;">Status</th>
-          <th style="border: 1px solid #ddd; padding: 6px 3px; text-align: center; width: 10%; page-break-inside: avoid;">Tanggal</th>
-        </tr>
-      </thead>
-      <tbody style="display: table-row-group;">
-        ${filteredData
-          .map((sale, index) => {
-            const total = (sale.OrderCount || 0) * (sale.TicketPrice || 0);
-            const rowBg = index % 2 === 0 ? "#ffffff" : "#f8f9fa";
-            const statusColor =
-              sale.Status?.toLowerCase() === "active"
-                ? "#28a745"
-                : sale.Status?.toLowerCase() === "pending"
-                ? "#ffc107"
-                : "#6c757d";
-
-            return `
-            <tr style="background: ${rowBg}; page-break-inside: avoid; page-break-after: auto;">
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
-                sale.UserID || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; word-wrap: break-word; page-break-inside: avoid;">${
-                sale.Name || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
-                sale.PhoneNumber || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; word-wrap: break-word; page-break-inside: avoid;">${
-                sale.EventName || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
-                sale.TicketType || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
-                sale.OrderCount || 0
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${formatRupiah(
-                sale.TicketPrice || 0
-              )}</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${formatRupiah(
-                total
-              )}</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${
-                sale.TicketCode || "-"
-              }</td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-weight: bold; font-size: 12px; page-break-inside: avoid;">
-                <span style="color: ${statusColor}; padding: 2px 4px; border-radius: 8px; font-size: 10px; font-weight: bold;">
-                  ${sale.Status?.toUpperCase() || "Unknown"}
-                </span>
-              </td>
-              <td style="border: 1px solid #ddd; padding: 6px 3px; color: black !important; text-align: center; font-size: 12px; page-break-inside: avoid;">${moment(
-                sale.CreatedAt
-              ).format("DD/MM/YY")}</td>
-            </tr>
-          `;
-          })
-          .join("")}
-      </tbody>
-    </table>
-  </div>
-  
-  <div style="margin-top: 25px; text-align: center; border-top: 1px solid #ddd; padding-top: 15px; page-break-inside: avoid;">
-    <p style="color: #666 !important; font-size: 12px; margin: 0;">
-      Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
-        "id-ID"
-      )}
-    </p>
-  </div>
-`;
+  }
 
   exportDiv.appendChild(pdfContent);
   exportDiv.appendChild(closeButton);
   exportDiv.appendChild(downloadButton);
-
   overlay.appendChild(exportDiv);
   document.body.appendChild(overlay);
-
   overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) {
-      closePreview();
-    }
+    if (e.target === overlay) closePreview();
   });
-
-  const escapeHandler = (e) => {
-    if (e.key === "Escape") {
-      closePreview();
-      document.removeEventListener("keydown", escapeHandler);
-    }
-  };
-  document.addEventListener("keydown", escapeHandler);
-
-  setTimeout(() => {
-    overlay.style.opacity = "1";
-  }, 10);
-
-  console.log("Preview opened with interactive controls - optimized for PDF");
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePreview();
+  });
+  setTimeout(() => (overlay.style.opacity = "1"), 10);
+  console.log("Preview opened with single table and proper PDF pagination");
 }
 
 // Initialize dashboard
