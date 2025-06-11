@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mukromah Hijrah | Pemesanan Paket Umroh</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
       rel="icon"
       href="/public/homepage/image/umroh.ico"
@@ -50,14 +51,18 @@
       </div>
     </nav>
 
-    <main class="container concert-section" style="padding: 6rem 5% 2rem">
+    <main
+      class="container concert-section"
+      style="padding: 6rem 5% 2rem"
+      data-aos="fade-up"
+    >
       <h2 class="section-title" data-aos="zoom-in">Daftar Paket Umroh</h2>
       <div class="concert-grid" id="concertGrid"></div>
     </main>
 
     <!-- Booking Modal -->
-    <div class="modal" id="bookingModal">
-      <div class="modal-content">
+    <div class="modal" id="bookingModal" data-aos="fade-up">
+      <div class="modal-content" data-aos="fade-up">
         <button class="close-modal" id="closeBookingModal">
           <i class="fas fa-times"></i>
         </button>
@@ -141,7 +146,10 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/public/homepage/script/script.js"></script>
     <script>
-      AOS.init();
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
     </script>
   </body>
 </html>
