@@ -118,6 +118,7 @@ function setupBookingButtons() {
       if (bookingModal) {
         bookingModal.classList.add("active");
         bookingModal.style.display = "flex";
+        AOS.refreshHard();
       } else {
         console.error("Booking modal not found!");
       }
