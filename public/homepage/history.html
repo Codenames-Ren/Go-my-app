@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mukromah Hijrah | Payment History</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
       rel="icon"
       href="/public/homepage/image/umroh.ico"
@@ -59,8 +60,8 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section" data-aos="fade-up">
-      <div class="hero-content">
+    <section class="hero-section">
+      <div class="hero-content" data-aos="fade-up">
         <h1 class="hero-title">Your Payment Records</h1>
         <p class="hero-description">
           Check your purchases and transaction status below.
@@ -69,9 +70,9 @@
     </section>
 
     <!-- Main Content -->
-    <main class="payment-history-section" data-aos="fade-up">
-      <h2 class="section-title">Payment History</h2>
-      <div class="history-table-container">
+    <main class="payment-history-section">
+      <h2 class="section-title" data-aos="fade-up">Payment History</h2>
+      <div class="history-table-container" data-aos="fade-up">
         <table class="history-table">
           <thead>
             <tr>
@@ -89,8 +90,8 @@
       </div>
     </main>
 
-    <footer data-aos="fade-up">
-      <div class="footer-section">
+    <footer>
+      <div class="footer-section" data-aos="fade-up">
         <h3>Follow our social networks</h3>
         <div class="social-links">
           <a href="#"><i class="fab fa-facebook"></i></a>
@@ -109,7 +110,10 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/public/homepage/script/script.js"></script>
     <script>
-      AOS.init();
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
     </script>
   </body>
 </html>
