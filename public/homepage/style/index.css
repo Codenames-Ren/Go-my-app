@@ -397,8 +397,7 @@ footer {
   .lineup-grid,
   .ticket-grid,
   .card-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .navbar {
