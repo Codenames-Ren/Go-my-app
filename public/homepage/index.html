@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mukromah Hijrah | Home</title>
     <link rel="stylesheet" href="/public/homepage/style/index.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link
       rel="icon"
       href="/public/homepage/image/umroh.ico"
@@ -61,10 +62,10 @@
       </div>
     </section>
 
-    <section class="container lineup-section">
+    <section class="container lineup-section" data-aos="fade-up">
       <h2 class="section-title">List Package</h2>
-      <div class="lineup-grid">
-        <div class="lineup-card">
+      <div class="lineup-grid" data-aos="fade-up">
+        <div class="lineup-card" data-aos="fade-up">
           <h3 class="umroh-ekonomis">Umroh Ekonomis</h3>
           <ul>
             <li>Maskapai: Lion Air</li>
@@ -74,7 +75,7 @@
             <li>Pembimbing berpengalaman</li>
           </ul>
         </div>
-        <div class="lineup-card">
+        <div class="lineup-card" data-aos="fade-up">
           <h3 class="umroh-awal-musim">Umroh Awal Musim 9 Hari</h3>
           <ul>
             <li>Maskapai: Citilink</li>
@@ -84,7 +85,7 @@
             <li>Manasik offline & online</li>
           </ul>
         </div>
-        <div class="lineup-card">
+        <div class="lineup-card" data-aos="fade-up">
           <h3 class="umroh-ramadhan">Umroh Ramadhan</h3>
           <ul>
             <li>Maskapai: Emirates</li>
@@ -94,7 +95,7 @@
             <li>Pembimbing khusus selama Ramadhan</li>
           </ul>
         </div>
-        <div class="lineup-card">
+        <div class="lineup-card" data-aos="fade-up">
           <h3 class="umroh-akhir-tahun">Umroh Akhir Tahun</h3>
           <ul>
             <li>Maskapai: Garuda Airlines</li>
@@ -107,10 +108,10 @@
       </div>
     </section>
 
-    <section class="ticket-section container">
+    <section class="ticket-section container" data-aos="fade-up">
       <h2 class="section-title">Class Options</h2>
-      <div class="ticket-grid">
-        <div class="ticket-card">
+      <div class="ticket-grid" data-aos="fade-up">
+        <div class="ticket-card" data-aos="fade-up">
           <h3>Economic</h3>
           <p class="price">IDR 27.000.000</p>
           <ul class="ticket-benefits">
@@ -120,7 +121,7 @@
             <li>Jalan-jalan sekitar hotel</li>
           </ul>
         </div>
-        <div class="ticket-card">
+        <div class="ticket-card" data-aos="fade-up">
           <h3>Regular</h3>
           <p class="price">IDR 30.000.000</p>
           <ul class="ticket-benefits">
@@ -130,7 +131,7 @@
             <li>City Tour Madinah + Makkah</li>
           </ul>
         </div>
-        <div class="ticket-card">
+        <div class="ticket-card" data-aos="fade-up">
           <h3>VIP</h3>
           <p class="price">IDR 35.000.000</p>
           <ul class="ticket-benefits">
@@ -143,25 +144,25 @@
       </div>
     </section>
 
-    <section class="container">
+    <section class="container" data-aos="fade-up">
       <h2 class="section-title">Why Choose Us?</h2>
-      <div class="card-grid">
+      <div class="card-grid" data-aos="fade-up">
         <div class="card">
           <i class="fas fa-map-marked-alt fa-2x"></i>
           <h3>Lokasi Strategis</h3>
           <p>Akomodasi dekat Masjidil Haram dan Nabawi.</p>
         </div>
-        <div class="card">
+        <div class="card" data-aos="fade-up">
           <i class="fas fa-ticket-alt fa-2x"></i>
           <h3>Fasilitas Lengkap</h3>
           <p>Dari koper, manasik, hingga perlengkapan ibadah tersedia.</p>
         </div>
-        <div class="card">
+        <div class="card" data-aos="fade-up">
           <i class="fas fa-headset fa-2x"></i>
           <h3>Support 24 Jam</h3>
           <p>Tim kami siap membantu kapan pun dibutuhkan.</p>
         </div>
-        <div class="card">
+        <div class="card" data-aos="fade-up">
           <i class="fas fa-shield-alt fa-2x"></i>
           <h3>Booking Aman</h3>
           <p>Transaksi online aman dan transparan.</p>
@@ -169,7 +170,7 @@
       </div>
     </section>
 
-    <footer>
+    <footer data-aos="fade-up">
       <div class="footer-section">
         <h3>Follow our social networks</h3>
         <div class="social-links">
@@ -187,7 +188,10 @@
     <script src="/public/homepage/script/script.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init();
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
     </script>
   </body>
 </html>
