@@ -21,45 +21,80 @@ type EventRequest struct {
 
 func CreateEvent(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req EventRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		//get input from form
+		eventName := c.PostForm("event_name")
+		location := c.PostForm("location")
+		orderDeadlineStr := c.PostForm("order_deadline")
+		endDateStr := c.PostForm("end_date")
+
+		if eventName == "" || location == "" || orderDeadlineStr == "" || endDateStr == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "You must input all the field"})
 			return
 		}
 
+		orderDeadline, err := time.Parse(time.RFC3339, orderDeadlineStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid order_deadline format"})
+			return
+		}
+
+		endDate, err := time.Parse(time.RFC3339, endDateStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid end_date format"})
+			return
+		}
+
+		if orderDeadline.After(endDate) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline must not be later than the departure date"})
+			return
+		}
+
+		if endDate.Before(time.Now()) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Departure times must be in the future"})
+			return
+		}
+
+		//check event name
 		var existing models.Event
-		if err := db.Where("event_name = ?", req.EventName).First(&existing).Error; err == nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "event name already exists"})
+		if err := db.Where("event_name = ?", eventName).First(&existing).Error; err == nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Event already exists!"})
 			return
 		}
 
+		//take image file from client side
+		file, err := c.FormFile("image")
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "file not found"})
+			return
+		}
+
+		filename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
+		savepath := fmt.Sprintf("public/homepage/image/%s", filename)
+		if err := c.SaveUploadedFile(file, savepath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})
+			return
+		}
+
+		//generate event id
 		id, err := service.GenerateEventID(db)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate event id"})
-		}
-
-		if req.OrderDeadline.After(req.EndDate) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline must not be longer than than the departure time"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create event ID"})
 			return
 		}
 
-		if req.EndDate.Before(time.Now()) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "End date must be in the future"})
-			return
-		}
-
-		event := models.Event{
-			ID: 			id,
-			EventName:		req.EventName,
-			Location: 		req.Location,
-			OrderDeadline: 	req.OrderDeadline,
-			EndDate: 		req.EndDate,
-			ImageName: 		req.ImageName,
-			IsActive:		true,
+		//save to db
+		event := models.Event {
+			ID: 					id,
+			EventName: 				eventName,
+			Location: 				location,
+			OrderDeadline: 			orderDeadline,
+			EndDate: 				endDate,
+			ImageName: 				filename,
+			IsActive: 				true,
 		}
 
 		if err := db.Create(&event).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create event"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save event"})
 			return
 		}
 
@@ -78,74 +113,7 @@ func GetAllEvent(db *gorm.DB) gin.HandlerFunc{
 	}
 }
 
-func UpdateEvent(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Param("id")
-		var event models.Event
-		if err := db.Where("id = ?", id).First(&event).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "event not found"})
-			return
-		}
 
-		var req EventRequest
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		if req.OrderDeadline.After(req.EndDate) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Order deadline cannot be later than the concert time."})
-			return
-		}
-
-		if req.EndDate.Before(time.Now()) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "End date must be in the future"})
-			return
-		}
-
-		event.EventName = req.EventName
-		event.Location = req.Location
-		event.OrderDeadline = req.OrderDeadline
-		event.EndDate = req.EndDate
-		event.ImageName = req.ImageName
-
-		if err := db.Save(&event).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update event"})
-			return
-		}
-
-		c.JSON(http.StatusOK, event)
-	}
-}
-
-func ToggleEventStatus(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		id := c.Param("id")
-		var event models.Event
-		if err := db.Where("id = ?", id).First(&event).Error; err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "event not found"})
-			return
-		}
-
-		event.IsActive = !event.IsActive
-
-		if err := db.Save(&event).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to toggle event status"})
-			return
-		}
-
-		status := "disabled"
-		if event.IsActive {
-			status = "enabled"
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Event status updated successfully",
-			"data": event,
-			"status": status,
-		})
-	}
-}
 
 func DeleteEvent(db *gorm.DB) gin.HandlerFunc{
 	return func(c *gin.Context) {

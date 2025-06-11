@@ -75,7 +75,7 @@
 
         <div class="card">
           <h2 class="card-title" id="form-event-title">Tambah Paket Baru</h2>
-          <form id="form-event">
+          <form id="form-event" enctype="multipart/form-data" method="POST">
             <input type="hidden" id="event-id" />
             <div class="form-group">
               <label for="event-name">Nama Paket :</label>
@@ -100,11 +100,12 @@
             </div>
 
             <div class="form-group">
-              <label for="event-image-name">Nama File Gambar</label>
+              <label for="event-image">Upload Gambar Paket</label>
               <input
-                type="text"
-                id="event-image-name"
-                placeholder="contoh umroh.jpg"
+                type="file"
+                id="event-image"
+                name="image"
+                accept="image/*"
                 required
               />
             </div>

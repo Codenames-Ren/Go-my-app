@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const eventOrderDeadlineInput = document.getElementById(
     "event-order-deadline"
   );
-  const eventImageInput = document.getElementById("event-image-name");
+  const eventImageInput = document.getElementById("event-image");
   const eventEndDateInput = document.getElementById("event-end-date");
 
   const currentDateElement = document.getElementById("current-date-konser");
@@ -155,13 +155,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const eventDataForBackend = {
-      event_name: eventName.trim(),
-      location: eventLocationInput.value.trim(),
-      order_deadline: moment(orderDeadlineValue).toISOString(),
-      end_date: moment(endDateValue).toISOString(),
-      image_name: eventImageInput.value.trim(),
-    };
+    // const eventDataForBackend = {
+    //   event_name: eventName.trim(),
+    //   location: eventLocationInput.value.trim(),
+    //   order_deadline: moment(orderDeadlineValue).toISOString(),
+    //   end_date: moment(endDateValue).toISOString(),
+    //   image_name: eventImageInput.value.trim(),
+    // };
 
     const currentEventId = eventIdInput.value;
     const method = currentEventId ? "PUT" : "POST";
@@ -182,13 +182,23 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      const formData = new FormData();
+      formData.append("event_name", eventName.trim());
+      formData.append("location", eventLocationInput.value.trim());
+      formData.append(
+        "order_deadline",
+        moment(orderDeadlineValue).toISOString()
+      );
+      formData.append("end_date", moment(endDateValue).toISOString());
+      formData.append("image", document.getElementById("event-image").files[0]);
+
       const response = await fetch(endpoint, {
         method: method,
         headers: {
-          "Content-Type": "application/json",
           Authorization: token,
+          // ⚠️ Jangan set Content-Type di sini, biarkan browser yang urus (karena kita pakai FormData)
         },
-        body: JSON.stringify(eventDataForBackend),
+        body: formData,
       });
 
       if (!response.ok) {
