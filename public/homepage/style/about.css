@@ -200,3 +200,58 @@ footer {
   font-size: 0.9rem;
   color: #6b7a8f;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  /* Show hamburger menu */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hide nav menu by default on mobile */
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: #a7bfa3;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    padding: 2rem 0;
+    gap: 0;
+  }
+
+  /* Show nav menu when active */
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-menu li {
+    margin: 1rem 0;
+  }
+
+  .nav-menu li a {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    display: block;
+  }
+
+  /* Hide login button on mobile or move it to nav menu */
+  .nav-links {
+    margin-left: 110px;
+  }
+
+  .hero-title {
+    font-size: 2.4rem;
+  }
+
+  .navbar {
+    padding: 1rem 2%;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+}
