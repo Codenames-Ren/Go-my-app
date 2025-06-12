@@ -355,8 +355,227 @@ tr:hover {
   }
 }
 
+@media (max-width: 450px) {
+  .sidebar {
+    width: 70px;
+    overflow: hidden;
+  }
+  .sidebar-logo,
+  .menu-text,
+  .user-name {
+    display: none;
+  }
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  .user-info {
+    justify-content: center;
+  }
+  .user-avatar {
+    display: none;
+  }
+
+  .logout-btn {
+    background: none;
+    border: none;
+    color: #bdc3c7;
+    cursor: pointer;
+  }
+
+  .filter-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  select,
+  input {
+    padding: 5px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    font-size: 12px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  td::before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #666;
+  }
+
+  td:nth-of-type(1)::before {
+    content: "Nama";
+  }
+  td:nth-of-type(2)::before {
+    content: "Alamat";
+  }
+  td:nth-of-type(3)::before {
+    content: "Wilayah";
+  }
+  td:nth-of-type(4)::before {
+    content: "Whatsapp";
+  }
+  td:nth-of-type(5)::before {
+    content: "Paket";
+  }
+  td:nth-of-type(6)::before {
+    content: "Tipe Langganan";
+  }
+  td:nth-of-type(7)::before {
+    content: "Tagihan";
+  }
+  td:nth-of-type(8)::before {
+    content: "Status";
+  }
+  td:nth-of-type(9)::before {
+    content: "Jatuh Tempo";
+  }
+  td:nth-of-type(10)::before {
+    content: "Aksi";
+  }
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    overflow: hidden;
+  }
+  .sidebar-logo,
+  .menu-text,
+  .user-name {
+    display: none;
+  }
+  .main-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  .user-info {
+    justify-content: center;
+  }
+  .user-avatar {
+    margin-right: 0;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  td::before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #666;
+  }
+
+  td:nth-of-type(1)::before {
+    content: "ID User";
+  }
+  td:nth-of-type(2)::before {
+    content: "Nama Pemesan";
+  }
+  td:nth-of-type(3)::before {
+    content: "No Telepon";
+  }
+  td:nth-of-type(4)::before {
+    content: "Pilihan Paket";
+  }
+  td:nth-of-type(5)::before {
+    content: "Tipe Paket";
+  }
+  td:nth-of-type(6)::before {
+    content: "Quantity";
+  }
+  td:nth-of-type(7)::before {
+    content: "Harga Satuan";
+  }
+  td:nth-of-type(8)::before {
+    content: "Total Harga";
+  }
+  td:nth-of-type(9)::before {
+    content: "Kode Tiket";
+  }
+  td:nth-of-type(10)::before {
+    content: "Status";
+  }
+  td:nth-of-type(11)::before {
+    content: "Tanggal";
+  }
+  td:nth-of-type(12)::before {
+    content: "Aksi";
+  }
+}
+
+@media (min-width: 769px) {
+  .table-wrapper {
+    overflow-x: auto;
+  }
+}
+
+/* Responsive Styles */
+/* @media (max-width: 768px) {
   .sidebar {
     width: 70px;
     overflow: hidden;
@@ -400,4 +619,4 @@ tr:hover {
     cursor: pointer;
     font-size: 13px;
   }
-}
+} */
