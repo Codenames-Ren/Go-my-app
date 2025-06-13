@@ -1,0 +1,18 @@
+{
+  "build": {
+    "env": {
+      "PORT": "8080"
+    },
+    "buildCommand": "go build -o main ."
+  },
+  "deploy": {
+    "startCommand": "./main"
+  },
+  "services": [
+    {
+      "name": "Go-my-app",
+      "port": 8080,
+      "protocol": "http"
+    }
+  ]
+}
