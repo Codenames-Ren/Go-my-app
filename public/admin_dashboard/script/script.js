@@ -497,7 +497,7 @@ function ensureRendered(element, timeout = 300) {
   });
 }
 
-// logic export
+// logic export - FIXED VERSION with corrected logo position
 async function exportData() {
   const monthFilter = document.getElementById("month-filter").value;
   const dayFilter = document.getElementById("day-filter").value;
@@ -533,6 +533,27 @@ async function exportData() {
   filteredData.forEach((sale) => {
     totalSales += (sale.OrderCount || 0) * (sale.TicketPrice || 0);
   });
+
+  // CONVERT IMAGE TO BASE64 - INI YANG PENTING!
+  const getImageAsBase64 = async (imgPath) => {
+    try {
+      const response = await fetch(imgPath);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.warn("Image not found, using placeholder");
+      // Return a simple placeholder base64 image if original fails
+      return "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjZGRkIi8+CjxwYXRoIGQ9Ik0yNSAzMEg1NVY1MEgyNVYzMFoiIGZpbGw9IiM5OTkiLz4KPC9zdmc+";
+    }
+  };
+
+  // Get base64 image
+  const logoBase64 = await getImageAsBase64("/public/homepage/image/umroh.jpg");
 
   const overlay = document.createElement("div");
   overlay.id = "pdf-preview-overlay";
@@ -712,46 +733,73 @@ async function exportData() {
       </div>`;
   };
 
+  // HEADER TEMPLATE FUNCTION - FIXED LOGO POSITION
+  const generateHeader = (logoBase64) => {
+    return `
+      <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 25px;
+      border-bottom: 2px solid #333; padding-bottom: 15px; gap: 15px;">
+      <div style="flex-shrink: 0;">
+        <img src="${logoBase64}" alt="Logo" style=" margin-bottom: 10px; width: 100px; height: 100px; object-fit: contain; border-radius: 8px;"/>
+      </div>
+      <div style="display: flex; flex-direction: column; text-align: center;">
+    <h1 style="font-size: 20px; margin: 0 0 10px 0; color: #2c3e50; font-weight: bold;">LAPORAN PENJUALAN PAKET UMROH</h1>
+          <h1 style="font-size: 18px; margin: 0 0 5px 0; color: #34495e; font-weight: bold;">MUKROMAH HIJRAH MAMUNDA</h1>
+          <p style="font-size: 12px; margin: 0; color: #7f8c8d;">Tanggal Cetak: ${new Date().toLocaleDateString(
+            "id-ID",
+            {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }
+          )}</p>
+        </div>
+      </div>`;
+  };
+
   // Create preview content
   const previewContent = `
-    <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
-      <h1 style="font-size: 20px; margin: 0 0 10px 0;">LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA</h1>
-      <p style="font-size: 12px; margin: 0;">Tanggal Cetak: ${new Date().toLocaleDateString(
-        "id-ID",
-        {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }
-      )}</p>
-    </div>
-    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
-      <div>Total Transaksi: ${filteredData.length}</div>
-      <div>Total Omset: ${formatRupiah(totalSales)}</div>
-    </div>
+    ${generateHeader(logoBase64)}
+    
     ${generateSingleTable(filteredData)}
-    <div style="text-align: center; font-size: 11px; margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+    <div style="text-align: center; font-size: 11px; margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px; color: #7f8c8d;">
       Laporan ini dibuat secara otomatis oleh sistem pada ${new Date().toLocaleString(
         "id-ID"
       )}
-    </div>`;
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 20px; font-weight: bold; color: #2c3e50;">
+      <div>Total Transaksi: ${filteredData.length}</div>
+      <div>Total Omset: ${formatRupiah(totalSales)}</div>
+    </div>
+    `;
 
   pdfContent.innerHTML = previewContent;
 
   const closeButton = document.createElement("button");
-  closeButton.textContent = "x";
-  closeButton.style.cssText = `position: absolute; top: 10px; right: 15px; font-size: 24px; background: transparent; border: none; cursor: pointer;`;
+  closeButton.textContent = "×";
+  closeButton.style.cssText = `position: absolute; top: 10px; right: 15px; font-size: 50px; background: transparent; border: none; cursor: pointer; color: #999; width: 30px; height: 30px; border-radius: 10%; display: flex; align-items: center; justify-content: center;`;
+  closeButton.onmouseover = () =>
+    (closeButton.style.backgroundColor = "#f0f0f0");
+  closeButton.onmouseout = () =>
+    (closeButton.style.backgroundColor = "transparent");
   closeButton.onclick = () => closePreview();
 
   const downloadButton = document.createElement("button");
   downloadButton.innerHTML = "<i class='fas fa-download'></i> Download PDF";
-  downloadButton.style.cssText = `background: #28a745; color: white; border: none; border-radius: 25px; padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer;`;
+  downloadButton.style.cssText = `background: #28a745; color: white; border: none; border-radius: 25px; padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.3s;`;
+  downloadButton.onmouseover = () =>
+    (downloadButton.style.background = "#218838");
+  downloadButton.onmouseout = () =>
+    (downloadButton.style.background = "#28a745");
   downloadButton.onclick = () => generatePDF();
 
   function closePreview() {
     overlay.style.opacity = "0";
-    setTimeout(() => document.body.removeChild(overlay), 300);
+    setTimeout(() => {
+      if (document.body.contains(overlay)) {
+        document.body.removeChild(overlay);
+      }
+    }, 300);
   }
 
   async function generatePDF() {
@@ -779,47 +827,42 @@ async function exportData() {
       }
 
       pdfContentForExport.innerHTML = `
-        <div style="text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 15px;">
-          <h1 style="font-size: 20px; margin: 0 0 10px 0;">LAPORAN PENJUALAN PAKET UMROH - MUKROMAH HIJRAH MAMUNDA</h1>
-          <p style="font-size: 12px; margin: 0;">Tanggal Cetak: ${new Date().toLocaleDateString(
-            "id-ID",
-            {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }
-          )}</p>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
+        ${generateHeader(logoBase64)}
+        ${pdfHtmlBody}
+          <div style="display: flex; justify-content: space-between; margin-top: 35px; font-size: 20px; font-weight: bold; color: #2c3e50;">
           <div>Total Transaksi: ${filteredData.length}</div>
           <div>Total Omset: ${formatRupiah(totalSales)}</div>
         </div>
-        ${pdfHtmlBody}`;
+        `;
 
       await ensureRendered(pdfContentForExport, 300);
+
       Swal.fire({
         title: "Membuat PDF...",
+        html: "Sedang memproses data, mohon tunggu...",
         didOpen: () => Swal.showLoading(),
         allowOutsideClick: false,
         showConfirmButton: false,
       });
-      await new Promise((res) => setTimeout(res, 300));
+
+      await new Promise((res) => setTimeout(res, 500));
 
       const options = {
-        margin: [0.4, 0.3, 0.6, 0.3], // Increased bottom margin for footer
-        filename: `laporan-penjualan-paket-umroh-mukromah-hijrah${moment().format(
+        margin: [0.4, 0.3, 0.6, 0.3],
+        filename: `laporan-penjualan-paket-umroh-mukromah-hijrah-${moment().format(
           "YYYY-MM-DD-HHmm"
         )}.pdf`,
-        image: { type: "jpeg", quality: 0.95 },
+        image: { type: "jpeg", quality: 0.98 },
         html2canvas: {
           scale: 1.5,
           useCORS: true,
+          allowTaint: true,
           backgroundColor: "#ffffff",
           width: 1123,
           height: window.innerHeight,
           scrollX: 0,
           scrollY: 0,
+          logging: false,
         },
         jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
         pagebreak: {
@@ -868,7 +911,7 @@ async function exportData() {
       Swal.fire({
         icon: "success",
         title: "Export Berhasil!",
-        text: "Data berhasil di export.",
+        text: "PDF laporan berhasil diunduh.",
         timer: 4000,
         showConfirmButton: true,
       });
@@ -889,14 +932,17 @@ async function exportData() {
   exportDiv.appendChild(downloadButton);
   overlay.appendChild(exportDiv);
   document.body.appendChild(overlay);
+
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closePreview();
   });
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closePreview();
   });
+
   setTimeout(() => (overlay.style.opacity = "1"), 10);
-  console.log("Preview opened with single table and proper PDF pagination");
+  console.log("Preview opened with logo loaded and proper PDF pagination");
 }
 
 // Initialize dashboard
