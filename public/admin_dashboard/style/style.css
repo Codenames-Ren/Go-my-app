@@ -357,7 +357,7 @@ tr:hover {
 
 @media (max-width: 450px) {
   .sidebar {
-    width: 70px;
+    width: 50px;
     overflow: hidden;
   }
   .sidebar-logo,
@@ -424,6 +424,7 @@ tr:hover {
     font-size: 12px;
     border: none;
     border-bottom: 1px solid #eee;
+    min-height: 30px;
   }
 
   td::before {
@@ -432,9 +433,10 @@ tr:hover {
     left: 10px;
     width: 40%;
     padding-right: 10px;
-    white-space: nowrap;
+    white-space: pre-line;
     font-weight: bold;
     color: #666;
+    line-height: 1.2;
   }
 
   td:nth-of-type(1)::before {
@@ -524,8 +526,8 @@ tr:hover {
     top: 10px;
     left: 10px;
     width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
+    padding-right: 15px;
+    white-space: pre-line;
     font-weight: bold;
     color: #666;
   }
@@ -534,13 +536,13 @@ tr:hover {
     content: "ID User";
   }
   td:nth-of-type(2)::before {
-    content: "Nama Pemesan";
+    content: "Nama\APemesan";
   }
   td:nth-of-type(3)::before {
     content: "No Telepon";
   }
   td:nth-of-type(4)::before {
-    content: "Pilihan Paket";
+    content: "Pilihan\APaket";
   }
   td:nth-of-type(5)::before {
     content: "Tipe Paket";
@@ -549,10 +551,10 @@ tr:hover {
     content: "Quantity";
   }
   td:nth-of-type(7)::before {
-    content: "Harga Satuan";
+    content: "Harga\ASatuan";
   }
   td:nth-of-type(8)::before {
-    content: "Total Harga";
+    content: "Total\AHarga";
   }
   td:nth-of-type(9)::before {
     content: "Kode Tiket";

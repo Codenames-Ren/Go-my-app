@@ -478,14 +478,15 @@ tr:hover {
   tr {
     margin-bottom: 1rem;
     border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 8px;
+    border-radius: 4px;
   }
 
   td {
     position: relative;
     padding-left: 50%;
     text-align: left;
+    font-size: 9px;
     border: none;
     border-bottom: 1px solid #eee;
     min-height: 50px;
@@ -495,7 +496,7 @@ tr:hover {
     position: absolute;
     top: 10px;
     left: 10px;
-    width: 45%;
+    width: 40%;
     padding-right: 10px;
     white-space: pre-line;
     font-weight: bold;
