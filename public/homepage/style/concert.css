@@ -537,14 +537,14 @@ footer {
   /* Keep navbar visible */
   .navbar {
     display: flex;
-    padding: 0.6rem 2%;
+    padding: 0.6rem 0.5%;
     justify-content: space-between;
   }
 
   /* Show hamburger menu */
   .hamburger {
     display: flex;
-    margin-left: 22px;
+    margin-left: 15px;
   }
 
   /* Hide desktop nav-links */
