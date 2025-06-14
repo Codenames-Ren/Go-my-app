@@ -537,13 +537,14 @@ footer {
   /* Keep navbar visible */
   .navbar {
     display: flex;
-    padding: 1rem 2%;
+    padding: 0.6rem 2%;
     justify-content: space-between;
   }
 
   /* Show hamburger menu */
   .hamburger {
     display: flex;
+    margin-left: 15px;
   }
 
   /* Hide desktop nav-links */
@@ -555,7 +556,7 @@ footer {
     border: none;
     width: 50px;
     border-radius: 25px;
-    font-weight: 700;
+    /* font-weight: 700; */
     font-size: 18px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -601,14 +602,6 @@ footer {
   .logo img {
     width: 36px;
     height: 36px;
-  }
-
-  .hero-title {
-    font-size: 2rem;
-  }
-
-  .hero-description {
-    font-size: 1.1rem;
   }
 
   .section-title {

@@ -426,6 +426,7 @@ footer {
   /* Show hamburger menu */
   .hamburger {
     display: flex;
+    margin-left: 15px;
   }
 
   /* Hide desktop nav-links */

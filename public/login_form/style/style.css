@@ -390,3 +390,48 @@ input {
     margin: 1rem 0;
   }
 }
+
+@media (max-width: 450px) {
+  .container {
+    width: 95%;
+    max-width: 100%;
+  }
+
+  form {
+    padding: 0 1rem;
+  }
+
+  input {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  button {
+    padding: 10px 30px;
+    font-size: 12px;
+  }
+
+  .social-container a {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+  }
+
+  h1,
+  h1.title {
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+  }
+
+  p,
+  span,
+  .pass-link a {
+    font-size: 11.5px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+}
