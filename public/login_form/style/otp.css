@@ -100,3 +100,71 @@ button:hover:not(:disabled) {
 .popup.show {
   transform: translateX(0);
 }
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 1rem;
+    margin: 0 auto;
+  }
+
+  form {
+    padding: 0;
+  }
+
+  .otp-field input {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+
+  input {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 450px) {
+  .otp-field input {
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+  }
+
+  input {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  button {
+    padding: 9px 18px;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    padding: 18px 0.8rem;
+  }
+}
