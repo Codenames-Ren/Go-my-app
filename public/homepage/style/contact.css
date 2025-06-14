@@ -299,3 +299,139 @@ footer {
     width: 100%;
   }
 }
+
+@media (max-width: 450px) {
+  /* Keep navbar visible */
+  .navbar {
+    display: flex;
+    padding: 1rem 2%;
+    justify-content: space-between;
+  }
+
+  /* Show hamburger menu */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hide desktop nav-links */
+  .nav-links {
+    display: block;
+    margin: 1rem;
+    background-color: #d7e3d4;
+    color: #3c4a3f;
+    border: none;
+    width: 50px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Mobile nav menu setup */
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: #a7bfa3;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    padding: 2rem 0 1rem 0;
+    gap: 0;
+    z-index: 998;
+  }
+
+  /* Show nav menu when active */
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-menu li {
+    margin: 1rem 0;
+  }
+
+  .nav-menu li a {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    display: block;
+  }
+
+  /* Make sure logo doesn't take too much space */
+  .logo a {
+    font-size: 1.3rem;
+    gap: 0.4rem;
+  }
+
+  .logo img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  /* Force single column layout for ALL grids on small screens */
+  .lineup-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .ticket-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  /* Remove the special positioning for 4th lineup card on mobile */
+  .lineup-card:last-child:nth-child(4) {
+    grid-column: auto;
+    justify-self: auto;
+  }
+
+  .modal-content {
+    width: 50%;
+    padding: 1.5rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+    margin: 3rem auto;
+  }
+
+  .hero-section {
+    background: linear-gradient(135deg, #a7bfa3 0%, #8ca78c 100%);
+    padding: 4rem 2%;
+    text-align: center;
+    color: #3c4a3f;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+    font-family: "Merriweather", serif;
+    margin-bottom: 1rem;
+    letter-spacing: 1.2px;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+}
