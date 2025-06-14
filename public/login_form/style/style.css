@@ -345,3 +345,48 @@ input {
   color: yellow;
   text-shadow: 1px #333;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    max-width: 100%;
+  }
+
+  form {
+    padding: 0 1rem;
+  }
+
+  input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 10px 32px;
+    font-size: 14px;
+  }
+
+  .social-container a {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  h1,
+  h1.title {
+    font-size: 1.8rem;
+    line-height: 2rem;
+  }
+
+  p,
+  span,
+  .pass-link a {
+    font-size: 13px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1rem 0;
+  }
+}
