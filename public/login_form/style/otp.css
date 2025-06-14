@@ -107,8 +107,8 @@ button:hover:not(:disabled) {
   }
 
   .container {
-    width: 100%;
-    max-width: 100%;
+    width: 95%;
+    max-width: 95%;
     padding: 20px 1rem;
     margin: 0 auto;
   }
@@ -118,8 +118,8 @@ button:hover:not(:disabled) {
   }
 
   .otp-field input {
-    width: 35px;
-    height: 35px;
+    width: 28px;
+    height: 30px;
     font-size: 18px;
   }
 
@@ -145,7 +145,7 @@ button:hover:not(:disabled) {
 
 @media (max-width: 450px) {
   .otp-field input {
-    width: 22px;
+    width: 18px;
     height: 22px;
     font-size: 14px;
   }
