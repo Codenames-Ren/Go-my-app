@@ -459,7 +459,7 @@ tr:hover {
     justify-content: center;
   }
   .user-avatar {
-    margin-right: 0;
+    display: none;
   }
 
   table,
