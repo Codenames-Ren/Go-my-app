@@ -155,14 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // const eventDataForBackend = {
-    //   event_name: eventName.trim(),
-    //   location: eventLocationInput.value.trim(),
-    //   order_deadline: moment(orderDeadlineValue).toISOString(),
-    //   end_date: moment(endDateValue).toISOString(),
-    //   image_name: eventImageInput.value.trim(),
-    // };
-
     const currentEventId = eventIdInput.value;
     const method = currentEventId ? "PUT" : "POST";
     const endpoint = currentEventId
